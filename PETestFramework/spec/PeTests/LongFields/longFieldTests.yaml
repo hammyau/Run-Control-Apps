@@ -1,0 +1,289 @@
+---
+#Seven or fewer characters in the name
+#Uppercase please
+name: "LSTR"
+title: "Long field test specification"
+description: "Test functions on with field lengths > 256 \
+  \ stuff"
+#The category maps to the directory path below the Spec directory
+#Which is where the spec file should be located
+category: "dev/longFields"
+cq: ""
+note: ""
+#There can be many tests.
+#note the '-' that makes an array member
+#and is required at the start of each test
+tests:
+#again 7 characters - try to make it meaningful
+#
+# next test
+#
+- name: "ISNULLS"
+  #don't worry about header can make the same as the test name 
+  header: "ISNULLS"
+  description: "Test CX* functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_ISNULLS[12082].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGNULLS" #needs to match what is in the PF DDName
+    filename: "LONGFLD.NULLS"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012082" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#
+- name: "ISNUM"
+  #don't worry about header can make the same as the test name 
+  header: "ISNUM"
+  description: "Test CN* functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_ISNUMERIC[12083].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGNUM" #needs to match what is in the PF DDName
+    filename: "LONGFLD.NUMERIC"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012083" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#
+- name: "ISPACE"
+  #don't worry about header can make the same as the test name 
+  header: "ISPACE"
+  description: "Test CS* functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_ISSPACES[12084].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGSPACE" #needs to match what is in the PF DDName
+    filename: "LONGFLD.SPACES"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012084" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#
+- name: "ISDT"
+  #don't worry about header can make the same as the test name 
+  header: "ISDT"
+  description: "Test DT* functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_DT[12085].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012085" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#
+- name: "ISDTPAD"
+  #don't worry about header can make the same as the test name 
+  header: "ISDTPAD"
+  description: "Test DT* functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_DT_pad[12086].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012086" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#    
+- name: "ISDTTRC"
+  #don't worry about header can make the same as the test name 
+  header: "ISDTTRC"
+  description: "Test DT* functions 256+ length fields with truncation"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_DT_trunc[12087].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012087" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#    
+- name: "COMPARE"
+  #don't worry about header can make the same as the test name 
+  header: "COMPARE"
+  description: "Test CF** functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_compare[12088].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012088" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+#
+# next test
+#    
+- name: "SUBSTR"
+  #don't worry about header can make the same as the test name 
+  header: "SUBSTR"
+  description: "Test SF** functions 256+ length fields"
+  #Trying to make them all WBXML - but could be database.
+  #Ask for details
+  source: "WBXML"
+  #List of WBXML files - yes there could be more than one
+  #But probably not
+  #Expected to be in the xml directory of the test framework
+  xmlfiles:
+  - name: "long_field_all_substring[12089].xml"
+  #List of input data sets - for the moment called event files
+  #the filename is relative to the TEST_HLQ.INPUT
+  #you can use an absoulte DSN as well
+  eventfiles:
+  - ddname: "LNGSUBS" #needs to match what is in the PF DDName
+    filename: "LONGFLD.SUBSTR"
+  #List of reference files - just like event files
+  # omit if no reference phase required
+  #Extract output 
+  # The ddname needs to match the PF defined in the view
+  # for an extract only view
+  # For a format phase it will be EXTR00n where n is defined in the view
+  extractfiles:
+  - ddname: "F0012089" 
+    space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"

@@ -1,0 +1,5 @@
+specFileSets:
+  - name: "Long Field Tests"
+    templateSetName: "MR91toPE.yaml"
+    specs:
+      - "PeTests/LongFields/longFieldTests.yaml"
