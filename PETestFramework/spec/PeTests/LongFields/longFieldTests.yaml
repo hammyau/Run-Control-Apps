@@ -29,7 +29,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_ISNULLS[12082].xml"
+  - name: "LongFields/long_field_all_ISNULLS[12082].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -63,7 +63,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_ISNUMERIC[12083].xml"
+  - name: "LongFields/long_field_all_ISNUMERIC[12083].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -97,7 +97,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_ISSPACES[12084].xml"
+  - name: "LongFields/long_field_all_ISSPACES[12084].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -131,7 +131,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_DT[12085].xml"
+  - name: "LongFields/long_field_all_DT[12085].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -165,7 +165,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_DT_pad[12086].xml"
+  - name: "LongFields/long_field_all_DT_pad[12086].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -199,7 +199,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_DT_trunc[12087].xml"
+  - name: "LongFields/long_field_all_DT_trunc[12087].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -233,7 +233,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_compare[12088].xml"
+  - name: "LongFields/long_field_all_compare[12088].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
@@ -267,7 +267,7 @@ tests:
   #But probably not
   #Expected to be in the xml directory of the test framework
   xmlfiles:
-  - name: "long_field_all_substring[12089].xml"
+  - name: "LongFields/long_field_all_substring[12089].xml"
   #List of input data sets - for the moment called event files
   #the filename is relative to the TEST_HLQ.INPUT
   #you can use an absoulte DSN as well
