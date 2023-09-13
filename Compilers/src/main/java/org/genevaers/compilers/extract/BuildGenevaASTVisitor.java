@@ -41,9 +41,11 @@ import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
 import org.genevaers.compilers.extract.astnodes.FiscaldateAST;
 import org.genevaers.compilers.extract.astnodes.IfAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
+import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;
+import org.genevaers.compilers.extract.astnodes.RightASTNode;
 import org.genevaers.compilers.extract.astnodes.RundateAST;
 import org.genevaers.compilers.extract.astnodes.SelectIfAST;
 import org.genevaers.compilers.extract.astnodes.SetterAST;
@@ -52,6 +54,7 @@ import org.genevaers.compilers.extract.astnodes.SortTitleAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.astnodes.StringComparisonAST;
 import org.genevaers.compilers.extract.astnodes.StringConcatinationAST;
+import org.genevaers.compilers.extract.astnodes.SubStringASTNode;
 import org.genevaers.compilers.extract.astnodes.SymbolEntry;
 import org.genevaers.compilers.extract.astnodes.SymbolList;
 import org.genevaers.compilers.extract.astnodes.UnaryInt;
@@ -602,8 +605,36 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             return visitChildren(ctx); 
         }
      }
+    
+    @Override  public ExtractBaseAST visitRight(GenevaERSParser.RightContext ctx) {
+        RightASTNode rn = (RightASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.RIGHT);
+        rn.addChildIfNotNull(visit(ctx.getChild(2)));
+        rn.setLength(ctx.getChild(4).getText());
+        return rn;
+     }
   
+    @Override  public ExtractBaseAST visitLeft(GenevaERSParser.LeftContext ctx) {
+        LeftASTNode ln = (LeftASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.LEFT);
+        ln.addChildIfNotNull(visit(ctx.getChild(2)));
+        ln.setLength(ctx.getChild(4).getText());
+        return ln;
+     }
   
+    @Override  public ExtractBaseAST visitSubstr(GenevaERSParser.SubstrContext ctx) {
+        SubStringASTNode sn = (SubStringASTNode) ASTFactory.getNodeOfType(ASTFactory.Type.SUBSTR);
+        //Subtring may have one or two numbers
+        //start and len
+        //or len only ... so really just a left
+        if(ctx.getChildCount() == 6) {
+            sn.addChildIfNotNull(visit(ctx.getChild(2)));
+            sn.setLength(ctx.getChild(4).getText());
+        } else if(ctx.getChildCount() == 8) {
+            sn.addChildIfNotNull(visit(ctx.getChild(2)));
+            sn.setStartOffest(ctx.getChild(4).getText());
+            sn.setLength(ctx.getChild(6).getText());
+        }
+        return sn;
+     }
 
     @Override public ExtractBaseAST visitString(GenevaERSParser.StringContext ctx) { 
         StringAtomAST str = (StringAtomAST) ASTFactory.getNodeOfType(ASTFactory.Type.STRINGATOM);

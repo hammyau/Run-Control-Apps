@@ -76,7 +76,7 @@ public class TestHelper {
     public static final String ALL_ARITH = "../../../../PETestFramework/xml/AllArith.xml";
 	public static final String CFAX_TEST = "CFAXTest[12051].xml";
 	public static final String CFXA_TEST = "CFXATest[12051].xml";
-	public static final String CONCAT = "Concat.xml";
+	public static final String CONCAT = "ConcatNew[12150].xml";
 	
     public static final String MERGESS = "mergeAssAll.xml";
 

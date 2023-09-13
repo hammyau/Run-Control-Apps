@@ -86,7 +86,10 @@ public class ASTFactory {
         ISNOTNUMERIC("Is Not Numeric"), 
         BETWEENFUNC("Between"), 
         REPEAT("Repeat"), 
-        STRINGCONCAT("Concatination")
+        STRINGCONCAT("Concatination"), 
+        RIGHT("Right"),
+        LEFT("Left"),
+        SUBSTR("Substring")
          ;
 
         private String name;
@@ -122,6 +125,12 @@ public class ASTFactory {
                 return new StringAtomAST();
             case STRINGCONCAT:
                 return new StringConcatinationAST();
+            case RIGHT:
+                return new RightASTNode();
+            case LEFT:
+                return new LeftASTNode();
+            case SUBSTR:
+                return new SubStringASTNode();
             case LRFIELD:
                 return new FieldReferenceAST();
             case ERRORS:

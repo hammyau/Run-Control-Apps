@@ -73,7 +73,7 @@ public class GenevaERSRoot extends ExtractBaseAST implements EmittableASTNode{
         gen.setRecordType(LtRecordType.GENERATION);
         gen.setFunctionCode("GEN");
         gen.setExtract(true);
-        gen.setIsAscii(true);
+        gen.setIsAscii(System.getProperty("os.name").startsWith("z") ? false : true);
         gen.setDesc("Java MR91");
         DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         DateFormat timeFormat = new SimpleDateFormat("hhmmss");

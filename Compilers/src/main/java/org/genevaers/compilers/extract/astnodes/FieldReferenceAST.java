@@ -39,7 +39,7 @@ import org.genevaers.repository.components.enums.DataType;
 
 // The FormattedASTNode could/should be an inteface it implements
 // Ditto the TypedASTNode
-public class FieldReferenceAST extends FormattedASTNode implements Assignable, CalculationSource {
+public class FieldReferenceAST extends FormattedASTNode implements Assignable, CalculationSource, Concatable {
 
     protected LRField ref;
     protected String name; //this is a duplication for the moment
@@ -207,6 +207,61 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         if(arg2.getFieldFormat() == DataType.ALPHANUMERIC && arg.getFieldFormat() != DataType.ALPHANUMERIC) {
             arg2.setFieldFormat(DataType.ZONED);
         }
+    }
+
+    @Override
+    public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        LogicTableArg arg2 = ((LogicTableF2)f2).getArg2();
+        arg2.setStartPosition(start);
+        arg2.setFieldLength(arg1.getFieldLength());
+        ltEmitter.addToLogicTable((LTRecord)f2);
+        return arg1.getFieldLength();
+    }
+
+    @Override
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setFieldLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f2);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
+    @Override
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + fieldlen - length));
+            arg1.setFieldLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f2);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
+    @Override
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
+        LogicTableF2 f2 = (LogicTableF2) getAssignmentEntry(col, rhs);
+        LogicTableArg arg1 = ((LogicTableF2)f2).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + start));
+            arg1.setFieldLength(length);
+            ltEmitter.addToLogicTable((LTRecord)f2);
+        } else {
+            //Error 
+        }
+        return length;
     }
 
 }

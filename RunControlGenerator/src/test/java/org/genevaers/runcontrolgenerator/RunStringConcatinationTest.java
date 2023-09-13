@@ -76,65 +76,169 @@ class RunStringConcatinationTest extends RunCompilerBase {
     }
 
     @Test void testConcatAssignment() {
-        LogicTable xlt = runFromXMLOverrideLogic(11556, TestHelper.CONCAT, 
-        "COLUMN = {Two} & {Three} & {Five}");
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "");
         String[] expected = new String[]{ "DTE", "DTE", "DTE", "DTE" };
-        int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        LogicTableF2 dte1 =  (LogicTableF2) xlt.getFromPosition(4);
-        assertEquals(2, dte1.getArg2().getFieldLength());
-        LogicTableF2 dte2 =  (LogicTableF2) xlt.getFromPosition(5);
-        assertEquals(3, dte2.getArg2().getStartPosition());
-        assertEquals(3, dte2.getArg2().getFieldLength());
-        LogicTableF2 dte3 =  (LogicTableF2) xlt.getFromPosition(6);
-        assertEquals(6, dte3.getArg2().getStartPosition());
-        assertEquals(5, dte3.getArg2().getFieldLength());
-        LogicTableF2 dte4 =  (LogicTableF2) xlt.getFromPosition(7);
-        assertEquals(11, dte4.getArg2().getStartPosition());
-        assertEquals(2, dte4.getArg2().getFieldLength());
+        //Look at some key entries to confirm processing
+        assertDte((LogicTableF2)xlt.getFromPosition(6) , 26, 2);
+        assertDte((LogicTableF2)xlt.getFromPosition(7) , 28, 5);
+        assertDte((LogicTableF2)xlt.getFromPosition(8) , 33, 3);
+        assertDtc((LogicTableF1)xlt.getFromPosition(10) , 38, 1, "/");
+        assertDte((LogicTableF2)xlt.getFromPosition(11) , 39, 3);
+        assertDte((LogicTableF2)xlt.getFromPosition(13) , 43, 5);
+        assertJoin((LogicTableF1)xlt.getFromPosition(14) , 17, 19);
+        assertDtl((LogicTableF2)xlt.getFromPosition(17) , 48, 2);
+        assertDtc((LogicTableF1)xlt.getFromPosition(19) , 48, 2, "");
+        assertJoin((LogicTableF1)xlt.getFromPosition(20) , 23, 25);
+        assertDtl((LogicTableF2)xlt.getFromPosition(23) , 50, 3);
+        assertDtc((LogicTableF1)xlt.getFromPosition(25) , 50, 3, "");
+        assertDtc((LogicTableF1)xlt.getFromPosition(38) , 61, 1, "*");
+        assertDtx((LogicTableF2)xlt.getFromPosition(53) , 78, 10);
+        assertDtc((LogicTableF1)xlt.getFromPosition(54) , 88, 10, " AND MORE ");
+        assertDtx((LogicTableF2)xlt.getFromPosition(55) , 98, 10);
     }
 
-    @Test void testConcatConstAssignment() {
-        LogicTable xlt = runFromXMLOverrideLogic(11556, TestHelper.CONCAT, 
-        "COLUMN = {Two} & \"|\" & {Two}");
-        String[] expected = new String[]{ "DTE", "DTC", "DTE", "DTE" };
-        int expectedGotos[][] = {{}};
-        TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        LogicTableF2 dte1 =  (LogicTableF2) xlt.getFromPosition(4);
-        assertEquals(2, dte1.getArg2().getFieldLength());
-        LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(5);
-        assertEquals(3, dtc.getArg().getStartPosition());
-        assertEquals(1, dtc.getArg().getFieldLength());
-        LogicTableF2 dte3 =  (LogicTableF2) xlt.getFromPosition(6);
-        assertEquals(4, dte3.getArg2().getStartPosition());
-        assertEquals(2, dte3.getArg2().getFieldLength());
-        LogicTableF2 dte4 =  (LogicTableF2) xlt.getFromPosition(7);
-        assertEquals(11, dte4.getArg2().getStartPosition());
-        assertEquals(2, dte4.getArg2().getFieldLength());
+    @Test void testRightFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = RIGHT({Ten}, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 27, 4);
+    }
+        
+    @Test void testLeftFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = LEFT({Ten}, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 21, 4);
+    }
+        
+    @Test void testDefaultSubstringFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Ten}, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 21, 4);
+    }
+        
+    @Test void testSubstringFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Ten}, 3, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(4) , 24, 4);
+    }
+        
+    @Test void testRightLookupFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = RIGHT({Concat_ConcatTarg.Ten}, 4)");
+        assertDtlSource((LogicTableF2)xlt.getFromPosition(7) , 17, 4);
+    }
+        
+    @Test void testLeftLookupFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = LEFT({Concat_ConcatTarg.Ten}, 4)");
+        assertDtlSource((LogicTableF2)xlt.getFromPosition(7) , 11, 4);
+    }
+        
+    @Test void testDefaultLookupSubstringFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Concat_ConcatTarg.Ten}, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 11, 4);
+    }
+        
+    @Test void testSubstringLookupFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR({Concat_ConcatTarg.Ten}, 3, 4)");
+        assertDteSource((LogicTableF2)xlt.getFromPosition(7) , 14, 4);
+    }
+        
+    @Test void testRightColRefAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = RIGHT(Col.1, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(6) , 7, 4);
+    }
+        
+    @Test void testLeftColRefAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = LEFT(Col.1, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(6) , 1, 4);
+    }
+        
+    @Test void testDefaultColRefFieldAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = SUBSTR(Col.1, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 1, 4);
+    }
+        
+    @Test void testSubstringColRefAssignment() {
+        LogicTable xlt = runFromXMLOverrideColNLogic(12150, TestHelper.CONCAT, 3,
+        "COLUMN = SUBSTR(Col.1, 3, 4)");
+        assertDtxSource((LogicTableF2)xlt.getFromPosition(7) , 4, 4);
+    }
+        
+    @Test void testRightStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = RIGHT(\"A Big String\", 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 10, "ring");
+    }
+        
+    @Test void testLeftStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = LEFT(\"A Big String\", 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 12, "A Bi");
+    }
+        
+    @Test void testDefaultStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR(\"A Big String\", 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4), 1, 10, "A Bi");
+    }
+        
+    @Test void testSubstringStringAssignment() {
+        LogicTable xlt = runFromXMLOverrideLogic(12150, TestHelper.CONCAT, 
+        "COLUMN = SUBSTR(\"A Big String\", 3, 4)");
+        assertDtc((LogicTableF1)xlt.getFromPosition(4) , 1, 10, "ig S");
+    }
+        
+    private void assertDte(LogicTableF2 dte, int start, int len) {
+        assertEquals(start, dte.getArg2().getStartPosition());
+        assertEquals(len, dte.getArg2().getFieldLength());
     }
 
-    @Test void testConcatRefAssignment() {
-        LogicTable xlt = runFromXMLOverrideColNLogic(11556, TestHelper.CONCAT, 4,
-        "IF COL.2 = {Ten} THEN\n" + //
-                "    COLUMN = {Two} & {Three} & {Five} \n" + //
-                "ELSE\n" + //
-                "    COLUMN = \"FAIL\"\n" + //
-                "ENDIF");
-        String[] expected = new String[]{ "DTE", "DTC", "DTE", "DTE" };
-        int expectedGotos[][] = {{}};
-        // TestLTAssertions.assertFunctionCodesAndGotos(4, expected, expectedGotos, xlt);
-        // LogicTableF2 dte1 =  (LogicTableF2) xlt.getFromPosition(4);
-        // assertEquals(2, dte1.getArg2().getFieldLength());
-        // LogicTableF1 dtc =  (LogicTableF1) xlt.getFromPosition(5);
-        // assertEquals(3, dtc.getArg().getStartPosition());
-        // assertEquals(1, dtc.getArg().getFieldLength());
-        // LogicTableF2 dte3 =  (LogicTableF2) xlt.getFromPosition(6);
-        // assertEquals(4, dte3.getArg2().getStartPosition());
-        // assertEquals(2, dte3.getArg2().getFieldLength());
-        // LogicTableF2 dte4 =  (LogicTableF2) xlt.getFromPosition(7);
-        // assertEquals(11, dte4.getArg2().getStartPosition());
-        // assertEquals(2, dte4.getArg2().getFieldLength());
+    private void assertDteSource(LogicTableF2 dte, int start, int len) {
+        assertEquals(start, dte.getArg1().getStartPosition());
+        assertEquals(len, dte.getArg1().getFieldLength());
     }
 
+
+    private void assertDtl(LogicTableF2 dtl, int start, int len) {
+        assertEquals("DTL", dtl.getFunctionCode());
+        assertEquals(start, dtl.getArg2().getStartPosition());
+        assertEquals(len, dtl.getArg2().getFieldLength());
+    }
+
+    private void assertDtlSource(LogicTableF2 dtl, int start, int len) {
+        assertEquals("DTL", dtl.getFunctionCode());
+        assertEquals(start, dtl.getArg1().getStartPosition());
+        assertEquals(len, dtl.getArg1().getFieldLength());
+    }
+
+    private void assertDtx(LogicTableF2 dtx, int start, int len) {
+        assertEquals("DTX", dtx.getFunctionCode());
+        assertEquals(start, dtx.getArg2().getStartPosition());
+        assertEquals(len, dtx.getArg2().getFieldLength());
+    }
+
+    private void assertDtxSource(LogicTableF2 dtx, int start, int len) {
+        assertEquals("DTX", dtx.getFunctionCode());
+        assertEquals(start, dtx.getArg1().getStartPosition());
+        assertEquals(len, dtx.getArg1().getFieldLength());
+    }
+
+    private void assertDtc(LogicTableF1 dtc, int start, int len, String val) {
+        assertEquals(start, dtc.getArg().getStartPosition());
+        assertEquals(val, dtc.getArg().getValue());
+        assertEquals(len, dtc.getArg().getFieldLength());
+    }
+
+    private void assertJoin(LogicTableF1 join, int goto1, int goto2) {
+        assertEquals("JOIN", join.getFunctionCode());
+        assertEquals(goto1, join.getGotoRow1());
+        assertEquals(goto2, join.getGotoRow2());
+    }
 
 }

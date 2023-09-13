@@ -102,7 +102,7 @@ public class RunControlWriter {
         //Need a Generation Record if nothing else
         VDPGenerationRecord gen = new VDPGenerationRecord();
         gen.setRecordType(VDPRecord.VDP_GENERATION);
-        gen.setAsciiInd(true); //TODO This will need be switchable
+        gen.setAsciiInd(System.getProperty("os.name").startsWith("z") ? false : true);
         DateFormat dateFormat1 = new SimpleDateFormat("YYYYMMdd");
         Date dt = Repository.getGenerationTime();
         DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");

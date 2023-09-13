@@ -17,11 +17,12 @@ package org.genevaers.compilers.extract.astnodes;
  * under the License.
  */
 
+ //Force implemetors to support a concatination
+public interface Concatable {
 
-import org.genevaers.genevaio.ltfile.LTFileObject;
-
-public interface Assignable {
-
-    public LTFileObject getAssignmentEntry(ColumnAST col, ExtractBaseAST rhs);
+    public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start);
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length);
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length);
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length);
 
 }

@@ -25,6 +25,7 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF0;
+import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.LRField;
@@ -34,7 +35,7 @@ import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
 import org.genevaers.repository.components.enums.ExtractArea;
 
-public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource{
+public class LookupFieldRefAST extends LookupPathAST implements Assignable, CalculationSource, Concatable{
 
     private LRField ref;
 
@@ -212,5 +213,88 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
         if(arg2.getFieldFormat() == DataType.ALPHANUMERIC && arg.getFieldFormat() != DataType.ALPHANUMERIC) {
             arg2.setFieldFormat(DataType.ZONED);
         }
+    }
+
+
+    @Override
+    public short getConcatinationEntry(ColumnAST col, ExtractBaseAST rhs, short start) {
+        getAssignmentEntry(col, rhs);
+        //now we need to fixup the col start and length
+        //for both the assigned entry and the default
+        //The last ltemitter entry will be the DTC
+        //Last - 2 will be the DTL
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        fixupDtl(dtl, start);
+        return fixupDtc(dtc, start, dtl.getArg1().getFieldLength());
+    }
+
+    private short fixupDtc(LogicTableF1 dtc, short start, short len) {
+        LogicTableArg arg = dtc.getArg();
+        arg.setStartPosition(start);
+        arg.setFieldLength(len);
+        return (short) len;
+    }
+
+    private short fixupDtl(LogicTableF2 dtl, short start) {
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        LogicTableArg arg2 = ((LogicTableF2)dtl).getArg2();
+        arg2.setStartPosition(start);
+        arg2.setFieldLength(arg1.getFieldLength());
+        return arg1.getFieldLength();
+    }
+
+
+    @Override
+    public short getLeftEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        getAssignmentEntry(col, rhs);
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setFieldLength(length);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
+
+    @Override
+    public short getRightEntry(ColumnAST col, ExtractBaseAST rhs, short length) {
+        getAssignmentEntry(col, rhs);
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + fieldlen - length));
+            arg1.setFieldLength(length);
+        } else {
+            //Error 
+        }
+        return length;
+    }
+
+
+    @Override
+    public short getSubstreEntry(ColumnAST col, ExtractBaseAST rhs, short start, short length) {
+        getAssignmentEntry(col, rhs);
+        int numRecords = ltEmitter.getNumberOfRecords();
+        LogicTableF1 dtc = (LogicTableF1) ltEmitter.getLogicTable().getFromPosition(numRecords -1);
+        LogicTableF2 dtl = (LogicTableF2) ltEmitter.getLogicTable().getFromPosition(numRecords -3);
+        LogicTableArg arg1 = ((LogicTableF2)dtl).getArg1();
+        short fieldlen = arg1.getFieldLength();
+        if(length < fieldlen) { 
+            arg1.setStartPosition((short)(arg1.getStartPosition() + start));
+            arg1.setFieldLength(length);
+        } else {
+            //Error 
+        }
+        return length;
     }
 }

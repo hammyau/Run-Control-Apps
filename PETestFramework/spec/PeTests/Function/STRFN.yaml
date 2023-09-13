@@ -11,36 +11,17 @@ tests:
   description: "String Concatenation compares and assignments"
   source: "WBXML"
   xmlfiles:
-  - name: "Concat.xml"
-    
+  - name: "ConcatNew[12150].xml"   
   eventfiles:
   - ddname: "CONCAT"
     filename: "CONCAT"
   extractfiles:
-  - ddname: "F0011556"
+  - ddname: "F0012150"
     space: "TRK"
     primary: "1"
     secondary: "10"
     recfm: "FB"
     lrecl: "122"
-    comparable: "true"
-- name: "STRFNR"
-  header: "String Concatenation Column Reference"
-  description: "String Concatenation with column references using compares and assignments"
-  source: "WBXML"
-  xmlfiles:
-  - name: "ConcatRef.xml"
-    
-  eventfiles:
-  - ddname: "CONCAT"
-    filename: "CONCAT"
-  extractfiles:
-  - ddname: "F0011559"
-    space: "TRK"
-    primary: "1"
-    secondary: "10"
-    recfm: "FB"
-    lrecl: "92"
     comparable: "true"
 - name: "STRFNS"
   header: "Substring"
@@ -48,7 +29,6 @@ tests:
   source: "WBXML"
   xmlfiles:
   - name: "SubStr.xml"
-    
   eventfiles:
   - ddname: "CONCAT"
     filename: "CONCAT"
@@ -69,7 +49,6 @@ tests:
   source: "WBXML"
   xmlfiles:
   - name: "Left.xml"
-    
   eventfiles:
   - ddname: "CONCAT"
     filename: "CONCAT"
@@ -90,7 +69,6 @@ tests:
   source: "WBXML"
   xmlfiles:
   - name: "Right.xml"
-    
   eventfiles:
   - ddname: "CONCAT"
     filename: "CONCAT"
@@ -104,25 +82,4 @@ tests:
     secondary: "10"
     recfm: "FB"
     lrecl: "35"
-    comparable: "true"
-- name: "STRFNP"
-  header: "Compare concat both side"
-  description: "Check compare with concatenation both sides"
-  source: "WBXML"
-  xmlfiles:
-  - name: "ConcatPart.xml"
-    
-  eventfiles:
-  - ddname: "CONCAT"
-    filename: "CONCAT"
-  reffiles:
-  - ddname: "CONTARG"
-    filename: "CONTARG"
-  extractfiles:
-  - ddname: "F0011563"
-    space: "TRK"
-    primary: "1"
-    secondary: "10"
-    recfm: "FB"
-    lrecl: "30"
     comparable: "true"

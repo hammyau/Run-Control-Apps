@@ -165,6 +165,13 @@ public class ExtractAST2Dot {
                 case STRINGCONCAT:
                     doStringConcat(node);
                     break;
+                case LEFT:
+                case RIGHT:
+                    doStringFunction(node);
+                    break;
+                case SUBSTR:
+                    doSubStringFunction(node);
+                    break;
                 case COLUMNASSIGNMENT:
                     dotColumnAssignmentNode(node);
                     break;
@@ -246,6 +253,9 @@ public class ExtractAST2Dot {
                     break;
                 case EOS:
                     doEOS(node);
+                    break;
+                case LOOKUPFIELDREF:
+                    dotLookupFieldNode(node);
                     break;
                 default:
                     dotDefaultNode(node);
@@ -431,6 +441,15 @@ public class ExtractAST2Dot {
         reverseArrow = true;
     }
 
+    private static void dotLookupFieldNode(ExtractBaseAST node) {
+        LookupFieldRefAST lkfieldRef = (LookupFieldRefAST) node;
+        label = lkfieldRef.getLookup().getName() + "." + lkfieldRef.getRef().getName();
+        colour = DATASOURCE;
+        idString = "Field_" + nodeNum++;
+        reverseArrow = true;
+    }
+
+
     private static void dotPriorLrFieldNode(ExtractBaseAST node) {
         FieldReferenceAST fieldRef = (FieldReferenceAST) node;
         label = fieldRef.getName();
@@ -457,9 +476,25 @@ public class ExtractAST2Dot {
     }
 
     private static void doStringConcat(ExtractBaseAST node) {
-        StringConcatinationAST strNode = (StringConcatinationAST) node;
+        FormattedASTNode strNode = (FormattedASTNode) node;
         colour = STRINGCONST;
         label = strNode.getType().toString();
+        idString = "Str_" + nodeNum++;
+        reverseArrow = true;
+    }
+
+    private static void doStringFunction(ExtractBaseAST node) {
+        StringFunctionASTNode strNode = (StringFunctionASTNode) node;
+        colour = STRINGCONST;
+        label = strNode.getType().toString() + "(" + strNode.getLength() + ")";
+        idString = "Str_" + nodeNum++;
+        reverseArrow = true;
+    }
+
+    private static void doSubStringFunction(ExtractBaseAST node) {
+        SubStringASTNode strNode = (SubStringASTNode) node;
+        colour = STRINGCONST;
+        label = strNode.getType().toString() + "(" + strNode.getStartOffest() + "," + strNode.getLength() + ")";
         idString = "Str_" + nodeNum++;
         reverseArrow = true;
     }
