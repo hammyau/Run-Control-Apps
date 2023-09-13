@@ -3,3 +3,4 @@ specFileSets:
     templateSetName: "MR91toPE.yaml"
     specs:
       - "PeTests/LongFields/longFieldTests.yaml"
+      - "PeTests/LongFields/longFieldTestsFormat.yaml"
