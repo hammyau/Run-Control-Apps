@@ -42,13 +42,13 @@ tests:
     primary: "100"
     secondary: "100"
     recfm: "FB"
-    lrecl: "1538"
+    lrecl: "1540"
     workfile: "1"
 #
 # next test
 #
-- name: "FMTDTD"
-  header: "FMTDTD"
+- name: "FMTDTC"
+  header: "FMTDTC"
   description: "Test DT* functions 256+ length fields Format View CSV delimited"
   source: "WBXML"
   xmlfiles:
@@ -71,5 +71,34 @@ tests:
     primary: "100"
     secondary: "100"
     recfm: "FB"
-    lrecl: "1538"
+    lrecl: "1550"
+    workfile: "1"
+#
+# next test
+#
+- name: "FMTDTC2"
+  header: "FMTDTC2"
+  description: "Test DT* functions 256+ length fields Format View CSV delimited with header"
+  source: "WBXML"
+  xmlfiles:
+  - name: "LongFields/long_field_all_DT_format_CSV2[12095].xml"
+  eventfiles:
+  - ddname: "LNGALPHA" #needs to match what is in the PF DDName
+    filename: "LONGFLD.ALPHA"
+  #List of reference files 
+  # omit if no reference phase required
+  #Extract output 
+  extractfiles:
+  - space: "TRK"
+    primary: "1"
+    secondary: "10"
+    recfm: "VB"
+    lrecl: "8192"
+  formatfiles:
+  - ddname: "F0012093"
+    space: "TRK"
+    primary: "100"
+    secondary: "100"
+    recfm: "FB"
+    lrecl: "1550"
     workfile: "1"
