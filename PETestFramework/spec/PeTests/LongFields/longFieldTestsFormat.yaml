@@ -47,8 +47,8 @@ tests:
 #
 # next test
 #
-- name: "FMTDTC"
-  header: "FMTDTC"
+- name: "FMTDTV"
+  header: "FMTDTV"
   description: "Test DT* functions 256+ length fields Format View CSV delimited"
   source: "WBXML"
   xmlfiles:
@@ -76,8 +76,8 @@ tests:
 #
 # next test
 #
-- name: "FMTDTC2"
-  header: "FMTDTC2"
+- name: "FMTDTV2"
+  header: "FMTDTV2"
   description: "Test DT* functions 256+ length fields Format View CSV delimited with header"
   source: "WBXML"
   xmlfiles:
