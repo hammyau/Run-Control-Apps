@@ -39,6 +39,15 @@
         },
         {
             "type": "java",
+            "name": "Launch RCA Diff(PlayPen)",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolanalyser.CommandLineHandler",
+            "projectName": "runcontrolanalyser",
+            "cwd": "${workspaceFolder}/../../../RunControlPlayPen",
+            "args": "-d"
+        },
+        {
+            "type": "java",
             "name": "Launch TestFramework Menu",
             "request": "launch",
             "mainClass": "org.genevaers.testframework.CommandLineHandler",
@@ -87,6 +96,14 @@
             "mainClass": "org.genevaers.runcontrolgenerator.App",
             "projectName": "runcontrolgenerator",
             "cwd": "${workspaceFolder}/../../RunControlPlayPen"
+        },
+        {
+            "type": "java",
+            "name": "Launch RCG from playpen RC1",
+            "request": "launch",
+            "mainClass": "org.genevaers.runcontrolgenerator.App",
+            "projectName": "runcontrolgenerator",
+            "cwd": "${workspaceFolder}/../../../RunControlPlayPen/RC1"
         },
         {
             "type": "java",

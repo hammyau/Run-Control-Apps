@@ -64,4 +64,9 @@ public class ByteField extends Field {
         return "X";
     }
 
+    @Override
+    public String getFieldNodeEntry() {
+        return defaultNumericNodeEntry();
+    }
+
 }

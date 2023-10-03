@@ -25,11 +25,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.flogger.FluentLogger;
 
 import ComponentGenerator.model.generators.GeneratorBase;
-import ComponentGenerator.model.segments.ModelSegment;
 import ComponentGenerator.model.segments.record.fields.FreemarkerFieldEntries;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;

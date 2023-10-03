@@ -137,4 +137,20 @@ public class ArrayField extends Field {
         return null;
     }
 
+    @Override
+    public String getFieldNodeEntry() {
+        StringBuilder fieldNodeEntry = new StringBuilder();
+        String ccName = NameUtils.getCamelCaseName(name, false);
+        fieldNodeEntry.append(DBLINDENT + "StringBuilder " + ccName+"Str = new StringBuilder();\n");
+        fieldNodeEntry.append(DBLINDENT + "for (int i = 0; i<" + arraySize + "; i += 1) {\n");
+        if (arrayType.startsWith("VDP")) {
+            fieldNodeEntry.append(DBLINDENT + "    " + ccName + ".get(i).addRecordNodes(rn, compare);\n");
+        } else {
+            fieldNodeEntry.append(DBLINDENT + "    " + ccName+"Str" + ".append(" + ccName + ".get(i)+\",\");\n");
+        }
+        fieldNodeEntry.append(DBLINDENT + "}\n");
+        fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + ccName+"Str.toString()), compare);");  
+        return fieldNodeEntry.toString();
+    }
+
 }

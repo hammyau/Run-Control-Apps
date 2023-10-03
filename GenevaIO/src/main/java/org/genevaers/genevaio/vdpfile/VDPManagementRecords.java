@@ -101,6 +101,7 @@ public class VDPManagementRecords {
 
     public void makeFormatViewRecord() {
         formatViews = new VDPFormatViews();
+        formatViews.setSequenceNbr((short)0);
         formatViews.setRecordType(VDPRecord.VDP_FORMAT_VIEWS);
         formatViews.setRecordId(VDPRecord.VDP_FORMAT_VIEWS);
         int totalFormatDTColumns = 0; // Note this is just column count

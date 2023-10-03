@@ -28,6 +28,8 @@ public interface FieldGenerator {
 
     public String getReadEntry();
 
+    public String getFieldNodeEntry();
+
     public String getCsvEntry();
 
     public String getCsvHeaderEntry();

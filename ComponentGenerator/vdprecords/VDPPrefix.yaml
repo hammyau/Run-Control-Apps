@@ -20,6 +20,7 @@ fields:
   type: short
 - name: sequence_nbr
   type: short
+  default: 1
 - name: record_id
   type: integer
 

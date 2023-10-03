@@ -30,6 +30,8 @@ import ComponentGenerator.DSectEntryMethod;
 import ComponentGenerator.model.generators.GeneratorBase;
 import ComponentGenerator.model.segments.ModelSegment;
 import ComponentGenerator.model.segments.record.fields.FreemarkerFieldEntries;
+import freemarker.ext.beans.BeansWrapperBuilder;
+import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -60,6 +62,7 @@ public class VDPRecordGenerator extends GeneratorBase {
 		nodeMap.put("record", recordItem.getRecord());
 		nodeMap.put("imports", recordItem.getRecord().getImports());
 		nodeMap.put("dsectEntry", new DSectEntryMethod());
+		nodeMap.put("statics", new BeansWrapperBuilder(Configuration.VERSION_2_3_31).build().getStaticModels());
 		writeJavaObject(recordItem, nodeMap);
 		writeRecordToDSECT(recordItem, nodeMap);
 	}

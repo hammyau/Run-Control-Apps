@@ -25,6 +25,7 @@ import org.genevaers.repository.components.enums.LtRecordType;
 
 public class LogicTable {
 	private List<LTRecord> records = new ArrayList<>();
+	private LTRecord lastEntry;
 
 	public int getNumberOfRecords() {
 		return records.size();
@@ -34,11 +35,8 @@ public class LogicTable {
 		return (int) records.stream().filter(l -> l.getRecordType().equals(type)). count();
 	}
 
-	public void addNV(LTRecord nvr) {
-		records.add(nvr);
-	}
-
 	public void add(LTRecord ltRecord) {
+		lastEntry = ltRecord;
 		//TODO keep type counters as records added
 		records.add(ltRecord);
 	}
@@ -49,6 +47,10 @@ public class LogicTable {
 
     public LTRecord getFromPosition(int i) {
         return records.get(i);
+    }
+
+   public LTRecord getLastEntry() {
+        return lastEntry;
     }
 
 }

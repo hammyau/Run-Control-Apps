@@ -92,6 +92,10 @@ public class CommandLineHandler {
 			flow.generateJltPrint(root);
 		} else if(line.hasOption("c")) {
 			flow.aggregateLtCoverage();
+		} else if(line.hasOption("d")) {
+			generateDiffReport(root);
+		} else if(line.hasOption("help")) {
+			showHelpIfNeeded(buildCommandLineOptions(), true);
 		} else {
 			flow.makeRunControlAnalyserDataStore(root);
 			root.resolve("rca").toFile().mkdirs();
@@ -101,6 +105,17 @@ public class CommandLineHandler {
 			generateFlow();
 		}
 
+	}
+
+	private static void generateDiffReport(Path root) {
+		//Confirm expected subdirs
+		logger.atInfo().log("Generate Diff Report");
+		try {
+			flow.diffReport(root);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	private static void showHelpIfNeeded(Options options, boolean showHelp) {
@@ -118,12 +133,16 @@ public class CommandLineHandler {
 		Option xltPrint = new Option( "x", "xltprint",  false, "generate xltprint");
 		Option jltPrint = new Option( "j", "jltprint",  false, "generate jltprint");
 		Option ltcover = new Option( "c", "ltcoverage",  false, "logic table coverage");
+		//Diff report implies two subdirectories RC1 and RC2
+		//Think about database and XML base comparisons later. May be that RCG needs to have been run?
+		Option diffReport = new Option( "d", "diff",  false, "generate diff report");
 		
 		options.addOption( help );
 		options.addOption(menu);
 		options.addOption(xltPrint);
 		options.addOption(jltPrint);		
 		options.addOption(ltcover);
+		options.addOption(diffReport);
 
 		return options;
 	}

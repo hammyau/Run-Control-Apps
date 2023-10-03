@@ -30,6 +30,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.genevaers.genevaio.dots.LookupGenerationDotWriter;
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
 import org.genevaers.genevaio.html.VDPHTMLWriter;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -55,11 +57,13 @@ public class RunControlAnalyser {
 		trg = Paths.get("RunControls");
 	}
 
-	public void readVDP(Path vdpPath, boolean withCSV) throws Exception {
+	public void readVDP(Path vdpPath, boolean withCSV, MetadataNode recordsRoot, boolean compare) throws Exception {
 		logger.atInfo().log("Read VDP %s csv flag %s", vdpPath, Boolean.toString(withCSV));
 		if(vdpPath.toFile().exists()) {
 			VDPFileReader vdpr = new VDPFileReader();
 			vdpr.setCsvPath(trg);
+			vdpr.setRecordsRoot(recordsRoot);
+			vdpr.setCompare(compare);
 			vdpr.open(vdpPath);
 			vdpr.addToRepsitory(withCSV);
 			vmrs = vdpr.getViewManagementRecords();
@@ -69,9 +73,11 @@ public class RunControlAnalyser {
 		
 	}
 
-	public void readXLT(Path xltPath, boolean withCSV) {
+	public void readXLT(Path xltPath, boolean withCSV, RecordNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read XLT %s csv flag %s", xltPath, Boolean.toString(withCSV));
 		XLTFileReader xltr = new XLTFileReader();
+		xltr.setCompare(compare);
+		xltr.setRecordsRoot(recordsRoot);
 		xltr.open(xltPath.toString());
 		xlt = xltr.makeLT();
 		if(withCSV) {
@@ -84,10 +90,12 @@ public class RunControlAnalyser {
 		}
 	}
 
-	public void readJLT(Path jltPath, boolean withCSV) {
+	public void readJLT(Path jltPath, boolean withCSV, RecordNode recordsRoot, boolean compare) {
 		logger.atInfo().log("Read JLT %s csv flag %s", jltPath, Boolean.toString(withCSV));
 		if(jltPath.toFile().exists()) {
 			XLTFileReader jltr = new XLTFileReader();
+			jltr.setCompare(compare);
+			jltr.setRecordsRoot(recordsRoot);
 			jltr.open(jltPath.toString());
 			jlt = jltr.makeLT();
 			if(withCSV) {
@@ -203,9 +211,9 @@ public class RunControlAnalyser {
 			logger.atInfo().log("Read JLT File %s", jltName);
 			logger.atInfo().log("Write to %s", htmlFileName);
 
-			readVDP(vdpName, withCSV);
-			readXLT(xltName, withCSV);
-			readJLT(jltName, withCSV);
+			readVDP(vdpName, withCSV, null, false);
+			readXLT(xltName, withCSV, null, false);
+			readJLT(jltName, withCSV, null, false);
 			writeHTML(joinsFilter);
 			
 			if(noBrowse == false) {

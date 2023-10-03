@@ -30,6 +30,7 @@ public class FreemarkerFieldEntries {
     private List<String> fieldEntries = new ArrayList<>();
     private List<String> gettersAndSetters = new ArrayList<>();
     private List<String> readers = new ArrayList<>();
+    private List<String> fieldNodeEntries = new ArrayList<>();
     private List<String> csvEntries = new ArrayList<>();
     private List<String> csvHeaders = new ArrayList<>();
     private List<String> componentEntries = new ArrayList<>();
@@ -109,6 +110,14 @@ public class FreemarkerFieldEntries {
         this.dsectEntries = dsectEntries;
     }
 
+    public List<String> getFieldNodeEntries() {
+        return fieldNodeEntries;
+    }
+
+    public void setFieldNodeEntries(List<String> fieldNodeEntries) {
+        this.fieldNodeEntries = fieldNodeEntries;
+    }
+
     public void addEntriesFrom(Record record) {
 		addRecordEntries(record);
     }
@@ -176,12 +185,18 @@ public class FreemarkerFieldEntries {
         addFieldEntryIfNotNull(f.getFieldEntry());
         addGetAndSetEntryIfNotNull(f.getGetAndSetEntry());
         addReaderEntryIfNotNull(f.getReadEntry());
+        addFieldNodes(f.getFieldNodeEntry());
         addCsvEntryIfNotNull(f.getCsvEntry());
         addCsvHeaderEntryIfNotNull(f.getCsvHeaderEntry());
         addComponentEntryIfNotNull(f.getComponentEntry());
         addFillFromComponentEntryIfNotNull(f.getFillFromComponentEntry());
         addFillWriteBufferEntryIfNotNull(f.getFillTheWriteBufferEntry());
         addDsectEntryIfNotNull(f, "");
+    }
+
+    private void addFieldNodes(String fieldNodeEntry) {
+        if(fieldNodeEntry != null)
+        	fieldNodeEntries.add(fieldNodeEntry);
     }
 
     private void addDsectEntryIfNotNull(Field f, String useName) {

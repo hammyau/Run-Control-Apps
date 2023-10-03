@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 </#if>
+import org.genevaers.genevaio.fieldnodes.NumericFieldNode;
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.fieldnodes.StringFieldNode;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
 
@@ -41,6 +45,22 @@ ${getAndSetEntry}
 ${readerEntry}
 </#list>
     }
+
+    @Override
+   	public void addRecordNodes(FieldNodeBase root, boolean compare)
+    {
+        RecordNode rn = new RecordNode();
+<#if record.recordId gt 0>
+        rn.setName(recordType + "_" + recordId + "_" + sequenceNbr);
+<#else>
+        rn.setName("${statics["java.util.UUID"].randomUUID()}"); 
+</#if>
+        rn = (RecordNode) root.add(rn, compare);
+<#list entries.fieldNodeEntries as fieldNodeEntry>
+${fieldNodeEntry}
+</#list>
+    }
+
 
     @Override
     public void writeCSV(FileWriter fw) throws IOException

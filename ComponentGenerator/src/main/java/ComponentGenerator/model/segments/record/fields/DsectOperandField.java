@@ -19,7 +19,7 @@ package ComponentGenerator.model.segments.record.fields;
 
 
 /*
- * This is only relevany for the DSect generation
+ * This is only relevant for the DSect generation
  */
 public class DsectOperandField extends Field{
 
@@ -67,5 +67,9 @@ public class DsectOperandField extends Field{
     public String getDsectType() {
         return value;
     }
+
+    @Override
+    public String getFieldNodeEntry() {
+        return null;    }
     
 }

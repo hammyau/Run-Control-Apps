@@ -114,4 +114,18 @@ public class BooleanField extends Field {
         return "C";
     }
 
+    @Override
+    public String getFieldNodeEntry() {
+        StringBuilder fieldNodeEntry = new StringBuilder();
+        String ccName = NameUtils.getCamelCaseName(name, false);
+        fieldNodeEntry.append(DBLINDENT + "String " + ccName + "val;\n");
+        fieldNodeEntry.append(DBLINDENT + "if (" + ccName + ") {\n");
+        fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"True\";\n");
+        fieldNodeEntry.append(DBLINDENT + "} else {\n");
+        fieldNodeEntry.append(DBLINDENT + "     "+ ccName + "val = \"False\";\n");
+        fieldNodeEntry.append(DBLINDENT + "}\n");
+        fieldNodeEntry.append(DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\", "+ ccName + "val ), compare);");  
+        return fieldNodeEntry.toString();
+    }
+
 }

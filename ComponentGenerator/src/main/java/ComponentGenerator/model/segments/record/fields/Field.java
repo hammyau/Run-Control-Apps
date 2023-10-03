@@ -161,6 +161,14 @@ public abstract class Field implements FieldGenerator {
         return csvHeader;
     }
 
+    public String defaultNumericNodeEntry() {
+        return  DBLINDENT + "rn.add(new NumericFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+    }
+
+    public String defaultStringNodeEntry() {
+        return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +"), compare);";  
+    }
+
     @Override
     public String getComponentEntry() {
         String populateEntry= null;

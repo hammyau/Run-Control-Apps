@@ -21,10 +21,9 @@ package org.genevaers.genevaio.vdpfile;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringUtils;
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
-import org.genevaers.genevaio.vdpfile.record.VDPRecord;
 
 public abstract class VDPFileObject {
 
@@ -32,6 +31,7 @@ public abstract class VDPFileObject {
 	
 	public abstract void readRecord(VDPFileRecordReader reader, FileRecord rec) throws Exception;
 
+	public abstract void addRecordNodes(FieldNodeBase root, boolean compare);
 	public abstract void writeCSV(FileWriter csvFile) throws IOException;
 	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
 	public abstract void fillTheWriteBuffer(RecordFileReaderWriter rw) throws Exception;

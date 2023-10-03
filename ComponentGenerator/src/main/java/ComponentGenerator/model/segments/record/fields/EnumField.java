@@ -90,4 +90,9 @@ public class EnumField extends Field {
         return "FL4";
     }
 
+    @Override
+    public String getFieldNodeEntry() {
+        return  DBLINDENT + "rn.add(new StringFieldNode(\"" + NameUtils.getCamelCaseName(name, false) + "\"," + NameUtils.getCamelCaseName(name, false) +".toString()), compare);";  
+    }
+
 }

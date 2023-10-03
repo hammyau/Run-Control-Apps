@@ -27,6 +27,11 @@ import java.util.Collection;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.DirectoryFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.genevaers.genevaio.fieldnodes.MetadataNode;
+import org.genevaers.genevaio.fieldnodes.RecordNode;
+import org.genevaers.genevaio.fieldnodes.Records2Dot;
+import org.genevaers.genevaio.html.LTRecordsHTMLWriter;
+import org.genevaers.genevaio.html.VDPRecordsHTMLWriter;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.XLTFileReader;
@@ -34,8 +39,11 @@ import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FTPSession;
 
+import com.google.common.flogger.FluentLogger;
+
 
 public class AnalyserDriver {
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	/**
 	 *
@@ -49,6 +57,10 @@ public class AnalyserDriver {
 	private Object cwd;
 	private Path dataStore;
 	private LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
+
+	private boolean jlt1Present;
+
+	private boolean jlt2Present;
 
 	public void ftpRunControlDatasets(String host, String dataset, String rc, String  user, String password) throws IOException {
 
@@ -177,6 +189,93 @@ public class AnalyserDriver {
 
 	public void aggregateLtCoverage() {
 		ltCoverageAnalyser.aggregateCoverage();
+	}
+
+    public void diffReport(Path root) throws Exception {
+		//What kind of diff report?
+		//Based on what data?
+		// RCG case
+		// Look for Run Control Files
+		if(runControlFilesPresent(root)) {
+			Path rc1 = root.resolve("RC1");
+			Path rc2 = root.resolve("RC2");
+			generateVDPDiffReport(root, rc1, rc2);
+			generateXLTDiffReport(root, rc1, rc2);
+			generateJLTDiffReport(root, rc1, rc2);
+		}
+    }
+
+	private void generateJLTDiffReport(Path root, Path rc1, Path rc2) {
+		if(jlt1Present) {
+			RecordNode recordsRoot = new RecordNode();
+			recordsRoot.setName("Root");
+			fa.readXLT(rc1.resolve("JLT"), false, recordsRoot, false);
+			logger.atInfo().log("JLT Tree built from %s", rc1.toString());
+			Records2Dot.write(recordsRoot, root.resolve("JLT1records.gv"));
+			fa.readXLT(rc2.resolve("JLT"), false, recordsRoot, true);
+			logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
+			Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
+			LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "JLT.html");
+		}
+	}
+
+	private void generateXLTDiffReport(Path root, Path rc1, Path rc2) {
+		RecordNode recordsRoot = new RecordNode();
+		recordsRoot.setName("Root");
+		fa.readXLT(rc1.resolve("XLT"), false, recordsRoot, false);
+		logger.atInfo().log("XLT Tree built from %s", rc1.toString());
+		Records2Dot.write(recordsRoot, root.resolve("xlt1records.gv"));
+		fa.readXLT(rc2.resolve("XLT"), false, recordsRoot, true);
+		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
+		Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
+		LTRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "XLT.html");
+	}
+
+	private void generateVDPDiffReport(Path root, Path rc1, Path rc2) throws Exception {
+		MetadataNode recordsRoot = new MetadataNode();
+		recordsRoot.setName("Root");
+		recordsRoot.setSource1(root.relativize(rc1.resolve("VDP")).toString());
+		recordsRoot.setSource2(root.relativize(rc2.resolve("VDP")).toString());
+		fa.readVDP(rc1.resolve("VDP"), false, recordsRoot, false);
+		logger.atInfo().log("VDP Tree built from %s", rc1.toString());
+		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "VDP1.html");
+		fa.readVDP(rc2.resolve("VDP"), false, recordsRoot, true);
+		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
+		Records2Dot.write(recordsRoot, root.resolve("records.gv"));
+		VDPRecordsHTMLWriter.writeFromRecordNodes(root, recordsRoot, "VDPDiff.html");
+	}
+
+	private boolean runControlFilesPresent(Path root) {
+		boolean allPresent = false;
+		Path rc1 = root.resolve("RC1");
+		Path rc2 = root.resolve("RC2");
+		if(rcFilesPresent(rc1) && rcFilesPresent(rc2)) {
+			logger.atInfo().log("Run control files found");
+			jlt1Present = checkJLTPresent(rc1, "RC1");
+			jlt2Present = checkJLTPresent(rc1, "RC2");
+			allPresent = true;
+		} else {
+			logger.atSevere().log("Not all run control files are present.\nNeed subdirectories RC1 and RC2 to have VDP, XLT amd JLT files.");
+		}
+		return allPresent;
+	}
+
+	private boolean checkJLTPresent(Path rc, String name) {
+		boolean present = false;
+		Path jltPath = rc.resolve("JLT");
+			if(jltPath.toFile().exists()) {
+				logger.atInfo().log("JLT present %s", name);
+				present = true;
+			} else {
+				logger.atInfo().log("No JLT for %s", name);
+			};
+		return present;
+	}
+
+	private boolean rcFilesPresent(Path rc) {
+		Path vdpPath = rc.resolve("VDP");
+		Path xltPath = rc.resolve("XLT");
+		return vdpPath.toFile().exists() &&	xltPath.toFile().exists();
 	}
 
 }

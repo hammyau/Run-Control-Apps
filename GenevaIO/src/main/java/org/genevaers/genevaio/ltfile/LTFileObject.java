@@ -21,15 +21,16 @@ package org.genevaers.genevaio.ltfile;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import org.genevaers.genevaio.fieldnodes.FieldNodeBase;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter.FileRecord;
-import org.genevaers.repository.components.enums.LtRecordType;
 
 public abstract class LTFileObject {
 
 	protected static String spaces = "";
 	
 	public abstract void readRecord(LTRecordReader reader, FileRecord rec) throws Exception;
+   	public abstract void addRecordNodes(FieldNodeBase root, boolean compare);
 
 	public abstract void writeCSV(FileWriter csvFile) throws IOException;
 	public abstract void writeCSVHeader(FileWriter csvFile) throws IOException;
