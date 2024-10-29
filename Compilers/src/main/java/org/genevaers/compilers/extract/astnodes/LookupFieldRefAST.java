@@ -155,10 +155,9 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             arg1.setLogfileId(lookup.getTargetLFID());
             arg1.setLrId(lookup.getTargetLRID());
             arg1.setFieldId(ref.getComponentId());
-            arg1.setFieldFormat(getDataType());
-            arg1.setFieldContentId(getDateCode());
             LogicTableArg skarg2 = skl.getArg2();
-//            flipDataTypeIfFieldAlphanumeric(arg1, skarg2);
+            flipDataTypeIfFieldAlphanumeric(arg1, skarg2);
+            stripDatesIfSame(skl);
             ltEmitter.addToLogicTable((LTRecord)skl);
         }
         return null;
@@ -274,14 +273,16 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
             case INVALID:
                 break;
             case SORTKEY:
-                DataType colDataType;
                 ViewSortKey sk = Repository.getViews().get(currentViewColumn.getViewId()).getViewSortKeyFromColumnId(currentViewColumn.getComponentId());
-                colDataType = sk.getSortKeyDataType();
-                if (colDataType == DataType.ALPHANUMERIC) {
-                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC(" ", currentViewColumn, sk));
+                DataType dtlDataType = ((LogicTableF2)lkEntry).getArg2().getFieldFormat();
+                LogicTableF1 skc;
+                if (dtlDataType == DataType.ALPHANUMERIC) {
+                    skc = (LogicTableF1) fcf.getSKC(" ", currentViewColumn, sk);
                 } else {
-                    ltEmitter.addToLogicTable((LTRecord) fcf.getSKC("0", currentViewColumn, sk));
+                    skc = (LogicTableF1) fcf.getSKC("0", currentViewColumn, sk);
                 }
+                skc.getArg().setFieldFormat(((LogicTableF2)lkEntry).getArg2().getFieldFormat());
+                ltEmitter.addToLogicTable((LTRecord) skc);
                 break;
             case SORTKEYTITLE:
                 break;
@@ -407,5 +408,12 @@ public class LookupFieldRefAST extends LookupPathAST implements Assignable, Calc
     @Override
     public int getMaxNumberOfDigits() {
         return RepoHelper.getMaxNumberOfDigitsForType(getDataType(), ref.getLength());
+    }
+
+    private void stripDatesIfSame(LogicTableF2 lte) {
+        if(lte.getArg1().getFieldFormat() == lte.getArg2().getFieldFormat() && lte.getArg1().getFieldContentId() == lte.getArg2().getFieldContentId()) {
+           lte.getArg1().setFieldContentId(DateCode.NONE);
+           lte.getArg2().setFieldContentId(DateCode.NONE);
+        }
     }
 }
