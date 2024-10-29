@@ -75,19 +75,22 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
         if (children.size() == 2) {
 
             int saveColNumber = 0;
+            ViewColumn savedViewColumn = null;
             Iterator<ASTBase> ci = children.iterator();
             ExtractBaseAST rhs = (ExtractBaseAST) ci.next();
             ColumnAST colnode = (ColumnAST) ci.next();
 
-            LookupFieldRefAST lkref = checkForJOINandEmitIfRequired();
 
             rhs = decastRHS(rhs);
             ColumnAST col = decastColumn(colnode);
             if(ltEmitter.getSuffixSeqNbr() != col.getViewColumn().getColumnNumber()) {
                 //won't work for single DTE?
                 saveColNumber = ltEmitter.getSuffixSeqNbr();
+                savedViewColumn = currentViewColumn;
+                currentViewColumn = col.getViewColumn();
             }
             ltEmitter.setSuffixSeqNbr((short) col.getViewColumn().getColumnNumber());
+            LookupFieldRefAST lkref = checkForJOINandEmitIfRequired();
             emitIfNeeded(rhs);
 
             // This is where we need the rules checking and data type adjustment
@@ -105,8 +108,9 @@ public class ColumnAssignmentASTNode extends ExtractBaseAST implements Emittable
 
             col.emit(); // In case there is a sort title emit
             col.restoreDateCode();
-            if(saveColNumber > 0) {
+            if(savedViewColumn != null) {
                 ltEmitter.setSuffixSeqNbr((short)saveColNumber);
+                currentViewColumn = savedViewColumn;
             }
         } else {
             //Badly constructed AST - should not get here
