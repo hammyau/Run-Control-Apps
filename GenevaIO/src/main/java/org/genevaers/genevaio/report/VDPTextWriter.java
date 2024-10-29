@@ -94,6 +94,7 @@ public class VDPTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("Column_Calculation_sequenceNbr", true); 
 		ignoreTheseDiffs.put("Column_Calculation_Stack_recordId", true); 
 		ignoreTheseDiffs.put("Format_Filter_Stack_recordId", true); 
+		ignoreTheseDiffs.put("Column_Sources_viewSrcLrId", true); 
 	}
 
 	private void checkIfOldIsCpp(MetadataNode recordsRoot) {
@@ -504,6 +505,9 @@ public class VDPTextWriter extends TextRecordWriter {
 							n.setState(ComparisonState.IGNORED);
 						}
 						if(!ft.equals("PIPE") && n.getName().equals("textDelimId")) {
+							n.setState(ComparisonState.IGNORED);
+						}
+						if(!ft.equals("DISK") && n.getName().equals("allocLrecl")) {
 							n.setState(ComparisonState.IGNORED);
 						}
 					} else if(n.getParent().getParent().getName().equals("Columns")) {

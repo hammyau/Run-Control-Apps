@@ -80,6 +80,7 @@ public class LogicTableTextWriter extends TextRecordWriter {
 		ignoreTheseDiffs.put("LKLR_gotoRow1", true); 
 		ignoreTheseDiffs.put("LKLR_gotoRow2", true); 
 		ignoreTheseDiffs.put("KSLK_fileId", true); 
+		ignoreTheseDiffs.put("CTC_logfileId", true); 
 	}
 
 	private void writeComparisonSummary(MetadataNode recordsRoot, Writer fw) throws IOException {
