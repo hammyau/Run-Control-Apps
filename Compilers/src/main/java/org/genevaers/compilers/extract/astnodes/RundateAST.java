@@ -152,7 +152,6 @@ RunDateASTNode::getLength() const
     private void expandArgCookieValue(LogicTableF1 f) {
         LogicTableArg arg = f.getArg();
         arg.setValue(new Cookie(getCookieCode(), getValue()));
-        arg.setFieldContentId(rawDateCode());
     }
 
     @Override
