@@ -20,8 +20,7 @@ import java.lang.reflect.Array;
  */
 
 
-import java.nio.ByteBuffer;
-
+import org.apache.commons.lang3.StringUtils;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
@@ -75,7 +74,13 @@ public class ArgHelper {
         if(key.getValue().startsWith(" ") && key.getDatatype() != DataType.ALPHANUMERIC) {
             arg.setValue(new Cookie("0"));
         } else {
-            arg.setValue(new Cookie(key.getValue()));
+            //Strip leading 0s for numeric data types
+            //This should be a more general function
+            if(key.getDatatype() != DataType.ALPHANUMERIC && key.getValue().startsWith("0")) {
+                arg.setValue(new Cookie(StringUtils.stripStart(key.getValue(), "0")));
+            } else {
+                arg.setValue(new Cookie(key.getValue()));
+            }
         }
         arg.setPadding2("");  //This seems a little silly
     }
