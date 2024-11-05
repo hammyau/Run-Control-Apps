@@ -537,8 +537,10 @@ public class Repository {
 		Iterator<LRIndex> ndxi = sktLr.getIteratorForIndexBySeq();
 		while (ndxi.hasNext()) {
 			LRIndex ndx = ndxi.next();
-			LRField ndxField = Repository.getFields().get(ndx.getFieldID());
-			indexLength += ndxField.getLength();
+			if(!ndx.isEffectiveDateStart() && !ndx.isEffectiveDateEnd()) {
+				LRField ndxField = Repository.getFields().get(ndx.getFieldID());
+				indexLength += ndxField.getLength();
+			}
 		}
 		return indexLength;
 	}
