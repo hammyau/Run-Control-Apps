@@ -60,11 +60,14 @@ public class DBViewColumnSourceReader extends DBReaderBase{
             vcs.setViewId(rs.getInt("VIEWID"));
             vcs.setSourceType(ColumnSourceType.values()[rs.getInt("SOURCETYPEID")]);
             vcs.setSrcValue(rs.getString("CONSTVAL"));
+            vcs.setValueLength(rs.getString("CONSTVAL").length());
             vcs.setSrcJoinId(rs.getInt("LOOKUPID"));
             vcs.setViewSrcLrFieldId(rs.getInt("LRFIELDID"));
             //We now need to support sort key titles
             //Need to update the generation to include these here
             vcs.setLogicText(rs.getString("EXTRACTCALCLOGIC"));
+            vcs.setSortTitleFieldId(rs.getInt("SORTTITLELRFIELDID"));
+            vcs.setSortTitleLookupId(rs.getInt("SORTTITLELOOKUPID"));
             view.addViewColumnSource(vcs);
         } else {
            //Can there ever be an else here... ?

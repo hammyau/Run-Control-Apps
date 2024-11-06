@@ -1,0 +1,11 @@
+specFileSets:
+ - name: "Format phase Tests"
+   templateSetName: "gvbrcatoPE.yaml"
+   specs:
+    - "PeTests/FormatReports/SortKeyTitle.yaml"
+    - "PeTests/FormatReports/SortKeyTitleExtra.yaml"
+    - "PeTests/FormatReports/ReportZeroSuppress.yaml"
+    - "PeTests/FormatReports/ReportHeaderTest.yaml"
+    - "PeTests/FormatReports/NEWP2.yaml"
+    - "PeTests/Format/NEWP3.yaml"
+    - "PeTests/Format/FCLART.yaml"

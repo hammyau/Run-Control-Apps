@@ -23,9 +23,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.Map.Entry;
 
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.LRField;
 import org.genevaers.repository.components.LRIndex;
 import org.genevaers.repository.components.LogicalFile;
 import org.genevaers.repository.components.LogicalRecord;
@@ -35,6 +37,7 @@ import org.genevaers.repository.components.LookupPathStep;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewNode;
+import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
 
 // import com.ibm.safr.we.constants.DateFormat;
@@ -60,7 +63,8 @@ public class RecordParserData {
 	public static Map<Integer, LRIndex> effdateEnds = new HashMap<>();
 
 	public static Map<Integer, LRLF> lrlfs = new HashMap<>();
-	public static Map<String, LFPF> lfpfsByAssocSeq = new TreeMap<>(Collections.reverseOrder());
+	public static Map<Integer, LFPF> seq2lfpf = new HashMap<>();
+	public static Map<Integer, Map<Integer, LFPF>> lf2seqlfpf = new TreeMap<>();
 	public static Map<Integer, LFPF> lfpfs = new HashMap<>();
 
 	public RecordParserData() {
@@ -89,10 +93,10 @@ public class RecordParserData {
 			}
 		}
 	}
-
+			
 	private static void fixViewColumnSources(ViewSource vs, int lrid) {
 		Iterator<ViewColumnSource> csi = vs.getIteratorForColumnSourcesByNumber();
-		while(csi.hasNext()) {
+		while (csi.hasNext()) {
 			csi.next().setViewSrcLrId(lrid);
 		}
 	}
@@ -144,18 +148,23 @@ public class RecordParserData {
 	}
 
 	public static void buildLFs() {
-		Iterator<LFPF> lfpfi = lfpfs.values().iterator();
-		int lf = 0;
-		LogicalFile logFile = null;
-		while (lfpfi.hasNext()) {
-			LFPF lfpf = lfpfi.next();
-			if (lfpf.lfid != lf) {
-				logFile = Repository.getLogicalFiles().get(lfpf.lfid);
+		Iterator<Map<Integer, LFPF>> lf2seqpfi = lf2seqlfpf.values().iterator();
+		while (lf2seqpfi.hasNext()) {
+			Map<Integer, LFPF> lfseq = lf2seqpfi.next();
+			Iterator<LFPF> lfpfi = lfseq.values().iterator();
+			int lf = 0;
+			LogicalFile logFile = null;
+			while (lfpfi.hasNext()) {
+				LFPF lfpf = lfpfi.next();
+				if (lfpf.lfid != lf) {
+					logFile = Repository.getLogicalFiles().get(lfpf.lfid);
+				}
+				PhysicalFile pf = Repository.getPhysicalFiles().get(lfpf.pfid);
+				pf.setLogicalFileId(lfpf.lfid);
+				pf.setLogicalFilename(logFile.getName());
+				logFile.addPF(pf, lfpf.seq);
 			}
-			PhysicalFile pf = Repository.getPhysicalFiles().get(lfpf.pfid);
-			pf.setLogicalFileId(lfpf.lfid);
-			pf.setLogicalFilename(logFile.getName());
-			logFile.addPF(pf);
+				
 		}
 	}
 
@@ -204,7 +213,9 @@ public class RecordParserData {
 
 		lrlfs = new HashMap<>();
 		lfpfs = new HashMap<>();
-	}
+		seq2lfpf = new HashMap<>();
+		lf2seqlfpf = new TreeMap<>();
+		}
 
 	public static void fixupEffectiveDateIndexes() {
 		addEffDateKeyFrom(effdateStarts.entrySet().iterator());
@@ -220,4 +231,13 @@ public class RecordParserData {
 			lr.addToIndexBySeq(effStartNdx);
 		}
 	}
+
+	public static Map<Integer, LFPF> addOrGetLfSeqMap(int lfid) {
+		return lf2seqlfpf.computeIfAbsent(lfid, l -> makeSeqMap(lfid));
+	}
+
+	private static Map<Integer, LFPF> makeSeqMap(int lfid) {
+		return new HashMap<Integer, LFPF>();
+	}
+
 }

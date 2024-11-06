@@ -61,7 +61,7 @@ fields:
 - name: alloc_device_type 
   type: string
   maxlength: 48
-  component_field: sqlText
+  component_field: none
 - name: alloc_space_unit 
   type: integer
   component_field: none
@@ -174,8 +174,10 @@ fields:
   component_field: accessMethod
 - name: minimum_length
   type: short
+  component_field: minimumLength
 - name: maximum_length
   type: short
+  component_field: maximumLength
 - name: alloc_dsorg 
   type: integer
   component_field: none
