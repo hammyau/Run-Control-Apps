@@ -84,8 +84,14 @@ public class ViewNode extends ComponentNode{
 	}
 
 	public void addViewSortKey(ViewSortKey vsk) {
-		sortKeys.put(vsk.getSequenceNumber(), vsk);
+		if(vsk.getSequenceNumber() != 0) {
+			sortKeys.put(vsk.getSequenceNumber(), vsk);
+		}
 		sortKeysByColumnID.put(vsk.getColumnId(), vsk);
+	}
+
+	public void addViewSortKeyBySeq(ViewSortKey vsk) {
+		sortKeys.put(vsk.getSequenceNumber(), vsk);
 	}
 
 	/*

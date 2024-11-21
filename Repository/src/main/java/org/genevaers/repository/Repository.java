@@ -69,6 +69,7 @@ public class Repository {
 	private static LookupPathKey currentLookupKey;
 	private static int maxViewID = 0;
 	private static int maxComponentLRID = 0;
+	private static int maxVdpXmLRID = 0;
 	private static int maxFieldID = 0;
 	private static int maxIndexID = 0;
 
@@ -220,7 +221,7 @@ public class Repository {
 		if (lr != null) {
 			lr.addToFieldsByID(lrf);
 			if(lrf.getName() != null) { //Can be from tests
-				logger.atInfo().log("Add Field %s to LR %s",lrf.getName() ,lr.getName());
+//				logger.atInfo().log("Add Field %s to LR %s",lrf.getName() ,lr.getName());
 				lr.addToFieldsByName(lrf);
 			}
 		} else {
@@ -543,6 +544,14 @@ public class Repository {
 			}
 		}
 		return indexLength;
+	}
+
+	public static void saveMaxLrId() {
+		maxVdpXmLRID = maxComponentLRID;
+	}
+
+	public static int getMaxVdpLrId() {
+		return maxVdpXmLRID;
 	}
 
 }
