@@ -204,6 +204,7 @@ public class DBViewsReader extends DBReaderBase {
         vd.setWriteExitId(rs.getInt("WRITEEXITID"));
         vd.setWriteExitParams(getDefaultedString(rs.getString("WRITEEXITSTARTUP"), ""));
         vd.setFormatExitId(rs.getInt("FORMATEXITID"));
+        requiredExits.add(rs.getInt("FORMATEXITID"));
         vd.setFormatExitParams(getDefaultedString(rs.getString("FORMATEXITSTARTUP"), ""));
         vd.setControlRecordId(rs.getInt("CONTROLRECID"));
 
