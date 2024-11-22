@@ -376,12 +376,16 @@ public class GersConfigration {
         return getCWDPrefix() + WB_XML_FILES_SOURCE;
     }
 
+    public static String getVDPXMLDirectory() {
+        return getCWDPrefix() + VDP_XML_FILES_SOURCE;
+    }
+
     public static String getActiveXMLDirectory() {
         switch(parmToValue.get(INPUT_TYPE).getValue()) {
             case "WBXML":
-            return "WBXMLI";
+            return getWBXMLDirectory();
             case "VDPXML":
-            return "VDPXMLI";
+            return getVDPXMLDirectory();
             default:
             return "";
         }
