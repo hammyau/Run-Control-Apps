@@ -655,6 +655,7 @@ public class VDPXMLWriter {
         if (pf.getComponentId() < 9000000) {
             writeIdElement("Partition", pf.getComponentId(), fw);
             writeElement("Name", pf.getName(), fw);
+            writeElement("PartitionType", pf.getFileType().dbcode(), fw);
             writeElement("AccessMethod", pf.getAccessMethod().dbcode(), fw);
             writeElement("RecordDelimiter", pf.getRecordDelimiter().toString(), fw);
             if (pf.getSqlText().length() > 0) {
