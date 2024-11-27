@@ -54,6 +54,8 @@ public class GersConfigration {
     public static final String VDPOLD_DDNAME = "VDPOLD";
     
     public static final String GENERATE = "GENERATE_RC_FILES";
+    public static final String WRITE_VDPXML = "GENERATE_VDPXML";
+    public static final String VDPXML_OUT_FILE = "VDPXML";
 
     //RCG Parms
     public static final String DOT_XLT = "DOT_XLT";
@@ -147,6 +149,7 @@ public class GersConfigration {
         parmToValue.put(XLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(JLT_REPORT, new ConfigEntry("N", false));
         parmToValue.put(VDP_REPORT, new ConfigEntry("N", false));
+        parmToValue.put(WRITE_VDPXML, new ConfigEntry("N", false));
         parmToValue.put(COMPARE, new ConfigEntry("N", false));
         parmToValue.put(RCA_REPORT, new ConfigEntry("N", true));
         parmToValue.put(REPORT_FORMAT, new ConfigEntry("TXT", false));
@@ -365,8 +368,27 @@ public class GersConfigration {
         return parmToValue.get(DOT_FORMAT).getValue().equalsIgnoreCase("Y");
     }
 
+    public static boolean isWriteVDPXMLEnabled() {
+        return parmToValue.get(WRITE_VDPXML).getValue().equalsIgnoreCase("Y");
+    }
+
     public static String getWBXMLDirectory() {
         return getCWDPrefix() + WB_XML_FILES_SOURCE;
+    }
+
+    public static String getVDPXMLDirectory() {
+        return getCWDPrefix() + VDP_XML_FILES_SOURCE;
+    }
+
+    public static String getActiveXMLDirectory() {
+        switch(parmToValue.get(INPUT_TYPE).getValue()) {
+            case "WBXML":
+            return getWBXMLDirectory();
+            case "VDPXML":
+            return getVDPXMLDirectory();
+            default:
+            return "";
+        }
     }
 
 	public static String getParmFileName() {

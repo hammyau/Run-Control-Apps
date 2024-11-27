@@ -50,13 +50,14 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 		readXMLs();
         return retval;
     }
-	protected abstract void buildFromXML(InputReport ir);
+	protected abstract Status buildFromXML(InputReport ir);
 	protected abstract String getXMLDirectory();
 
 	protected void readXMLs() {
-		//GersFilesUtils.clear();
-		Collection<GersFile> gfs = new GersFilesUtils().getGersFiles(GersConfigration.getWBXMLDirectory());
-		logger.atInfo().log("found %d files in %s", gfs.size(), GersConfigration.getWBXMLDirectory());
+		String activeDir = GersConfigration.getActiveXMLDirectory();
+		logger.atInfo().log("Reading XML from %s", activeDir);
+		Collection<GersFile> gfs = new GersFilesUtils().getGersFiles(activeDir);
+		logger.atInfo().log("found %d files in %s", gfs.size(), activeDir);
 		for (GersFile gf : gfs) {
 			logger.atFine().log("Read XML file from %s", gf.getName());
 			try {
@@ -64,7 +65,7 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 				InputReport ir = new InputReport();
 				ir.setDdName(getXMLDirectory());
 				ir.setMemberName(gf.getName());
-				buildFromXML(ir);
+				retval = buildFromXML(ir);
 				Repository.addInputReport(ir);
 			} catch (FileNotFoundException e) {
 				logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());

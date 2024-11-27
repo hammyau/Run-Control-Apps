@@ -60,21 +60,13 @@ public class ComponentGenerator extends GeneratorBase{
 		logger.atInfo().log(" ");
     }
 
-    private void writeDocumentation(String cr, Map<String, Object> nodeMap) {
+	private void writeDocumentation(String cr, Map<String, Object> nodeMap) {
 		Template template;
-		try {
-			template = getTemplate("compDocumentation.ftl");
-			Path to = Paths.get("docs");
-			to = to.resolve("Java"+cr.replace(" ", "") + ".md");
-			generateTemplatedOutput(template, nodeMap, to);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TemplateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
+		template = getTemplate("compDocumentation.ftl");
+		Path to = Paths.get("docs");
+		to = to.resolve("Java" + cr.replace(" ", "") + ".md");
+		generateTemplatedOutput(template, nodeMap, to);
+	}
 
     private Path getPathToWriteTo(Map<String, Object> nodeMap) {
 		Path trg = Paths.get("docs/ltmac");

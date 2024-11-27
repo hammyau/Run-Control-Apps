@@ -601,7 +601,7 @@ public class VDPFileWriter {
 		while (lrfi.hasNext()) {
 			VDPLRField vlrf = new VDPLRField();
 			LRField lrf = lrfi.next();
-			logger.atFine().log("Write Field:%d %d %s", lrf.getComponentId(), lrf.getLrID(), lrf.getName());
+			logger.atFiner().log("Write Field:%d %d %s", lrf.getComponentId(), lrf.getLrID(), lrf.getName());
 			vlrf.fillFromComponent(lrf);
 			vlrf.fillTheWriteBuffer(VDPWriter);
 			VDPWriter.writeAndClearTheRecord();

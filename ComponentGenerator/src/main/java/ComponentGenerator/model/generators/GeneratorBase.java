@@ -77,20 +77,20 @@ public class GeneratorBase {
             template = cfg.getTemplate(templateName);
             generateTemplatedOutput(template, nodeMap, to);
         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            logger.atSevere().log("Freemarker template error " + e);
         }
     }
 
-    protected void generateTemplatedOutput(Template temp, Map<String, Object> templateModel, Path target)
-            throws IOException, TemplateException {
+    protected void generateTemplatedOutput(Template temp, Map<String, Object> templateModel, Path target) {
         Writer fstream = null;
-        fstream = new OutputStreamWriter(new FileOutputStream(target.toFile()), StandardCharsets.UTF_8);
-        temp.process(templateModel, fstream);
-        fstream.close();
+        try (FileOutputStream fos = new FileOutputStream(target.toFile())) {
+            fstream = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            temp.process(templateModel, fstream);
+        } catch (IOException e) {
+            logger.atSevere().log("File error " + e);
+        } catch (TemplateException e) {
+            logger.atSevere().log("Freemarker error " + e);
+        }
     }
 
     public void setFreeMarkerCfg(Configuration cfg) {

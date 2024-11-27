@@ -17,7 +17,6 @@ package org.genevaers.runcontrolgenerator;
  * under the License.
  */
 
-
 import java.io.FileWriter;
 import java.util.Calendar;
 import java.util.List;
@@ -26,6 +25,7 @@ import org.genevaers.compilers.base.ASTBase;
 import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.report.ReportWriter;
+import org.genevaers.genevaio.vdpxml.VDPXMLWriter;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
@@ -43,7 +43,7 @@ import org.genevaers.utilities.Status;
 import com.google.common.flogger.FluentLogger;
 
 public class RunControlGenerator {
-    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private Status status = Status.OK;
 
@@ -56,18 +56,20 @@ public class RunControlGenerator {
 
 	public Status runFromConfig() {
 		GenevaLog.writeHeader("Run Control Generator");
-        Repository.setRunviews(IdsReader.getIdsFrom(GersConfigration.RUNVIEWS));
-		if(buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
+		Repository.setRunviews(IdsReader.getIdsFrom(GersConfigration.RUNVIEWS));
+		if (buildComponentRepositoryFromSelectedInput() != Status.ERROR) {
 			logger.atInfo().log("Repository populated");
 			Repository.fixupViewsAndSkts();
 			Repository.fixupPFDDNames();
 			Repository.allLFsNotRequired();
 			Repository.setGenerationTime(Calendar.getInstance().getTime());
+			Repository.saveMaxLrId();
 			singlePassOptimise();
 			runCompilers();
 			writeRunControlFiles();
 		} else {
-			Repository.addErrorMessage(new CompilerMessage(0, null, 0, 0, 0, "Failed to build the component repository"));
+			Repository
+					.addErrorMessage(new CompilerMessage(0, null, 0, 0, 0, "Failed to build the component repository"));
 			logger.atSevere().log("Failed to build the component repository. No run control files will be written");
 		}
 		ReportWriter.setRCGStatus(status);
@@ -75,7 +77,7 @@ public class RunControlGenerator {
 	}
 
 	private void writeRunControlFiles() {
-		if(status != Status.ERROR) {
+		if (status != Status.ERROR) {
 			RunControlWriter rcw = new RunControlWriter();
 			logger.atFine().log("Join Logic Table");
 			logger.atFine().log(LTLogger.logRecords(joinLogicTable));
@@ -87,6 +89,13 @@ public class RunControlGenerator {
 			ReportWriter.setNumJLTRecordsWritten(joinLogicTable.getNumberOfRecords());
 			ReportWriter.setNumXLTRecordsWritten(extractLogicTable.getNumberOfRecords());
 			ReportWriter.setNumVDPRecordsWritten(rcw.getNumVDPRecordsWritten());
+
+			if (GersConfigration.isWriteVDPXMLEnabled()) {
+				VDPXMLWriter xmlw = new VDPXMLWriter();
+				xmlw.writeFromRepository(GersConfigration.VDPXML_OUT_FILE);
+				logger.atInfo().log("Generated a VDPXML file");
+			}
+
 		} else {
 			logger.atSevere().log("There were errors. No run control files will be written");
 		}
@@ -96,14 +105,14 @@ public class RunControlGenerator {
 	 * Now that the single pass optimisation has been completed
 	 * We need to form the tree of information to be enitted
 	 * The top level of which is derived from the logic groups.
-	 * The lower level as a result of compiling the logic text in the 
+	 * The lower level as a result of compiling the logic text in the
 	 * view sources and view column sources.
 	 * 
 	 * We also need to compile the format phase filter and column calculations.
 	 */
 	private void runCompilers() {
 		GenevaLog.logNow("runCompilers");
-		if(status != Status.ERROR) {
+		if (status != Status.ERROR) {
 			status = ExtractPhaseCompiler.run(logicGroups);
 			extractLogicTable = ExtractPhaseCompiler.getExtractLogicTable();
 			joinLogicTable = ExtractPhaseCompiler.getJoinLogicTable();
@@ -114,7 +123,7 @@ public class RunControlGenerator {
 	}
 
 	private void singlePassOptimise() {
-		if(status != Status.ERROR) {
+		if (status != Status.ERROR) {
 			SinglePassOptimiser spo = new SinglePassOptimiser();
 			status = spo.run();
 			logicGroups = spo.getLogicGroups();
