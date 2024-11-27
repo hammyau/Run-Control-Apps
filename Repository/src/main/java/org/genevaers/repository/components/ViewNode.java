@@ -324,6 +324,10 @@ public class ViewNode extends ComponentNode{
 		reportHeaders.add(rh);
     }
 
+	public int getNumberOfHeaders() {
+		return reportHeaders.size();
+	}
+
 	public boolean hasReportHeaders() {
 		return !reportHeaders.isEmpty();
 	}

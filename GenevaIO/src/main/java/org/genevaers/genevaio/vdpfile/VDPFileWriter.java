@@ -60,6 +60,9 @@ import com.google.common.flogger.FluentLogger;
 public class VDPFileWriter {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
+	private static final int INITIAL_COUNT = 0;
+	private static final int RECSIZE = 4096;
+
 	private File vdpFile;
 	private RecordFileWriter VDPWriter;
 	private int numrecords;
@@ -87,6 +90,7 @@ public class VDPFileWriter {
 
 	private void writeTheRecords() throws Exception {
 		VDPWriter = RecordFileReaderWriter.getWriter();
+		getExpectedRecordCount();
 		VDPWriter.writeRecordsTo(vdpFile);
 
 		// We really need to walk the list of items to get the generation information
@@ -107,6 +111,23 @@ public class VDPFileWriter {
 		writeExtractOutputFile();
 		writeExtractRecordFile();
 		writeViews();
+	}
+
+	private void getExpectedRecordCount() {
+		numrecords = INITIAL_COUNT;
+		numrecords += Repository.getPhysicalFiles().size();
+		numrecords += Repository.getLogicalRecords().size();
+		numrecords += Repository.getFields().size();
+		numrecords += Repository.getUserExits().size();
+		Iterator<ViewNode> vi = Repository.getViews().getIterator();
+		while (vi.hasNext()) {
+			ViewNode vn = vi.next();
+			numrecords += vn.getNumberOfColumns();
+			numrecords += vn.getNumberOfViewSources() * vn.getNumberOfColumns();
+			numrecords += vn.getNumberOfSortKeys();
+			numrecords += vn.getNumberOfHeaders();
+		}
+		logger.atInfo().log("Estimated number of required VDP records %d", numrecords);
 	}
 
 	private void writeViews() {
@@ -625,6 +646,10 @@ public class VDPFileWriter {
 		VDPGenerationRecord gen = vdpMgmtRecs.getViewGeneration();
 		gen.setVersionInfo((short)13);
 		gen.setLrFieldCount(Repository.getFields().size());
+		int estBytcount = numrecords * RECSIZE;
+		logger.atInfo().log("Estimated VDP byte count set to %d", estBytcount);
+		gen.setVdpByteCount(estBytcount);
+		gen.setRecordCount(numrecords);
 		gen.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
 	}
