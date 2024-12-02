@@ -9,7 +9,7 @@
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 401.5)">
 <title>RunControlGeneratoFileFlowr</title>
 <polygon fill="white" stroke="none" points="-4,4 -4,-401.5 1239.81,-401.5 1239.81,4 -4,4"/>
-<text text-anchor="middle" x="617.91" y="-372.6" font-family="Helvetica,sans-Serif" font-size="22.00">Run Control Generator File Flow</text>
+<text text-anchor="middle" x="617.91" y="-372.6" font-family="Helvetica,sans-Serif" font-size="22.00">Run Control Generator Data Flow</text>
 <g id="clust1" class="cluster">
 <title>cluster_rcg</title>
 <polygon fill="none" stroke="black" points="434.4,-46 434.4,-157 643.35,-157 643.35,-46 434.4,-46"/>

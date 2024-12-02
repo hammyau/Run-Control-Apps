@@ -1,6 +1,6 @@
 digraph RunControlGeneratoFileFlowr {
 rankdir=LR
-graph [label="Run Control Generator File Flow\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
+graph [label="Run Control Generator Data Flow\n\n\n", labelloc=t, labeljust=center, fontname=Helvetica, fontsize=22];
 labeljust=center;
 
 // Files
