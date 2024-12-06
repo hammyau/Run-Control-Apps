@@ -20,10 +20,8 @@ import java.util.Date;
  * under the License.
  */
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeSet;
@@ -38,11 +36,9 @@ import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
 import org.genevaers.repository.components.PhysicalFile;
 import org.genevaers.repository.components.UserExit;
-import org.genevaers.repository.components.ViewColumnSource;
 import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
-import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.LrStatus;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.ComponentCollection;
@@ -390,20 +386,32 @@ public class Repository {
 		}
 	}
 
-    public static void fixupViewsAndSkts() {
+	public static void fixupViewsAndSkts() {
 		Iterator<ViewNode> vi = views.getIterator();
-		while(vi.hasNext()) {
+		while (vi.hasNext()) {
 			ViewNode view = vi.next();
 			view.fixupMaxHeaderLines();
 			fixupSortKeyTitles(view);
+			fixupOutputFile(view);
 		}
-    }
+	}
+
+	private static void fixupOutputFile(ViewNode view) {
+		if(view.getOutputFile().getOutputDDName().isEmpty() && view.getViewDefinition().getDefaultOutputFileId() > 0) {
+			PhysicalFile pf = pfs.get(view.getViewDefinition().getDefaultOutputFileId()); 
+			if(pf != null) {
+				view.setOutputFileFrom(pf);
+			} else {
+				logger.atInfo().log("View %d has output filed id %d but no PF found", view.getID(), view.getViewDefinition().getDefaultOutputFileId());
+			}
+		}
+	}
 
 	public static int getNumberOfRequiredPhysicalFiles() {
 		int count = 0;
 		Iterator<PhysicalFile> pfi = pfs.getIterator();
-		while(pfi.hasNext()) {
-			if(pfi.next().isRequired()) {
+		while (pfi.hasNext()) {
+			if (pfi.next().isRequired()) {
 				count++;
 			}
 		}
