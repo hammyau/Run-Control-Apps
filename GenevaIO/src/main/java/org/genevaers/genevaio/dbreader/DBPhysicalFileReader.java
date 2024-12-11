@@ -105,18 +105,18 @@ public class DBPhysicalFileReader extends DBReaderBase {
             requiredExits.add(re);
         }
         pf.setReadExitIDParm(getDefaultedString(rs.getString("READEXITSTARTUP"), ""));
-        String ddi = rs.getString("DDNAMEINPUT").trim();
-        if(ddi.length() > 0) {
-            pf.setInputDDName(ddi);
+        String ddi = rs.getString("DDNAMEINPUT");
+        if(ddi != null && ddi.length() > 0) {
+            pf.setInputDDName(ddi.trim());
         } else {
             pf.setInputDDName(String.format("I%07d", pf.getComponentId()));
         }
         pf.setDataSetName(getDefaultedString(rs.getString("DSN"), ""));
         pf.setMinimumLength(rs.getShort("MINRECLEN"));
         pf.setMaximumLength(rs.getShort("MAXRECLEN"));
-        String ddo = rs.getString("DDNAMEOUTPUT").trim();
-        if(ddo.length() > 0) {
-            pf.setOutputDDName(ddo);
+        String ddo = rs.getString("DDNAMEOUTPUT");
+        if(ddo != null && ddo.length() > 0) {
+            pf.setOutputDDName(ddo.trim());
         } else {
             pf.setOutputDDName(String.format("O%07d", pf.getComponentId()));
         }
