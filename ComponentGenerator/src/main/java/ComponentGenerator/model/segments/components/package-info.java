@@ -18,7 +18,8 @@
  */
 
  /**
-  * Handle Components to be generated.
+  * The component classes to be generated are defined in YAML files in <a href="file:../../../../../../../ComponentGenerator/components">components</a> 
+  * The classes in this package read the YAML files via the {@link ComponentSegment#readYaml()}
   */ 
 package ComponentGenerator.model.segments.components;
 

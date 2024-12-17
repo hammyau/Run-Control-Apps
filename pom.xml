@@ -249,6 +249,7 @@
 			<version>3.11.1</version>
 			<configuration>
           		<show>private</show>
+				<docfilessubdirs>true</docfilessubdirs>
       		</configuration>
 			<reportSets>
 			  <reportSet>

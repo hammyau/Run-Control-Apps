@@ -19,6 +19,20 @@
 
  /**
   * Command line level package for the Component Generator.
+  * <p>The Component Generator is first built and then used to generate the classes we use within the Run Control Apps.</p>
+  * <p>There is another discussion of the Component Generator in the <a href="https://github.com/genevaers/Run-Control-Apps/tree/main/ComponentGenerator">Github repo</a></p>
+  * <p>The GenevaERS model is made up from a number of segments defined in the <a href="file:../../../../ComponentGenerator//src/main/resources/modelConfig.yaml">model config</a>.</p>
+  * <p>The individual segements are defined in YAML files located in 
+  * <a href="file:../../../../ComponentGenerator/src/main/resources">resources</a></p>
+  * <p>The segments of the our model describe</p>
+  * <ul>
+  * <li>The Repository <a href="file:../../../../ComponentGenerator/src/main/resources/componentconfig.yaml">Components</a> see {@link ComponentGenerator.model.segments.components}</li>
+  * <li>The VDP <a href="file:../../../../ComponentGenerator/src/main/resources/vdpconfig.yaml">Records</a> see details {@link ComponentGenerator.model.segments.record}</li>
+  * <li>The Logic Table <a href="file:../../../../ComponentGenerator/src/main/resources/ltconfig.yaml">Records</a> see details {@link ComponentGenerator.model.segments.record}</li>
+  * <li>The logic Table <a href="file:../../../../ComponentGenerator/src/main/resources/functionCodes.yaml">Function Codes</a> see details {@link ComponentGenerator.model.segments.functioncodes}</li>
+  * <li>Our component <a href="file:../../../../ComponentGenerator/src/main/resources/enumsAndEquates.yaml">Enumerations</a> see details {@link ComponentGenerator.model.segments.enums}</li>
+  * </ul>
+  * 
   */ 
 package ComponentGenerator;
 

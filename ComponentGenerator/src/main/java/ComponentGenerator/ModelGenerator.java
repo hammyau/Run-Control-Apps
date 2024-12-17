@@ -29,6 +29,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.flogger.FluentLogger;
 
 import ComponentGenerator.model.GenevaModel;
+import ComponentGenerator.model.GenevaWholeGenerator;
+import ComponentGenerator.model.GenevaWholeModel;
 import ComponentGenerator.model.segments.ModelSegment;
 import ComponentGenerator.model.segments.Segment;
 import ComponentGenerator.model.segments.SegmentFactory;
@@ -41,6 +43,7 @@ public class ModelGenerator {
 	private static int numErrors = 0;
 	private Configuration cfg;
 	private GenevaModel genevaModel;
+	private GenevaWholeModel wholeModel = new GenevaWholeModel();
 	private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
 	public void generateFrom(String modelConfig) throws IOException {
@@ -56,13 +59,28 @@ public class ModelGenerator {
 	}
 
 	// The model can be used to generate each of the desired outputs once built
-	public void  generateSegmentsOfModel(String modelConfig) throws FileNotFoundException, IOException {
+	public void generateSegmentsOfModel(String modelConfig) throws FileNotFoundException, IOException {
 		logger.atConfig().log("Build the GenevaERS model");
 		logger.atInfo().log("Read model defintion from %s\n", modelConfig);
 		readModel(modelConfig);
 		generateSegments();
+		generateRelationships();
 	}
 
+	private void generateRelationships() {
+		try {
+			// for(Segment s : genevaModel.getSegments())
+			// {
+			wholeModel.setDescription("GenevaModel");
+			mapper.writeValue(new File("WholeModel.yaml"), wholeModel);
+			GenevaWholeGenerator ggen = new GenevaWholeGenerator();
+			ggen.setFreeMarkerCfg(cfg);
+			ggen.writeOutputs(wholeModel);
+			// }
+		} catch (IOException e) {
+			logger.atSevere().log("Unable to write Fullmodel.yaml: %s", e.getMessage());
+		}
+	}
 
 	private void readModel(String modelConfig) throws IOException {
 		genevaModel = mapper.readValue(new File(modelConfig), GenevaModel.class);
@@ -75,6 +93,7 @@ public class ModelGenerator {
 		 	logger.atInfo().log("%s from %s", s.getName(), s.getSource());
 			ModelSegment modelSegment =  SegmentFactory.getModelSegment(s, mapper);
 			modelSegment.writeOutputs(mapper, cfg);
+			wholeModel.addSegment(s.getName(), modelSegment);
 		}
 		logger.atConfig().log("--------------------------");
 		logger.atInfo().log(" ");

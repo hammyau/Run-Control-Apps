@@ -1,7 +1,12 @@
-package ComponentGenerator.model.segments.components.members;
+/**
+ * Here we can drivel on about the details of the Run Control Apps
+ */
+package org.genevaers;
 
 /*
- * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
+ * Copyright Contributors to the GenevaERS Project.
+								SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation
+								2008
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,24 +22,3 @@ package ComponentGenerator.model.segments.components.members;
  * under the License.
  */
 
-
-public class ByteMember extends Member{
-
-    private static final String TYPE = "byte";
-
-    @Override
-    public String getType() {
-        return TYPE;
-    }
-
-    @Override
-    public String getFieldEntry() {
-        return defaultFieldEntryForType(TYPE);
-    }
-
-    @Override
-    public String getGetAndSetEntry() {
-        return getAndSetEntryForType(TYPE);
-    }
-    
-}

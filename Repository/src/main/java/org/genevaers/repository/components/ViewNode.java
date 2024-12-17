@@ -39,7 +39,7 @@ import org.genevaers.repository.components.enums.ViewType;
 
 public class ViewNode extends ComponentNode{
 
-	public ViewDefinition viewDef = new ViewDefinition();
+	private ViewDefinition viewDef = new ViewDefinition();
 
 	private Map<Integer, ViewColumn> columns = new TreeMap<Integer, ViewColumn>();
 	private Map<Integer, ViewColumn> columnsByID = new TreeMap<Integer, ViewColumn>();
