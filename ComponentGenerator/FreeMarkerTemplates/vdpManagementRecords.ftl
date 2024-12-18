@@ -31,7 +31,7 @@ labeljust=center; ranksep = "3 equally"
 <#assign vdprs = wm.segments["VDPRecords"] />
 <#list vdprs.records?reverse as r>
 <#assign record = r["record"] />
-<#if record.componentName == "none" >
+<#if record.componentName == "none" && record.recordName != "VDPPrefix">
 subgraph cluster_${record.recordName} { label="${record.recordName} (ID ${record.recordId?c})" node [shape=plaintext]
         
 ${record.recordName} [label=<<TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
