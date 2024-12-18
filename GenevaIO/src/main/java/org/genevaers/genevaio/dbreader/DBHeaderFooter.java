@@ -75,7 +75,7 @@ public class DBHeaderFooter extends DBReaderBase {
 		rf.setRow(rs.getShort("ROWNUMBER"));
 		rf.setColumn(rs.getShort("COLNUMBER"));
 		rf.setFooterLength(rs.getShort("LENGTH"));
-		rf.setText(rs.getString("ITEMTEXT").trim());
+		rf.setText(rs.getString("ITEMTEXT"));
 	}
 
 	private void parseHeader(ResultSet rs) throws SQLException  {
@@ -96,6 +96,6 @@ public class DBHeaderFooter extends DBReaderBase {
 		rh.setColumn(rs.getShort("COLNUMBER"));
 		rh.setTitleLength(rs.getShort("LENGTH"));
 		String it = rs.getString("ITEMTEXT");
-		rh.setText(it != null ? it.trim() : "");
+		rh.setText(it != null ? it : "");
 	}
 }
