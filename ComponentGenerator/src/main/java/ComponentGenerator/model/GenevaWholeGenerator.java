@@ -2,10 +2,8 @@ package ComponentGenerator.model;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008
@@ -25,16 +23,9 @@ import java.util.List;
  */
 
 import java.util.Map;
-import java.util.TreeMap;
-
 import com.google.common.flogger.FluentLogger;
 
 import ComponentGenerator.model.generators.GeneratorBase;
-import ComponentGenerator.model.segments.ModelSegment;
-import ComponentGenerator.model.segments.components.ComponentItem;
-import ComponentGenerator.model.segments.components.ComponentSegment;
-import ComponentGenerator.model.segments.record.RecordItem;
-import ComponentGenerator.model.segments.record.VDPRecordSegment;
 
 public class GenevaWholeGenerator extends GeneratorBase {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -43,20 +34,18 @@ public class GenevaWholeGenerator extends GeneratorBase {
     public void writeOutputs(GenevaWholeModel wm) {
         logger.atConfig().log("Generate Model Diagrams");
         wholeModel = wm;
-        // Iterator<ComponentItem> compi = compModel.getComponents().iterator();
-        // while (compi.hasNext()) {
-        // ComponentItem compentry = compi.next();
-        // logger.atConfig().log("Generate Component items from %s",
-        // compentry.getName());
-        // compWalker.buildEntryStrings(compentry.getComponent());
         Map<String, Object> nodeMap = new HashMap<>();
         nodeMap.put("wm", wholeModel);
         writeRecord2ComponentMapping("VDPRecs2Components", nodeMap);
         writeVDPManagmentRecords("VDPMngrecs", nodeMap);
-        // writeDocumentation(compentry.getName(), nodeMap);
-        // }
+        writeLogicTableRecordsAndFunctionCodes("LTandFCs", nodeMap);
         logger.atConfig().log("-----------------------------");
         logger.atInfo().log(" ");
+    }
+
+    private void writeLogicTableRecordsAndFunctionCodes(String name, Map<String, Object> nodeMap) {
+        Path to = getPathToWriteJavaObjecPath(name);
+        writeModelWithTemplateToPath(nodeMap, "ltAndFcs.ftl", to);
     }
 
     private void writeVDPManagmentRecords(String name, Map<String, Object> nodeMap) {
@@ -72,8 +61,6 @@ public class GenevaWholeGenerator extends GeneratorBase {
     private Path getPathToWriteJavaObjecPath(String name) {
         String dir = wholeModel.getTargetDirectory();
         Path trg = Paths.get(dir);
-        // Path trg = dirPath.resolve(pkg.replace('.', '/'));
-        // trg.resolve(pkg);
         trg.toFile().mkdirs();
         return trg.resolve(name + ".dot");
     }
