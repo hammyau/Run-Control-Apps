@@ -82,9 +82,9 @@ public class DBHeaderFooter extends DBReaderBase {
 		rh.setComponentId(rs.getInt("HEADERFOOTERID"));
 		String field = rs.getString("STDFUNCCD").trim();
 		if(field.length() > 0) {
-			rh.setFunction(ReportFunction.fromdbcode(field));
+			rh.setFunction(Repository.getReportFunctionValue(ReportFunction.fromdbcode(field)));
 		} else {
-			rh.setFunction(ReportFunction.INVALID);
+			rh.setFunction(0);
 		}
 		field = rs.getString("JUSTIFYCD").trim();
 		if(field.length() > 0) {

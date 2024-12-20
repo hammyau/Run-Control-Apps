@@ -2,6 +2,7 @@ package org.genevaers.repository;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -22,6 +23,7 @@ import java.util.Date;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,6 +42,7 @@ import org.genevaers.repository.components.ViewDefinition;
 import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.enums.LrStatus;
+import org.genevaers.repository.components.enums.ReportFunction;
 import org.genevaers.repository.data.CompilerMessage;
 import org.genevaers.repository.data.ComponentCollection;
 import org.genevaers.repository.data.ExtractDependencyCache;
@@ -94,6 +97,9 @@ public class Repository {
 	private static int numberOfExtractViews;
 	private static int numErrors;
 
+   	private static Map<ReportFunction, Integer> reportFunction2Int = new HashMap<>();
+   	private static Map<Integer, ReportFunction> int2reportFunction2 = new HashMap<>();
+
 	public static void clearAndInitialise() {
 		crs = new ComponentCollection<ControlRecord>();
 		lfs = new ComponentCollection<LogicalFile>();
@@ -125,6 +131,72 @@ public class Repository {
 		numErrors = 0;
 	
 		extractFileNubers = new TreeSet<>();
+		initReportFunctionMap();
+	}
+
+	private static void initReportFunctionMap() {
+		reportFunction2Int.clear();
+		reportFunction2Int.put(ReportFunction.INVALID, 0);
+		reportFunction2Int.put(ReportFunction.PDATE, 1); 
+		reportFunction2Int.put(ReportFunction.PTIME, 2); 
+		reportFunction2Int.put(ReportFunction.PGNUM, 3); 
+		reportFunction2Int.put(ReportFunction.VWID, 4); 
+		reportFunction2Int.put(ReportFunction.TEXT, 5); 
+		reportFunction2Int.put(ReportFunction.CONAM, 6); 
+		reportFunction2Int.put(ReportFunction.VWNAM, 7); 
+		reportFunction2Int.put(ReportFunction.VWOWN, 8); 
+		reportFunction2Int.put(ReportFunction.S01LB, 11); 
+		reportFunction2Int.put(ReportFunction.S01VL, 12); 
+		reportFunction2Int.put(ReportFunction.S01TT, 13); 
+		reportFunction2Int.put(ReportFunction.S02LB, 21); 
+		reportFunction2Int.put(ReportFunction.S02VL, 22); 
+		reportFunction2Int.put(ReportFunction.S02TT, 23); 
+		reportFunction2Int.put(ReportFunction.S03LB, 31); 
+		reportFunction2Int.put(ReportFunction.S03VL, 32); 
+		reportFunction2Int.put(ReportFunction.S03TT, 33); 
+		reportFunction2Int.put(ReportFunction.S04LB, 41); 
+		reportFunction2Int.put(ReportFunction.S04VL, 42); 
+		reportFunction2Int.put(ReportFunction.S04TT, 43); 
+		reportFunction2Int.put(ReportFunction.S05LB, 51); 
+		reportFunction2Int.put(ReportFunction.S05VL, 52); 
+		reportFunction2Int.put(ReportFunction.S05TT, 53); 
+		reportFunction2Int.put(ReportFunction.RDATE, 502); 
+		reportFunction2Int.put(ReportFunction.FDATE, 503); 
+		int2reportFunction2.clear();
+		int2reportFunction2.put(0, ReportFunction.INVALID);
+		int2reportFunction2.put(1, ReportFunction.PDATE); 
+		int2reportFunction2.put(2, ReportFunction.PTIME); 
+		int2reportFunction2.put(3, ReportFunction.PGNUM); 
+		int2reportFunction2.put(4,ReportFunction.VWID); 
+		int2reportFunction2.put(5,ReportFunction.TEXT); 
+		int2reportFunction2.put(6, ReportFunction.CONAM); 
+		int2reportFunction2.put(7, ReportFunction.VWNAM); 
+		int2reportFunction2.put(8, ReportFunction.VWOWN); 
+		int2reportFunction2.put(11, ReportFunction.S01LB); 
+		int2reportFunction2.put(12, ReportFunction.S01VL); 
+		int2reportFunction2.put(13, ReportFunction.S01TT); 
+		int2reportFunction2.put(21, ReportFunction.S02LB); 
+		int2reportFunction2.put(22, ReportFunction.S02VL); 
+		int2reportFunction2.put(23, ReportFunction.S02TT); 
+		int2reportFunction2.put(31, ReportFunction.S03LB); 
+		int2reportFunction2.put(32, ReportFunction.S03VL); 
+		int2reportFunction2.put(33, ReportFunction.S03TT); 
+		int2reportFunction2.put(41, ReportFunction.S04LB); 
+		int2reportFunction2.put(42, ReportFunction.S04VL); 
+		int2reportFunction2.put(43, ReportFunction.S04TT); 
+		int2reportFunction2.put(51, ReportFunction.S05LB); 
+		int2reportFunction2.put(52, ReportFunction.S05VL); 
+		int2reportFunction2.put(53, ReportFunction.S05TT); 
+		int2reportFunction2.put(502, ReportFunction.RDATE); 
+		int2reportFunction2.put(503, ReportFunction.FDATE); 
+	}
+
+	public static int getReportFunctionValue(ReportFunction rpf) {
+		return reportFunction2Int.get(rpf);
+	}
+
+	public static ReportFunction getReportFunctionEnum(int i) {
+		return int2reportFunction2.get(i);
 	}
 
 	public static ComponentCollection<ControlRecord> getControlRecords() {

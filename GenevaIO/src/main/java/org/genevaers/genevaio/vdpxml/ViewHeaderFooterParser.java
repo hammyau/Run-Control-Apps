@@ -61,7 +61,7 @@ public class ViewHeaderFooterParser extends BaseParser {
 				break;
 			case "FUNCTION":
 				functonCode = text.trim();
-				rh.setFunction(ReportFunction.fromdbcode(functonCode));
+				rh.setFunction(Repository.getReportFunctionValue(ReportFunction.fromdbcode(functonCode)));
 				break;
 			case "ALIGNMENT":
 				justify = text.trim();
@@ -116,9 +116,9 @@ public class ViewHeaderFooterParser extends BaseParser {
 		ReportHeader rh = new ReportHeader();
 		rh.setComponentId(id);
 		if (functonCode.length() > 0) {
-			rh.setFunction(ReportFunction.fromdbcode(functonCode));
+			rh.setFunction(Repository.getReportFunctionValue(ReportFunction.fromdbcode(functonCode)));
 		} else {
-			rh.setFunction(ReportFunction.INVALID);
+			rh.setFunction(0);
 		}
 		if (justify.length() > 0) {
 			rh.setJustification(JustifyId.fromdbcode(justify));
