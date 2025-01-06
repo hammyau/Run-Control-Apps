@@ -259,9 +259,12 @@ public class JoinViewsManager {
 			return exitJoins.getJLTView(lrid, false);
 		} else {
 			LogicalFile lf = Repository.getLogicalFiles().get(lfid);
-			if(lf.getPFIterator().next().getInputDDName().startsWith("$$")) {
+			PhysicalFile pf = lf.getPFIterator().next();
+			if(pf.getInputDDName().startsWith("$$")) {
 				//External files have an input DDname starting with $$
 				//Go figure...
+				pf.setRequired(true);
+				lf.setRequired(true);
 				return externalJoins.getJLTView(lrid, false);
 			} else {
 				referenceJoins = referenceDataSet.computeIfAbsent(lfid, k -> makeReferenceJoinMap(LookupType.NORMAL, lfid));
