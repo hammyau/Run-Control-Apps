@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
-# Copyright Contributors to the GenevaERS Project.
-#								SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation
-#								2008
+# # Copyright Contributors to the GenevaERS Project.
+# 								SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation
+# 								2008
 # 
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +14,4 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-mvn clean
-mvn install
-cp RCApps/target/*-with-dependencies.jar $GERS_RCA_JAR_DIR
-sh dotem.sh
-mvn javadoc:aggregate
+find . -type f -name '*.dot' | while read f; do dot -Tsvg -O "$f"; done

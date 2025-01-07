@@ -18,8 +18,6 @@ package ComponentGenerator.model.segments.components;
  */
 
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -32,10 +30,7 @@ import com.google.common.flogger.FluentLogger;
 
 import ComponentGenerator.model.ComponentWalker;
 import ComponentGenerator.model.generators.GeneratorBase;
-import ComponentGenerator.model.segments.ModelSegment;
-import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 public class ComponentGenerator extends GeneratorBase{
 

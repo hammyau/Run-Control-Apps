@@ -37,6 +37,9 @@ import ComponentGenerator.model.segments.SegmentFactory;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
 
+/**
+ * Read the model YAML file and generate the model artifacts
+ */
 public class ModelGenerator {
 
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -46,6 +49,11 @@ public class ModelGenerator {
 	private GenevaWholeModel wholeModel = new GenevaWholeModel();
 	private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
+	/**
+	 * Setup FreeMarker
+	 * and generate the Geneva model from the named file
+	 * <p>We also generate a whole model YAML file as a kind of crosscheck.</p>
+	 */
 	public void generateFrom(String modelConfig) throws IOException {
 		// Iterate through the YAML files in the component directories
 		// Or iterate throught the YAML files defined in a config file
@@ -58,7 +66,10 @@ public class ModelGenerator {
 		logger.atConfig().log("Generation Completed");
 	}
 
-	// The model can be used to generate each of the desired outputs once built
+	/** 
+	 * Read the Segments of the model.
+	 * The model is then used to generate the outputs of each segement.
+	 */
 	public void generateSegmentsOfModel(String modelConfig) throws FileNotFoundException, IOException {
 		logger.atConfig().log("Build the GenevaERS model");
 		logger.atInfo().log("Read model defintion from %s\n", modelConfig);

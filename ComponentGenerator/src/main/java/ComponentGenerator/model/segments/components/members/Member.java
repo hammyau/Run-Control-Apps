@@ -39,7 +39,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 /*
  * Represents a member of a component.
  * 
- * Supplied the functions used in the FreeMarker template to generate a component class.
+ * Supplies the functions used in the FreeMarker template to generate a component class.
  * 
  * Derived classes are for each of the possible class datatypes of a Component. See the Subclasses section.
  */

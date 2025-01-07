@@ -15,8 +15,5 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
-mvn clean
-mvn install
-cp RCApps/target/*-with-dependencies.jar $GERS_RCA_JAR_DIR
 sh dotem.sh
 mvn javadoc:aggregate
