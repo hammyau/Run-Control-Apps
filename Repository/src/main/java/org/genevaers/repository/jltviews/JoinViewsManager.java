@@ -550,4 +550,8 @@ public class JoinViewsManager {
 		jv.setSourceLFID(lfOfKey);
 		return jv;
 	}
+
+	public JLTViewMap<ExternalJoin> getExternalJoins() {
+		return externalJoins;
+	}
 }
