@@ -35,6 +35,7 @@ import org.genevaers.repository.components.enums.ExtractArea;
 import org.genevaers.repository.components.enums.FieldDelimiter;
 import org.genevaers.repository.components.enums.PerformBreakLogic;
 import org.genevaers.repository.components.enums.RecordDelimiter;
+import org.genevaers.repository.components.enums.ReportFunction;
 import org.genevaers.repository.components.enums.SortBreakFooterOption;
 import org.genevaers.repository.components.enums.SortBreakHeaderOption;
 import org.genevaers.utilities.GersConfigration;
@@ -230,7 +231,7 @@ public class VDPXMLWriter {
         writeElement("Line", Integer.toString(hdr.getRow()), fw);
         writeElement("Position", Integer.toString(hdr.getColumn()), fw);
         writeElement("Alignment", hdr.getJustification().dbcode(), fw);
-        writeElement("Function", hdr.getFunction().dbcode(), fw);
+        writeElement("Function", Repository.getReportFunctionEnum(hdr.getFunction()).dbcode(), fw);
         writeElement("Text", StringEscapeUtils.escapeHtml4(hdr.getText()), fw);
         closeElement("Header", fw);
         fw.write("\n");

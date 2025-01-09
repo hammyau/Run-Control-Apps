@@ -65,7 +65,7 @@ public class DBLRIndexReader extends DBReaderBase{
         lri.setKeyNumber(rs.getShort("FLDSEQNBR"));
         lri.setEffectiveDateStart(false);
         lri.setEffectiveDateEnd(false);
-        lri.setName("PK");
+        lri.setName("Primary");
         lri.setFieldID(rs.getInt("LRFIELDID"));
         Repository.addLRIndex(lri);
         if(!effectiveDatesAdded) {

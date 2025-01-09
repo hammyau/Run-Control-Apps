@@ -142,6 +142,7 @@ public class RecordParserData {
 				outpf.setRequired(true);
 				Repository.getLogicalFiles().get(lfpf.lfid).setRequired(true);
 				if(vw != null)
+					vw.getViewDefinition().setDefaultOutputFileId(outpf.getComponentId());
 					vw.setOutputFileFrom(outpf);
 			}
 		}
