@@ -13,8 +13,7 @@ fields:
   existing_java_type: record_id
   component_field: componentId
 - name: function
-  type: enum
-  existing_java_type: org.genevaers.repository.components.enums.ReportFunction
+  type: integer
   component_field: function
 - name: justification
   type: enum

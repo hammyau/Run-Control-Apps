@@ -155,7 +155,7 @@ public class VDPFileWriter {
 		writeViewColumns(view);
 		writeViewSortKeys(view);
 		writeViewSources(view);
-		writeViewColumnSources(view);
+		//writeViewColumnSources(view);
 	}
 
 	private void writeHeaders(ViewNode view) {
@@ -309,9 +309,18 @@ public class VDPFileWriter {
 		vvs.fillTheWriteBuffer(VDPWriter);
 		VDPWriter.writeAndClearTheRecord();
 		writeExtractFilter(vs);
+		writeViewColumnSourcesFromViewSource(vs);
 		writeOutputLogic(vs);
 	}
-
+		
+	private void writeViewColumnSourcesFromViewSource(ViewSource vs) {
+		Iterator<ViewColumnSource> vcsi = vs.getIteratorForColumnSourcesByNumber();
+		while (vcsi.hasNext()) {
+			ViewColumnSource vcs = vcsi.next();
+			writeViewColumnSource(vcs.getColumnNumber(), vcs);
+		}
+	}
+		
 	private void writeOutputLogic(ViewSource vs) {
 		if (vs.getExtractOutputLogic() != null && vs.getExtractOutputLogic().length() > 0) {
             logger.atFine().log("Output Logic\n%s", vs.getExtractOutputLogic());
