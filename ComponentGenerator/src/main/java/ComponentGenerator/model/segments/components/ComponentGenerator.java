@@ -28,7 +28,6 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.flogger.FluentLogger;
 
-import ComponentGenerator.model.ComponentWalker;
 import ComponentGenerator.model.generators.GeneratorBase;
 import freemarker.template.Template;
 
@@ -36,9 +35,7 @@ public class ComponentGenerator extends GeneratorBase{
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	private ComponentSegment definition;
-	private ComponentWalker compWalker = new ComponentWalker();
-
-    public void writeOutputs(ComponentSegment compModel) {
+	public void writeOutputs(ComponentSegment compModel) {
 		logger.atConfig().log("Generate Java Component items");
 		definition = compModel;
 		Iterator<ComponentItem> compi = compModel.getComponents().iterator();

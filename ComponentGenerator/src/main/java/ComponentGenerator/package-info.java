@@ -34,7 +34,7 @@
   * </ul>
   * 
   * <p>The ComponentGenerator also produces diagrams to capture the relationship between the <a href="file:../../../../ComponentGenerator/target/VDPRecs2Components.dot.svg">VDP Records and the Components</a>.</p>
-  * <p>And a <a href="file:../../../../ComponentGenerator/target/VDPRecs2Components.dot.svg">summary</a> of the Logic Table records and their associated function codes.</p>
+  * <p>And a <a href="file:../../../../ComponentGenerator/target/LTandFCs.dot.svg">summary</a> of the Logic Table records and their associated function codes.</p>
   * <p>An additional diagram shows the <a href="file:../../../../ComponentGenerator/target/VDPMngrecs.dot.svg">VDP Managment Records</a>. Those records for which there are no generated Components.</p>
   * 
   * The <a href="https://github.com/genevaers/Run-Control-Apps/tree/main/ComponentGenerator#description">Description</a> section of the Github page mentioned above shows the basic flow.

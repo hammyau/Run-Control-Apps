@@ -27,7 +27,7 @@ import freemarker.template.TemplateModelException;
 import freemarker.template.TemplateScalarModel;
 
 /**
- * Add a Method to the FreeMarker world do generate the DSECT string
+ * Add a Method to the FreeMarker world to generate the DSECT string
  */
 public class DSectEntryMethod implements TemplateMethodModelEx {
 
