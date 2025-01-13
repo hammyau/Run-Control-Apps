@@ -25,6 +25,9 @@ import java.util.TreeMap;
 
 import ComponentGenerator.model.segments.ModelSegment;
 
+/**
+ * POJO for the Whole Geneva model. Used in the Jackson processing.
+ */
 public class GenevaWholeModel {
     private String description;
     private Map<String, ModelSegment> segments = new TreeMap<>();

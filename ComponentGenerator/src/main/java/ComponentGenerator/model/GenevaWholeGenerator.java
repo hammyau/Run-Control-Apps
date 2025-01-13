@@ -27,6 +27,9 @@ import com.google.common.flogger.FluentLogger;
 
 import ComponentGenerator.model.generators.GeneratorBase;
 
+/**
+ * Write the whole model dot files using FreeMarker.
+ */
 public class GenevaWholeGenerator extends GeneratorBase {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private GenevaWholeModel wholeModel;
