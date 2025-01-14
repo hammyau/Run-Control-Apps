@@ -210,9 +210,9 @@ public class FieldReferenceAST extends FormattedASTNode implements Assignable, C
         if(arg2.getFieldFormat() != DataType.ALPHANUMERIC && arg.getFieldFormat() == DataType.ALPHANUMERIC) {
             arg.setFieldFormat(DataType.ZONED);
         }
-        if(arg2.getFieldFormat() == DataType.ALPHANUMERIC && arg.getFieldFormat() != DataType.ALPHANUMERIC) {
-            arg2.setFieldFormat(DataType.ZONED);
-        }
+        // if(arg2.getFieldFormat() == DataType.ALPHANUMERIC && arg.getFieldFormat() != DataType.ALPHANUMERIC) {
+        //     arg2.setFieldFormat(DataType.ZONED);
+        // }
     }
 
     @Override
