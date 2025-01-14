@@ -50,8 +50,8 @@ public class SameTypeChecker extends AssignmentRulesChecker {
         // }
         if (vc.getDateCode() != DateCode.NONE && frhs.getDateCode() != DateCode.NONE) {
             updateResult(result, apply(column, rhs));
-            stripOffDateCodes(column, frhs);
-         } else {
+            stripOffDateCodesIfTheSame(column, frhs);
+        } else {
             //need to strip here as well but know which side and generate warning
             if(vc.getDateCode() != DateCode.NONE) {
                 column.overrideDateCode(DateCode.NONE);
@@ -72,7 +72,7 @@ public class SameTypeChecker extends AssignmentRulesChecker {
     }
 
 
-    private void stripOffDateCodes(ColumnAST column, FormattedASTNode frhs) {
+    private void stripOffDateCodesIfTheSame(ColumnAST column, FormattedASTNode frhs) {
             // Stip off the content codes.
             // But in a copy not the original - or use an override type
             // Which is where the TypeASTNode should come in...
@@ -80,8 +80,11 @@ public class SameTypeChecker extends AssignmentRulesChecker {
             //if (vc.getFieldLength() != frhs.getLength()) {
                 // If the lengths are the same as well then just strip off the content codes
             //}
-        frhs.overrideDateCode(DateCode.NONE);
-        column.overrideDateCode(DateCode.NONE);
+            ViewColumn vc = column.getViewColumn();
+            if (vc.getDateCode() == frhs.getDateCode()) {
+                frhs.overrideDateCode(DateCode.NONE);
+                column.overrideDateCode(DateCode.NONE);
+            }
     }
 
     @Override
