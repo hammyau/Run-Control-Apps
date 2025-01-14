@@ -34,7 +34,6 @@ import org.genevaers.genevaio.ltfile.LTLogger;
 import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.writer.LTCSVWriter;
 import org.genevaers.genevaio.report.LogicTableTextWriter;
-import org.genevaers.genevaio.report.ReportWriter;
 import org.genevaers.genevaio.report.VDPTextWriter;
 import org.genevaers.repository.Repository;
 import org.genevaers.runcontrolanalyser.ltcoverage.LTCoverageAnalyser;
@@ -49,7 +48,6 @@ public class AnalyserDriver {
 
 	private static RunControlAnalyser fa = new RunControlAnalyser();
 	private static LTCoverageAnalyser ltCoverageAnalyser = new LTCoverageAnalyser();
-	private static ReportWriter report;
 	private static Status status = Status.OK;
 
 	private static String version;
@@ -85,7 +83,6 @@ public class AnalyserDriver {
 				generateRcaPrint(root);
 			}
 		}
-		ReportWriter.setDiffs(numVDPDiffs, numXLTDiffs, numJLTDiffs);
 		setStatus(numVDPDiffs, numXLTDiffs, numJLTDiffs);
 		return status;
 	}

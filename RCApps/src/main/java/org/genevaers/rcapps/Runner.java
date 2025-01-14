@@ -27,7 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.genevaers.genevaio.report.ReportWriter;
+import org.genevaers.runcontrolanalyser.AnalyserDriver;
 import org.genevaers.runcontrolanalyser.RCAApp;
 import org.genevaers.runcontrolgenerator.RCGApp;
 
@@ -63,7 +63,8 @@ public class Runner {
             }
             if(status != Status.ERROR && GersConfigration.analyserRunRequested())  {
                 RCAApp.run();
-                status = status == Status.OK ? RCAApp.ranOkay() : status;    
+                status = status == Status.OK ? RCAApp.ranOkay() : status; 
+                ReportWriter.setDiffs(AnalyserDriver.getNumVDPDiffs(), AnalyserDriver.getNumXLTDiffs(), AnalyserDriver.getNumJLTDiffs());   
             }
         } else {
             System.out.printf("Unable to find generator parm file\n");

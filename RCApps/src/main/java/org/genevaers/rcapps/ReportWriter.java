@@ -1,4 +1,4 @@
-package org.genevaers.genevaio.report;
+package org.genevaers.rcapps;
 
 
 
@@ -30,6 +30,7 @@ import java.util.Properties;
 import org.genevaers.genevaio.dbreader.DBFoldersReader;
 import org.genevaers.genevaio.dbreader.DBViewsReader;
 import org.genevaers.repository.Repository;
+import org.genevaers.runcontrolgenerator.compilers.ExtractPhaseCompiler;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersEnvironment;
 import org.genevaers.utilities.GersFile;
@@ -108,8 +109,8 @@ public class ReportWriter {
                 nodeMap.put("jltRecordsWritten", String.format("%,d", jltRecordsWritten));
                 nodeMap.put("views", Repository.getViews().getValues());
                 nodeMap.put("refviews", Repository.getJoinViews().getRefReportEntries());
-                nodeMap.put("reh", Repository.getViews().get(Repository.getJoinViews().getHeaderViewNumber()));
-                nodeMap.put("rth", Repository.getViews().get(Repository.getJoinViews().getHeaderViewNumber()));
+                nodeMap.put("reh", ExtractPhaseCompiler.getRehHeader());
+                nodeMap.put("rth", ExtractPhaseCompiler.getRthHeader());
                 nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
                 nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
             }

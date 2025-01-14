@@ -449,11 +449,20 @@ public class JoinViewsManager {
 	public List<ReferenceReportEntry> getRefReportEntries() {
 		List<ReferenceReportEntry> entries = new ArrayList<>();
 		Iterator<Entry<Integer, JLTViewMap<ReferenceJoin>>> refdi = referenceDataSet.entrySet().iterator();
+		System.out.println("getRefReportEntries" + referenceDataSet.entrySet().size());
 		while(refdi.hasNext()) {
 			Entry<Integer, JLTViewMap<ReferenceJoin>> refd = refdi.next();
 			Collection<ReferenceJoin> refViews = refd.getValue().getValues();
 			addToEntriesForReferenceViews(entries, refd.getKey(), refViews);
 		}
+        Iterator<ExternalJoin> extIt = externalJoins.getIterator();
+        int i = 1;
+        while (extIt.hasNext()) {
+            ExternalJoin extJoin = extIt.next();
+            LookupPath lk = Repository.getLookups().get(extJoin.getOrginalLookupId());
+            LogicalFile lf = Repository.getLogicalFiles().get(lk.getTargetLFID());
+			entries.add(extJoin.getReportEntry(lf.getID()));
+        }
 		return entries;
 	}
 
@@ -461,38 +470,7 @@ public class JoinViewsManager {
 		Iterator<ReferenceJoin> ri = refViews.iterator();
 		while (ri.hasNext()) {
 			ReferenceJoin ref = ri.next();
-			ReferenceReportEntry refEntry = new ReferenceReportEntry();
-			refEntry.setWorkDDName(String.format("REFR%03d", ref.getDdNum()));
-			refEntry.setViewID(ref.getRefViewNum());
-			refEntry.setViewName(ref.getView().getName());
-			PhysicalFile pf = Repository.getLogicalFiles().get(lfid).getPFIterator().next();
-			refEntry.setRefDDName(pf.getInputDDName());
-			refEntry.setRefPFID(pf.getComponentId());
-			refEntry.setRefPFName(pf.getName());
-			refEntry.setRefLRID(ref.getLRid());
-			refEntry.setRefLFID(lfid);
-			refEntry.setKeylen(ref.getKeyLength());
-			switch (ref.getEffDateCode()) {
-				case JLTView.EFF_DATE_BOTH:
-					refEntry.setEffStart("Y ");
-					refEntry.setEffEnd("Y ");
-					break;
-				case JLTView.EFF_DATE_START:
-					refEntry.setEffStart("Y ");
-					refEntry.setEffEnd("N ");
-					break;
-				case JLTView.EFF_DATE_END:
-					refEntry.setEffStart("N ");
-					refEntry.setEffEnd("Y ");
-					break;
-				case JLTView.EFF_DATE_NONE:
-					refEntry.setEffStart("N ");
-					refEntry.setEffEnd("N ");
-					break;
-				default:
-					break;
-			}
-			entries.add(refEntry);
+			entries.add(ref.getReportEntry(lfid));
 		}
 	}
 

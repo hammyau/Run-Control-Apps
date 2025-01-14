@@ -67,21 +67,22 @@ public class ExtractPhaseCompiler {
 	private static LogicTableEmitter jltEmitter = new LogicTableEmitter();
 	private static ViewSourceAstNode vsnode;
 	private static Status status = Status.OK;
-    
-   	public ExtractPhaseCompiler(List<LogicGroup> lgs) {
+	private static JLTTreeGenerator jltgen;
+	
+	public ExtractPhaseCompiler(List<LogicGroup> lgs) {
 		logicGroups = lgs;
-    }
+	}
 
-    public static void reset() {
-        xltEmitter = new LogicTableEmitter();
-        jltEmitter = new LogicTableEmitter();
+	public static void reset() {
+		xltEmitter = new LogicTableEmitter();
+		jltEmitter = new LogicTableEmitter();
 		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
 		ExtractBaseAST.clearLastColumnWithAWrite();
 		vsnode = null;
 		status =  Status.OK;
-    }
+	}
 
-    public static Status run(List<LogicGroup> lgs) {
+	public static Status run(List<LogicGroup> lgs) {
 		logicGroups = lgs;
 		buildTheAST();
 		if(Repository.getCompilerErrors().size() == 0) {
@@ -96,10 +97,10 @@ public class ExtractPhaseCompiler {
 		} else{
 			status = Status.ERROR;
 		}
-        return status;
+		return status;
 	}
 
-    public static void buildTheAST() {
+	public static void buildTheAST() {
 		extractRoot = (ExtractBaseAST) ASTFactory.getNodeOfType(ASTFactory.Type.ERSROOT);
 		BuildGenevaASTVisitor.setDataProvider(new RepoDataProvider());
 		Iterator<LogicGroup> lgi = logicGroups.iterator();
@@ -111,7 +112,7 @@ public class ExtractPhaseCompiler {
 		writeXLTDotIfEnabled();
 	}
 
-    public static void buildViewSourceAST(ViewSource vs) {
+	public static void buildViewSourceAST(ViewSource vs) {
 		vsnode = buildVSNodeAndAddToRoot(vs);
 		ExtractFilterAST ef = (ExtractFilterAST) ASTFactory.getNodeOfType(ASTFactory.Type.EXTRFILTER);
 		vsnode.addChildIfNotNull(ef);
@@ -124,7 +125,7 @@ public class ExtractPhaseCompiler {
 		}
 	}
 
-    public static void buildViewColumnSourceAST(ViewColumnSource vcs) {
+	public static void buildViewColumnSourceAST(ViewColumnSource vcs) {
 		if(vsnode == null) {
 			buildVSNodeAndAddToRoot(Repository.getViews().get(vcs.getViewId()).getViewSource(vcs.getSequenceNumber()));
 		}
@@ -277,26 +278,34 @@ public class ExtractPhaseCompiler {
 	}
 
 	public static void addPFNodes(LFAstNode lfNode) {
-        Iterator<PhysicalFile> pfi = lfNode.getLogicalFile().getPFIterator();
-        while(pfi.hasNext()) {
-            PFAstNode pfn = (PFAstNode)ASTFactory.getNodeOfType(ASTFactory.Type.PF);
-            pfn.setPhysicalFile(pfi.next());
-            pfn.addChildIfNotNull(lfNode);
-            extractRoot.addChildIfNotNull(pfn);
-        }
-    }
+		Iterator<PhysicalFile> pfi = lfNode.getLogicalFile().getPFIterator();
+		while(pfi.hasNext()) {
+			PFAstNode pfn = (PFAstNode)ASTFactory.getNodeOfType(ASTFactory.Type.PF);
+			pfn.setPhysicalFile(pfi.next());
+			pfn.addChildIfNotNull(lfNode);
+			extractRoot.addChildIfNotNull(pfn);
+		}
+	}
 
 	public static void buildTheJoinLogicTable() {
 		//To do this use a JLT generator
 		//Which knows how to take the Repo data and make the beast
 		//All of the required Join data should have been accumulated
 		//Let's see what we have
-		JLTTreeGenerator jltgen = new JLTTreeGenerator(jltEmitter);
+		jltgen = new JLTTreeGenerator(jltEmitter);
 		ExtractBaseAST.setLogicTableEmitter(jltEmitter);
 		joinsRoot = jltgen.buildJoinViews();
 		Repository.getJoinViews().logdata();
 		writeJltDotIfEnabled();
 		jltgen.emit();
+	}
+
+	public static REHHeader getRehHeader() {
+		return jltgen.getRehHeader();
+	}
+
+	public static RTHHeader getRthHeader() {
+		return jltgen.getRthHeader();
 	}
 
 	private static void writeJltDotIfEnabled() {

@@ -94,6 +94,7 @@ public class JLTTreeGenerator {
         int i = 1;
         while (extIt.hasNext()) {
             ExternalJoin extJoin = extIt.next();
+            extJoin.setDDNumber(joinNumber++);
             LookupPath lk = Repository.getLookups().get(extJoin.getOrginalLookupId());
             LogicalFile lf = Repository.getLogicalFiles().get(lk.getTargetLFID());
             Repository.getJoinViews().addJoinTarget((byte)1, lf.getID(), lf.getName());
@@ -155,6 +156,14 @@ public class JLTTreeGenerator {
             else 
                 return rthHeader;
         }
+    }
+
+    public REHHeader getRehHeader() {
+        return rehHeader;
+    }
+
+    public RTHHeader getRthHeader() {
+        return rthHeader;
     }
 
     // Take the repo infomation and build the JLT
