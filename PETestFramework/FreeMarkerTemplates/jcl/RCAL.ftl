@@ -64,7 +64,7 @@ export JAVA_HOME=/Java/J11.0_64
 export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"
 
 export APP_HOME=${env["GERS_RCA_JAR_DIR"]}
-export APP_NAME=rcapps-latest-jar-with-dependencies.jar
+export APP_NAME=rcapps-latest.jar
 export CLASSPATH=$APP_HOME:"$JAVA_HOME"/lib
 
 LIBPATH=/lib:/usr/lib:"$JAVA_HOME"/bin
