@@ -119,7 +119,7 @@ public class ReportWriter {
         } catch (IOException e) {
             logger.atSevere().log("Report Writer error %s",e.getMessage());
         }
-		logger.atConfig().log("Report Generated");
+		logger.atInfo().log("Report Generated");
 	}
 
 
