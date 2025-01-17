@@ -278,7 +278,7 @@ public class Repository {
 		if(maxComponentLRID < lr.getComponentId())
 			maxComponentLRID = lr.getComponentId();
 		lrs.add(lr, lr.getComponentId(), lr.getName());
-		logger.atInfo().log("Add LR %s", lr.getName());
+		logger.atFine().log("Add LR %s", lr.getName());
 	}
 
 	public static void addLRField(LRField lrf) {

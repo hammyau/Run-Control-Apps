@@ -449,7 +449,6 @@ public class JoinViewsManager {
 	public List<ReferenceReportEntry> getRefReportEntries() {
 		List<ReferenceReportEntry> entries = new ArrayList<>();
 		Iterator<Entry<Integer, JLTViewMap<ReferenceJoin>>> refdi = referenceDataSet.entrySet().iterator();
-		System.out.println("getRefReportEntries" + referenceDataSet.entrySet().size());
 		while(refdi.hasNext()) {
 			Entry<Integer, JLTViewMap<ReferenceJoin>> refd = refdi.next();
 			Collection<ReferenceJoin> refViews = refd.getValue().getValues();

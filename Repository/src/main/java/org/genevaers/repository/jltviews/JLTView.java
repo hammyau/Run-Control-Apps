@@ -351,8 +351,8 @@ public class JLTView {
         int alignStartPosition = genFld.getStartPosition() + genFld.getLength();
         int genLen = alignStartPosition - 1;
         int alignmentLength = (8 - (genLen % 8))%8;
-        logger.atInfo().log("Generarion LR length %d", genLen);
-        logger.atInfo().log("Generarion LR needs alignment of %d", alignmentLength);
+        logger.atFine().log("Generation LR length %d", genLen);
+        logger.atFine().log("Generation LR needs alignment of %d", alignmentLength);
         LRField alignField = Repository.makeNewField(genLR);
         alignField.setName("QuadwordAlign");
         alignField.setDatatype(DataType.ALPHANUMERIC);

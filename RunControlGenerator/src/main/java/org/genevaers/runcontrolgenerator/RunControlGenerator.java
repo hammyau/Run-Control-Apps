@@ -121,7 +121,7 @@ public class RunControlGenerator {
      * We also need to compile the format phase filter and column calculations.
      */
     private void runCompilers() {
-        GenevaLog.logNow("runCompilers");
+        GenevaLog.writeHeader("runCompilers");
         if (status != Status.ERROR) {
             status = ExtractPhaseCompiler.run(logicGroups);
             extractLogicTable = ExtractPhaseCompiler.getExtractLogicTable();

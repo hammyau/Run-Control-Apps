@@ -41,6 +41,7 @@ public class RCAApp {
     } 
 
     public static void run() {
+        GenevaLog.writeHeader("Run Control Analysis");
         ranOkay = Status.OK;
         if (GersConfigration.isRCAConfigValid()) {
             ranOkay = AnalyserDriver.runFromConfig();
