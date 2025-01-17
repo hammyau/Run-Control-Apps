@@ -81,6 +81,7 @@ public class GersEnvironment {
 		getEnvVarOrDefault("GERS_DB2_RUN_LIB", "DSN121.RUNLIB.LOAD");
 		getEnvVarOrDefault("GERS_DB2_UTILITY", "DSNTIA12");
 		getEnvVarOrDefault("GERS_GIT_REPO_DIR", "");
+		getEnvVarOrDefault("GERS_RCA_JAR_DIR", "");
 		getEnvVarOrDefault("RUNOS", "ZOS");
 		getEnvVarOrDefault("TSO_SERVER", "sp13.svl.ibm.com");
 		getEnvVarOrDefault("OUTDIR", "out");
