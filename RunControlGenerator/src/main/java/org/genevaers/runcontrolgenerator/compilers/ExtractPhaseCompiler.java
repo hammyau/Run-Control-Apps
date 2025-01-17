@@ -301,11 +301,11 @@ public class ExtractPhaseCompiler {
 	}
 
 	public static REHHeader getRehHeader() {
-		return jltgen.getRehHeader();
+		return jltgen != null ? jltgen.getRehHeader() : null;
 	}
 
 	public static RTHHeader getRthHeader() {
-		return jltgen.getRthHeader();
+		return jltgen != null ? jltgen.getRthHeader() : null;
 	}
 
 	private static void writeJltDotIfEnabled() {
@@ -347,7 +347,7 @@ public class ExtractPhaseCompiler {
 	private static void checkWriteStatements(ExtractBaseAST root) {
 		ViewSourceAstNode localvsnode = (vsnode == null ? (ViewSourceAstNode) root.getChildIterator().next().getChildIterator().next() : vsnode);
 		if(noWriteStatementMissing(localvsnode)) {
-			logger.atInfo().log("Lt built for View Source %d", localvsnode.getViewSource().getSequenceNumber());
+			logger.atInfo().log("LT built for view %s", localvsnode.getViewSource().getViewId());
 		} else {
 			Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage("No write statements were found"));              			
 		}
