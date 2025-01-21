@@ -23,6 +23,7 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
+import org.genevaers.compilers.extract.emitters.rules.AssignColumnFlipNumeric;
 import org.genevaers.compilers.extract.emitters.rules.CanAssignDates;
 import org.genevaers.compilers.extract.emitters.rules.ColumnZonedMaxLength;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
@@ -40,6 +41,7 @@ public class FlipColumnChecker extends AssignmentRulesChecker {
         addRule(new ColumnZonedMaxLength());  //Should be able use static?
         addRule(new CanAssignDates());
         addRule(new Truncation());
+        addRule(new AssignColumnFlipNumeric());
     }
 
     @Override

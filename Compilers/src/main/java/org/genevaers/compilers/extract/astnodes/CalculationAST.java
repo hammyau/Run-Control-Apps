@@ -172,8 +172,7 @@ public class CalculationAST  extends FormattedASTNode implements Assignable, Cal
 
     @Override
     public int getAssignableLength() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFormattedLength'");
+        return 31;
     }
 
     @Override

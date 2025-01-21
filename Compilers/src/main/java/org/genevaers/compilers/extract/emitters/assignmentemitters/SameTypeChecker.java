@@ -22,6 +22,7 @@ package org.genevaers.compilers.extract.emitters.assignmentemitters;
 
 import org.genevaers.compilers.extract.astnodes.ColumnAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
+import org.genevaers.compilers.extract.emitters.rules.AssignColumnFlipNumeric;
 import org.genevaers.compilers.extract.emitters.rules.CanAssignDates;
 import org.genevaers.compilers.extract.emitters.rules.Truncation;
 import org.genevaers.compilers.extract.emitters.rules.Rule.RuleResult;
@@ -33,6 +34,7 @@ public class SameTypeChecker extends AssignmentRulesChecker {
     public SameTypeChecker() {
         addRule(new CanAssignDates());
         addRule(new Truncation());
+        addRule(new AssignColumnFlipNumeric());
     }
 
     @Override
@@ -60,14 +62,7 @@ public class SameTypeChecker extends AssignmentRulesChecker {
                 frhs.overrideDateCode(DateCode.NONE);
             }
             updateResult(result, apply(column, rhs));
-            //generate warning
-            //If both sides had compatible dates ok
-            //  leave them
-            //else 
-            //    generate Error
-            //checkDateCodeCompatibility();
-            //Use bit map!!!!!!!!!!!!!!!!!!!
-        }
+         }
         return result;
     }
 
