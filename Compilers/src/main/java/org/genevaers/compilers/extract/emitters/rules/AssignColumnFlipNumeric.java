@@ -37,7 +37,7 @@ public class AssignColumnFlipNumeric extends Rule{
         //if column ALNUM and field is numeric (AND both sides do not have dates)
         if(vc.getDataType() == DataType.ALPHANUMERIC && frhs.isNumeric() && (vc.getDateCode() == DateCode.NONE && frhs.getDateCode() == DateCode.NONE)) {
             ((FormattedASTNode)op1).overrideDataType(DataType.ZONED);
-            Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format("Flipping Column %s to Zoned.", vc.getColumnNumber())));
+            Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format("Treating column %s as ZONED.", vc.getColumnNumber())));
             return RuleResult.RULE_WARNING;
         } else {
             return RuleResult.RULE_PASSED;

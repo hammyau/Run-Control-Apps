@@ -52,8 +52,8 @@ public class FlipColumnChecker extends AssignmentRulesChecker {
         if(vc.getDateCode() == DateCode.NONE) {
             column.overrideDataType(DataType.ZONED);
             updateResult(result, apply(column, rhs));
-            CompilerMessage warn = ExtractBaseAST.makeCompilerMessage(String.format("Treating column %d as ZONED.", column.getViewColumn().getColumnNumber()));
-            Repository.addWarningMessage(warn);
+            // CompilerMessage warn = ExtractBaseAST.makeCompilerMessage(String.format("Treating column %d as ZONED.", column.getViewColumn().getColumnNumber()));
+            // Repository.addWarningMessage(warn);
 
             // Change the alnum data type to zoned
             // Then treat as a DateChecker

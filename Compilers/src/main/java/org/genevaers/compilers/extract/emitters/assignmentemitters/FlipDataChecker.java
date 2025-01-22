@@ -28,6 +28,7 @@ import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FormattedASTNode;
 import org.genevaers.compilers.extract.emitters.rules.AssignColumnFlipNumeric;
 import org.genevaers.compilers.extract.emitters.rules.ConstStringToDateColumnError;
+import org.genevaers.compilers.extract.emitters.rules.FieldFlipNumeric;
 import org.genevaers.compilers.extract.emitters.rules.FieldZonedMaxLength;
 import org.genevaers.compilers.extract.emitters.rules.Rule;
 import org.genevaers.compilers.extract.emitters.rules.Truncation;
@@ -42,6 +43,7 @@ public class FlipDataChecker extends AssignmentRulesChecker {
         addRule(new ConstStringToDateColumnError());
         addRule(new Truncation());
         addRule(new AssignColumnFlipNumeric());
+        addRule(new FieldFlipNumeric());
     }
 
     @Override
