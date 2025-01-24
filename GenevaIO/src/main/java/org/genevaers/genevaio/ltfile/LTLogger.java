@@ -68,7 +68,8 @@ public class LTLogger {
 	private static final String CECOMP = "%s  %-47s %s %s %s";
 	private static final String ECCOMP = "%s %s  %s  %-46s %s";
 	private static final String EECOMP = "%s %s  %s %-46s %s";
-	private static final String CCCOMP = "%s %-48s  %s %-46s %s";
+	private static final String ACCUMCOMP = "%s %-48s %s %-46s %s";
+	private static final String CCCOMP = "%s %-48s %s %-46s %s";
 	private static final String DECLARATION = "%s Declare %s  = 0";
 	private static final String ASSIGNMENT = "%s %s  ->  %s";
 	private static final String KEYASSIGNMENT = "%s %s  ->  %s";
@@ -183,7 +184,7 @@ public class LTLogger {
 			case "CFAA": 
 			case "CFAC": {
 					LogicTableNameValue cfa = (LogicTableNameValue) ltr;
-			return(String.format(CFA, leadin, cfa.getTableName(), cfa.getCompareType(), cfa.getValue(), getGotos(ltr)));
+			return(String.format(CFA, leadin, cfa.getTableName(), cfa.getCompareType(), cfa.getValue().getPrintString(), getGotos(ltr)));
 			}
 			case "CFCE": 
 			case "CFCL": {
@@ -242,6 +243,18 @@ public class LTLogger {
 			case "CTA":
 				LogicTableNameF1 ct = (LogicTableNameF1) ltr;
 				return(String.format(CTASSIGNMENT, leadin, ct.getAccumulatorName()));
+			case "CFEA":
+			case "CFLA":
+			case "CFPA":
+			case "CFXA":
+				LogicTableNameF1 cfea = (LogicTableNameF1) ltr;
+				return(String.format(ACCUMCOMP, leadin, getFullArg(cfea.getArg()), cfea.getCompareType(), cfea.getAccumulatorName(), getGotos(ltr)));
+			case "CFAE":
+			case "CFAL":
+			case "CFAP":
+			case "CFAX":
+				LogicTableNameF1 cfae = (LogicTableNameF1) ltr;
+				return(String.format(ACCUMCOMP, leadin, cfae.getAccumulatorName(), cfae.getCompareType(), getFullArg(cfae.getArg()), getGotos(ltr)));
 			case "CTC":
 				LogicTableF1 ctc = (LogicTableF1) ltr;
 				return(String.format(CTASSIGNMENT, leadin, ctc.getArg().getValue().getPrintString()));
