@@ -27,20 +27,23 @@ import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ViewColumn;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.components.enums.ExtractArea;
 
 public class AssignColumnFlipNumeric extends Rule{ 
 
     @Override
     public RuleResult apply(final ExtractBaseAST op1, final ExtractBaseAST op2) {
+        RuleResult result = RuleResult.RULE_PASSED;
         final ViewColumn vc = ((ColumnAST)op1).getViewColumn();
         FormattedASTNode frhs = (FormattedASTNode) op2;
         //if column ALNUM and field is numeric (AND both sides do not have dates)
-        if(vc.getDataType() == DataType.ALPHANUMERIC && frhs.isNumeric() && (vc.getDateCode() == DateCode.NONE && frhs.getDateCode() == DateCode.NONE)) {
-            ((FormattedASTNode)op1).overrideDataType(DataType.ZONED);
-            Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format("Treating column %s as ZONED.", vc.getColumnNumber())));
-            return RuleResult.RULE_WARNING;
-        } else {
-            return RuleResult.RULE_PASSED;
+        if(vc.getExtractArea() != ExtractArea.SORTKEY) {
+            if(vc.getDataType() == DataType.ALPHANUMERIC && frhs.isNumeric() && (vc.getDateCode() == DateCode.NONE && frhs.getDateCode() == DateCode.NONE)) {
+                ((FormattedASTNode)op1).overrideDataType(DataType.ZONED);
+                Repository.addWarningMessage(ExtractBaseAST.makeCompilerMessage(String.format("Treating column %s as ZONED.", vc.getColumnNumber())));
+                return RuleResult.RULE_WARNING;
+            }
         }
+        return result;
     }
 }
