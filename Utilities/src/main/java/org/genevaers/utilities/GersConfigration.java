@@ -38,9 +38,6 @@ public class GersConfigration {
     //General Parm names
     public static final String RCA_PARM_FILENAME = "RCAPARM";
 
-//    public static final String PARMFILE = "PARMFILE";
-//    public static final String ZOSPARMFILE = "ZOSPARMFILE";
-
     public static final String REPORT_FILE = "RCARPT";
     public static final String LOG_FILE = "RCALOG";
 
@@ -183,46 +180,9 @@ public class GersConfigration {
 		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("STANDARD")){
             return Level.INFO;
         } else {
-            return Level.FINE;
+            return Level.FINER;
         }
 	}
-
-    // public static String getXLTFileName() {
-    //     return getCWDPrefix() + parmToValue.get(XLT_DDNAME).getValue();
-    // }
-
-    // public static String getVdpDdname() {
-    //     return parmToValue.get(VDP_DDNAME).getValue();
-    // }
-
-    // public static String getVdpFileName() {
-    //     return getCWDPrefix() + parmToValue.get(VDP_DDNAME).getValue();
-    // }
-
-    // public static String getJLTFileName() {
-    //     return getCWDPrefix() + parmToValue.get(JLT_DDNAME).getValue();
-    // }
-
-	// public static void overrideVDPFile(String vdpFile) {
-    //     if(vdpFile.length() > 0) {
-    //         ConfigEntry pv = parmToValue.get(VDP_DDNAME);
-    //         pv.setValue(vdpFile);
-    //     }
-	// }
-
-	// public static void overrideXLTFile(String xltFile) {
-    //     if(xltFile.length() > 0) {
-    //         ConfigEntry pv = parmToValue.get(XLT_DDNAME);
-    //         pv.setValue(xltFile);
-    //     }
-	// }
-
-	// public static void overrideJLTFile(String jltFile) {
-    //     if(jltFile.length() > 0) {
-    //         ConfigEntry pv = parmToValue.get(JLT_DDNAME);
-    //         pv.setValue(jltFile);
-    //     }
-	// }
 
     public static String getParm(String parm) {
         ConfigEntry cfe = parmToValue.get(parm);

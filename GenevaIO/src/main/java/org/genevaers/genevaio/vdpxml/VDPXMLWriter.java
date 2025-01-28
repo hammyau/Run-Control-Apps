@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.ControlRecord;
 import org.genevaers.repository.components.LRField;
@@ -32,14 +31,11 @@ import org.genevaers.repository.components.ViewNode;
 import org.genevaers.repository.components.ViewSortKey;
 import org.genevaers.repository.components.ViewSource;
 import org.genevaers.repository.components.enums.ExtractArea;
-import org.genevaers.repository.components.enums.FieldDelimiter;
 import org.genevaers.repository.components.enums.PerformBreakLogic;
-import org.genevaers.repository.components.enums.RecordDelimiter;
-import org.genevaers.repository.components.enums.ReportFunction;
 import org.genevaers.repository.components.enums.SortBreakFooterOption;
-import org.genevaers.repository.components.enums.SortBreakHeaderOption;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersFile;
+import org.genevaers.utilities.GersFilesUtils;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
@@ -800,7 +796,9 @@ public class VDPXMLWriter {
     }
 
     private void writeHeader(Writer fw) throws IOException {
-        fw.write("<?xml version = \"1.0\" encoding=\"IBM-1047\" ?>\n");
+        String codePage = new GersFilesUtils().getCodePage();
+        logger.atInfo().log("Code page: %s", codePage);
+        fw.write("<?xml version = \"1.0\" encoding=\"" + codePage + "\" ?>\n");
         fw.write("<SAFRVDP xmlns = \"http://www.ibm.com\"\n");
         fw.write("    xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\"\n");
         fw.write("    xsi:schemaLocation = \"http://www.ibm.com\n");

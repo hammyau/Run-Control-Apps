@@ -31,6 +31,7 @@ import com.ibm.jzos.PdsDirectory.MemberInfo;
 import com.ibm.jzos.ZFile;
 import com.ibm.jzos.ZFileConstants;
 import com.ibm.jzos.ZFileException;
+import com.ibm.jzos.ZUtil;
 
 public class ZosGersFilesUtils extends GersFilesUtils{
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
@@ -80,4 +81,7 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 		return gersFiles;
 	}
 
+    public String getCodePage() {
+        return ZUtil.getCodePageCurrentLocale();
+    }
 }

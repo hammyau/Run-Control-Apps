@@ -55,6 +55,7 @@ import org.genevaers.utilities.FileProcessor;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Substitution;
 import org.genevaers.utilities.GersEnvironment;
+import org.genevaers.utilities.GersFilesUtils;
 import org.genevaers.utilities.menu.Menu;
 import org.w3c.dom.NodeList;
 
@@ -86,10 +87,14 @@ public class TestDriver {
 	private static final String LOCALROOT = "LOCALROOT";
 	private static final String TSO_USERID = "TSO_USERID";
 	private Map<String, String> envVars;
+	
+	private static String codePage;
 
 	TestDriver() {
 		GersEnvironment.initialiseFromTheEnvironment();
 		envVars = GersEnvironment.getEnvironmentVariables();
+		codePage = new GersFilesUtils().getCodePage();
+		System.out.println("Code page: " + codePage);
 	}
 
 
@@ -491,7 +496,7 @@ public class TestDriver {
 			File xmlfile = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName()).toFile();
 			filesIn.add(xmlfile);
 			File outxmlfile = xmlFolder.resolve("XML" + xmlNum++).toFile();
-			substs.add(new Substitution("?>", " encoding=\"IBM-1047\"?>", 1, 1));
+			substs.add(new Substitution("?>", " encoding=\"" + codePage + "\"?>", 1, 1));
 			for (Replacement r : xml.getReplacements()) {
 				substs.add(new Substitution(r.getReplace(), r.getWith()));
 			}
