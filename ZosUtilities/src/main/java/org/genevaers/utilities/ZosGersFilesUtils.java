@@ -81,7 +81,4 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 		return gersFiles;
 	}
 
-    public String getCodePage() {
-        return ZUtil.getCodePageCurrentLocale();
-    }
 }

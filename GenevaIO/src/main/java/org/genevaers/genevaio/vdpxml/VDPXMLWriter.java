@@ -796,9 +796,7 @@ public class VDPXMLWriter {
     }
 
     private void writeHeader(Writer fw) throws IOException {
-        String codePage = new GersFilesUtils().getCodePage();
-        logger.atInfo().log("Code page: %s", codePage);
-        fw.write("<?xml version = \"1.0\" encoding=\"" + codePage + "\" ?>\n");
+        fw.write("<?xml version = \"1.0\" ?>\n");
         fw.write("<SAFRVDP xmlns = \"http://www.ibm.com\"\n");
         fw.write("    xmlns:xsi = \"http://www.w3.org/2001/XMLSchema-instance\"\n");
         fw.write("    xsi:schemaLocation = \"http://www.ibm.com\n");
