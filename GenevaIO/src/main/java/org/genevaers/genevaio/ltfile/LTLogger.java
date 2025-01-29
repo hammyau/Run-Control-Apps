@@ -181,26 +181,36 @@ public class LTLogger {
 			case "GOTO":
 			LogicTableF0 agoto = (LogicTableF0) ltr;
 			return(String.format(AGOTO, leadin, agoto.getGotoRow1()));
+			case "SFAA": 
+			case "SFAC": 
 			case "CFAA": 
 			case "CFAC": {
 					LogicTableNameValue cfa = (LogicTableNameValue) ltr;
 			return(String.format(CFA, leadin, cfa.getTableName(), cfa.getCompareType(), cfa.getValue().getPrintString(), getGotos(ltr)));
 			}
+			case "SFCE": 
+			case "SFCL": 
 			case "CFCE": 
 			case "CFCL": {
-				LogicTableF1 cf = (LogicTableF1) ltr;
+					LogicTableF1 cf = (LogicTableF1) ltr;
 				return(String.format(CECOMP, leadin, cf.getArg().getValue().getPrintString(), cf.getCompareType(), getFullArg(cf.getArg()) , getGotos(ltr)));
 			}
+			case "SFEC":
+			case "SFLC":
 			case "CFEC":
 			case "CFLC":
 				LogicTableF1 cf = (LogicTableF1) ltr;
 				return(String.format(ECCOMP, leadin, getFullArg(cf.getArg()), cf.getCompareType(), cf.getArg().getValue().getPrintString(), getGotos(ltr)));
+			case "SFEE":
+			case "SFEL":
+			case "SFLE":
 			case "CFEE":
 			case "CFEL":
 			case "CFLE":
-				LogicTableF2 cfee = (LogicTableF2) ltr;
+						LogicTableF2 cfee = (LogicTableF2) ltr;
 				return(String.format(EECOMP, leadin, getFullArg(cfee.getArg1()), cfee.getCompareType(),
 						getFullArg(cfee.getArg2()), getGotos(ltr)));
+			case "SFCC":
 			case "CFCC":
 				LogicTableCC cfcc = (LogicTableCC) ltr;
 			return(String.format(CCCOMP, leadin, cfcc.getValue1().getPrintString(), cfcc.getCompareType(),	cfcc.getValue2().getPrintString(), getGotos(ltr)));
@@ -243,12 +253,20 @@ public class LTLogger {
 			case "CTA":
 				LogicTableNameF1 ct = (LogicTableNameF1) ltr;
 				return(String.format(CTASSIGNMENT, leadin, ct.getAccumulatorName()));
+			case "SFEA":
+			case "SFLA":
+			case "SFPA":
+			case "SFXA":
 			case "CFEA":
 			case "CFLA":
 			case "CFPA":
 			case "CFXA":
 				LogicTableNameF1 cfea = (LogicTableNameF1) ltr;
 				return(String.format(ACCUMCOMP, leadin, getFullArg(cfea.getArg()), cfea.getCompareType(), cfea.getAccumulatorName(), getGotos(ltr)));
+			case "SFAE":
+			case "SFAL":
+			case "SFAP":
+			case "SFAX":
 			case "CFAE":
 			case "CFAL":
 			case "CFAP":
