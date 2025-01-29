@@ -289,7 +289,7 @@ public class Repository {
 		if (lr != null) {
 			lr.addToFieldsByID(lrf);
 			if(lrf.getName() != null) { //Can be from tests
-//				logger.atInfo().log("Add Field %s to LR %s",lrf.getName() ,lr.getName());
+				logger.atFiner().log("Add Field %s to LR %s",lrf.getName() ,lr.getName());
 				lr.addToFieldsByName(lrf);
 			}
 		} else {
