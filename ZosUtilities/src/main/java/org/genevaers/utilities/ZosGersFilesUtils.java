@@ -45,6 +45,8 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 			// Problem here is that this will be a PDS and we need to iterate its memebers
 			int type = dd.getDsorg();
 			switch (type) {
+				case ZFileConstants.DSORG_PDSE + ZFileConstants.DSORG_PDS_DIR: 
+					logger.atInfo().log("found PDSE Directory");
 				case ZFileConstants.DSORG_PDSE: 
 					logger.atInfo().log("found PDS E");
 					//Drop through
