@@ -180,7 +180,7 @@ public class GersConfigration {
 		if(parmToValue.get(LOG_LEVEL).getValue().equalsIgnoreCase("STANDARD")){
             return Level.INFO;
         } else {
-            return Level.FINER;
+            return Level.FINE;
         }
 	}
 
