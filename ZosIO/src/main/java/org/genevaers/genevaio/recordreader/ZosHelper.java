@@ -29,6 +29,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
 import org.apache.commons.lang3.StringUtils;
+import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
@@ -126,7 +127,7 @@ public class ZosHelper {
 
     private static byte[] asciiToEbcdic(String str) {
         Charset utf8charset = Charset.forName("ISO8859-1");
-        Charset ebccharset = Charset.forName("GersConfigration.getZosCodePage()");
+        Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
         ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
         CharBuffer data = utf8charset.decode(inputBuffer);
         return ebccharset.encode(data).array();

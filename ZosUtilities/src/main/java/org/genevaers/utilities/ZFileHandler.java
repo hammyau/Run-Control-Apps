@@ -36,7 +36,7 @@ public class ZFileHandler extends StreamHandler{
         try {
             ZFile dd = new ZFile(ddname, "w");
             setOutputStream(dd.getOutputStream());
-            setEncoding("GersConfigration.getZosCodePage()");
+            setEncoding(GersConfigration.getZosCodePage());
         } catch (ZFileException | SecurityException | UnsupportedEncodingException e) {
             logger.atSevere().log("ZFileHandler error %s", e.getMessage());
         }

@@ -24,6 +24,7 @@ import java.util.Arrays;
 import com.ibm.as400.access.AS400Text;
 
 import org.genevaers.genevaio.vdpfile.record.VDPRecord;
+import org.genevaers.utilities.GersConfigration;
 
 public class VDPFileRecordReader {
 	protected byte[] stringBuffer = new byte[8192];
@@ -44,7 +45,7 @@ public class VDPFileRecordReader {
 	}
 	
 	protected  String ebcdicToAscii(byte[] buffer, Charset charSet, int nameLen)  throws Exception {
-		  AS400Text textConverter = new AS400Text(nameLen, "GersConfigration.getZosCodePage()");
+		  AS400Text textConverter = new AS400Text(nameLen, GersConfigration.getZosCodePage());
 		  String asciiBuffer = ((String)textConverter.toObject(buffer)).substring(0, nameLen);
 		  return asciiBuffer;
 	}

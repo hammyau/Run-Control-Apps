@@ -24,6 +24,7 @@ import java.util.List;
 
 
 import org.genevaers.repository.calculationstack.CalcStack.CalcStackOpcode;
+import org.genevaers.utilities.GersConfigration;
 
 public class CalcStackEntry {
 
@@ -90,7 +91,7 @@ public class CalcStackEntry {
 
     public static byte[] asciiToEbcdic(String str) {
         Charset utf8charset = Charset.forName("ISO8859-1");
-        Charset ebccharset = Charset.forName("GersConfigration.getZosCodePage()");
+        Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
         ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
         CharBuffer data = utf8charset.decode(inputBuffer);
         return ebccharset.encode(data).array();
