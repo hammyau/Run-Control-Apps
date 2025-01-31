@@ -44,7 +44,7 @@ public class VDPFileRecordReader {
 	}
 	
 	protected  String ebcdicToAscii(byte[] buffer, Charset charSet, int nameLen)  throws Exception {
-		  AS400Text textConverter = new AS400Text(nameLen, "IBM-1047");
+		  AS400Text textConverter = new AS400Text(nameLen, "GersConfigration.getZosCodePage()");
 		  String asciiBuffer = ((String)textConverter.toObject(buffer)).substring(0, nameLen);
 		  return asciiBuffer;
 	}

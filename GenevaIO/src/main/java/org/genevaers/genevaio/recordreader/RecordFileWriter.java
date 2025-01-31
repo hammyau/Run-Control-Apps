@@ -47,7 +47,7 @@ public abstract class RecordFileWriter {
 	public static void setSpacesEBCDIC() {
 		if(spacesConverted == false) {
 			Charset utf8charset = Charset.forName("UTF-8");
-			Charset ebccharset = Charset.forName("IBM-1047");
+			Charset ebccharset = Charset.forName("GersConfigration.getZosCodePage()");
 			ByteBuffer inputBuffer = ByteBuffer.wrap(spaces.getBytes());
 			CharBuffer data = utf8charset.decode(inputBuffer);
 			spaces = new String(ebccharset.encode(data).array());	
@@ -95,7 +95,7 @@ public abstract class RecordFileWriter {
 
 	private byte[] asciiToEbcdic(String str) {
 		Charset utf8charset = Charset.forName("UTF-8");
-		Charset ebccharset = Charset.forName("IBM-1047");
+		Charset ebccharset = Charset.forName("GersConfigration.getZosCodePage()");
 		ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
 		CharBuffer data = utf8charset.decode(inputBuffer);
 		return ebccharset.encode(data).array();

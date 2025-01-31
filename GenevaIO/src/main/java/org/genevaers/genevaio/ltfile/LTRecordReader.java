@@ -23,7 +23,7 @@ import java.util.Arrays;
 
 import com.ibm.as400.access.AS400Text;
 
-import org.genevaers.genevaio.vdpfile.record.VDPRecord;
+import org.genevaers.utilities.GersConfigration;
 
 public class LTRecordReader {
 	protected byte[] stringBuffer = new byte[300];
@@ -40,10 +40,8 @@ public class LTRecordReader {
 	}
 	
 	protected  String ebcdicToAscii(byte[] buffer, Charset charSet, int nameLen)  throws Exception {
-		  //byte [] ebcdicByteArr = buffer.toString().getBytes(charSet);
-		  AS400Text textConverter = new AS400Text(nameLen, "IBM-1047");
-		  String asciiBuffer = ((String)textConverter.toObject(buffer)).substring(0, nameLen);
-		  return asciiBuffer;
+		  AS400Text textConverter = new AS400Text(nameLen, GersConfigration.getZosCodePage());
+		  return ((String)textConverter.toObject(buffer)).substring(0, nameLen);
 	}
 
 	//convert only length characters

@@ -110,12 +110,14 @@ public class GersConfigration {
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     private static boolean zos;
+    private static String zosCodePage;
 
     public static void initialise() {
         clear();
 		String os = System.getProperty("os.name");
 		logger.atFine().log("Operating System %s", os);
 		zos = os.startsWith("z");
+        zosCodePage = new GersFilesUtils().getCodePage();
  
         parmToValue.put(GENERATE, new ConfigEntry("N", false));
 
@@ -213,6 +215,10 @@ public class GersConfigration {
 
     public static boolean isZos() {
         return zos;
+    }
+
+    public static String getZosCodePage() {
+        return zosCodePage;
     }
 
     public static void setCurrentWorkingDirectory(String cwd) {

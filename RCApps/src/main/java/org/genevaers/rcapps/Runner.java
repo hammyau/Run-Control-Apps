@@ -40,6 +40,9 @@ public class Runner {
 		System.out.printf("Java Vendor %s\n", System.getProperty("java.vendor"));
 		System.out.printf("Java Version %s\n", System.getProperty("java.version"));
         GersConfigration.initialise();
+        if(GersConfigration.isZos()) {
+            System.out.printf("Code Page %s\n", GersConfigration.getZosCodePage());
+        }
         Runner.run();
         exitWithRC();
     } 

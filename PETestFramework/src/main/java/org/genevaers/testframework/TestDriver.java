@@ -846,7 +846,7 @@ public class TestDriver {
 
       private static byte[] ebcdicToAscii(byte[] buf) {
         Charset utf8charset = Charset.forName("ISO8859-1");
-        Charset ebccharset = Charset.forName("IBM-1047");
+        Charset ebccharset = Charset.forName("GersConfigration.getZosCodePage()");
         ByteBuffer inputBuffer = ByteBuffer.wrap(buf);
         CharBuffer data = ebccharset.decode(inputBuffer);
         return utf8charset.encode(data).array();

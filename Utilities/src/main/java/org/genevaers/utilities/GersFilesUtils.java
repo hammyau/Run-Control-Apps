@@ -74,4 +74,20 @@ public class GersFilesUtils {
 		gersFiles.clear();;
 	}
 
+	public String getCodePage() {
+		String codpage = null;
+		if (GersConfigration.isZos()) {
+            try {
+                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersFilesUtils");
+                Constructor<?>[] constructors = rrc.getConstructors();
+                return ((GersFilesUtils) constructors[0].newInstance()).getCodePage();
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                    | InvocationTargetException | ClassNotFoundException e) {
+                logger.atSevere().log("getGersFiles failed %s", e.getMessage());
+            }
+            return null;
+
+		}
+		return codpage;
+	}
 }
