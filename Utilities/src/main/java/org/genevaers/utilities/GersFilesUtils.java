@@ -23,11 +23,13 @@ package org.genevaers.utilities;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
@@ -39,7 +41,7 @@ public class GersFilesUtils {
 
 	static Collection<GersFile> gersFiles = new ArrayList<>();
 
-	public Collection<GersFile> getGersFiles(String dir) {
+	public static Collection<GersFile> getGersFiles(String dir) {
 		gersFiles.clear();
 		if (GersConfigration.isZos()) {
             try {
@@ -53,7 +55,6 @@ public class GersFilesUtils {
             return null;
 
 		} else {
-			Iterator<File> it = null;
 			Path xmlPath = Paths.get(dir);
 			if (xmlPath.toFile().exists()) {
 				WildcardFileFilter fileFilter = new WildcardFileFilter("*.xml");
@@ -74,7 +75,7 @@ public class GersFilesUtils {
 		gersFiles.clear();;
 	}
 
-	public String getCodePage() {
+	public static String getCodePage() {
 		String codpage = null;
 		if (GersConfigration.isZos()) {
             try {
@@ -90,4 +91,21 @@ public class GersFilesUtils {
 		}
 		return codpage;
 	}
+
+	public static byte[] asciiToEbcdic(String str) {
+		Charset utf8charset = Charset.forName("UTF-8");
+		Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
+		ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
+		CharBuffer data = utf8charset.decode(inputBuffer);
+		return ebccharset.encode(data).array();
+	}
+
+	public static byte[] ebcdicToAscii(byte[] buf) {
+        Charset utf8charset = Charset.forName("ISO8859-1");
+        Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
+        ByteBuffer inputBuffer = ByteBuffer.wrap(buf);
+        CharBuffer data = ebccharset.decode(inputBuffer);
+        return utf8charset.encode(data).array();
+      }
+
 }

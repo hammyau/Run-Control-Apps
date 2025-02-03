@@ -17,13 +17,10 @@ package org.genevaers.genevaio.ltfile;
  * under the License.
  */
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import com.ibm.as400.access.AS400Text;
-
-import org.genevaers.utilities.GersConfigration;
+import org.genevaers.utilities.GersFilesUtils;
 
 public class LTRecordReader {
 	protected byte[] stringBuffer = new byte[300];
@@ -39,29 +36,13 @@ public class LTRecordReader {
 		return asciiText==false;
 	}
 	
-	protected  String ebcdicToAscii(byte[] buffer, Charset charSet, int nameLen)  throws Exception {
-		  AS400Text textConverter = new AS400Text(nameLen, GersConfigration.getZosCodePage());
-		  return ((String)textConverter.toObject(buffer)).substring(0, nameLen);
-	}
-
 	//convert only length characters
 	protected  String convertStringIfNeeded(byte[] buffer, int nameLen) throws Exception {
 		String retStr;
 		if(isEBCDIC()) {
-			retStr = ebcdicToAscii(buffer, StandardCharsets.ISO_8859_1, nameLen);
+			retStr = new String(GersFilesUtils.ebcdicToAscii(buffer));
 		} else {
 			retStr = new String(buffer, 0, nameLen, StandardCharsets.ISO_8859_1);
-		}
-		return retStr ;
-	}
-	
-	//Convert the full buffer 
-	protected  String convertStringIfNeeded(byte[] buffer) throws Exception {
-		String retStr;
-		if(isEBCDIC()) {
-			retStr = ebcdicToAscii(buffer, StandardCharsets.ISO_8859_1, buffer.length);
-		} else {
-			retStr = new String(buffer, StandardCharsets.ISO_8859_1);
 		}
 		return retStr ;
 	}

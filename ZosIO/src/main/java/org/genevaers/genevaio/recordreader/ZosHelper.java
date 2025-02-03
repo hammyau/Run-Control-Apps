@@ -23,14 +23,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Writer;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-
 import org.apache.commons.lang3.StringUtils;
-import org.genevaers.utilities.GersConfigration;
-import org.genevaers.utilities.GersFile;
+import org.genevaers.utilities.GersFilesUtils;
 
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.RcException;
@@ -103,9 +97,9 @@ public class ZosHelper {
             int count = 0;
             while ((line = in.readLine()) != null) {
                 if(recfm.equals("fb")) {
-                    fileOut.write(asciiToEbcdic(StringUtils.rightPad(line, Integer.parseInt(lrecl))));
+                    fileOut.write(GersFilesUtils.asciiToEbcdic(StringUtils.rightPad(line, Integer.parseInt(lrecl))));
                 } else {
-                    fileOut.write(asciiToEbcdic(line)); 
+                    fileOut.write(GersFilesUtils.asciiToEbcdic(line)); 
                 }
                 count++;
             }
@@ -125,15 +119,7 @@ public class ZosHelper {
         }
     }
 
-    private static byte[] asciiToEbcdic(String str) {
-        Charset utf8charset = Charset.forName("ISO8859-1");
-        Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
-        ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
-        CharBuffer data = utf8charset.decode(inputBuffer);
-        return ebccharset.encode(data).array();
-    }
-  
-      public static void putEventFile(String destDataset, File input, String name, String lrecl) {
+    public static void putEventFile(String destDataset, File input, String name, String lrecl) {
         String datasetName = destDataset + "." + name;
         if (datasetDoesNotExist(datasetName)) {
             String ddname = ZFile.allocDummyDDName();

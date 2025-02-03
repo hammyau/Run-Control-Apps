@@ -36,20 +36,20 @@ import com.ibm.jzos.ZUtil;
 public class ZosGersFilesUtils extends GersFilesUtils{
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
-	Collection<GersFile> gersFiles = new ArrayList<>();
-
-	public Collection<GersFile> getGersFiles(String dir) {
+	static Collection<GersFile> gersFiles = new ArrayList<>();
+	
+	public static Collection<GersFile> getGersFiles(String dir) {
 		try {
 			String ddname = "//DD:" + dir;
 			ZFile dd = new ZFile(ddname, "r");
 			// Problem here is that this will be a PDS and we need to iterate its memebers
 			int type = dd.getDsorg();
 			switch (type) {
-				case ZFileConstants.DSORG_PDSE + ZFileConstants.DSORG_PDS_DIR: 
+				case ZFileConstants.DSORG_PDSE + ZFileConstants.DSORG_PDS_DIR:
 					logger.atInfo().log("found PDSE Directory");
-				case ZFileConstants.DSORG_PDSE: 
+				case ZFileConstants.DSORG_PDSE:
 					logger.atInfo().log("found PDS E");
-					//Drop through
+					// Drop through
 				case ZFileConstants.DSORG_PDS_DIR: {
 					logger.atInfo().log("found PDS");
 					String pdsName = dd.getActualFilename();
@@ -63,11 +63,11 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 							String buildName = ddname + "(" + mname + ")";
 							logger.atInfo().log("Build Repo from " + buildName);
 							GersFile gf = new GersFile();
-							gf.setName(buildName.substring(5)); //strip the //DD:
+							gf.setName(buildName.substring(5)); // strip the //DD:
 							gersFiles.add(gf);
 						}
 					} catch (IOException e) {
-						logger.atSevere().log("new PDSDirectory failed %s",e);
+						logger.atSevere().log("new PDSDirectory failed %s", e);
 					}
 				}
 					break;
@@ -83,7 +83,7 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 		return gersFiles;
 	}
 
-    public String getCodePage() {
+    public static String getCodePage() {
         return ZUtil.getCodePageCurrentLocale();
     }
 }
