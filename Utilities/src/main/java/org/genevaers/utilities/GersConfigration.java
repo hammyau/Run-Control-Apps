@@ -117,7 +117,7 @@ public class GersConfigration {
 		String os = System.getProperty("os.name");
 		logger.atFine().log("Operating System %s", os);
 		zos = os.startsWith("z");
-        zosCodePage = new GersFilesUtils().getCodePage();
+        zosCodePage = new GersCodePage().getCodePage();
  
         parmToValue.put(GENERATE, new ConfigEntry("N", false));
 

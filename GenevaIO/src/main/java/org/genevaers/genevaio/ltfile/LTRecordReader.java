@@ -20,7 +20,7 @@ package org.genevaers.genevaio.ltfile;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import org.genevaers.utilities.GersFilesUtils;
+import org.genevaers.utilities.GersCodePage;
 
 public class LTRecordReader {
 	protected byte[] stringBuffer = new byte[300];
@@ -40,7 +40,7 @@ public class LTRecordReader {
 	protected  String convertStringIfNeeded(byte[] buffer, int nameLen) throws Exception {
 		String retStr;
 		if(isEBCDIC()) {
-			retStr = new String(GersFilesUtils.ebcdicToAscii(buffer));
+			retStr = new String(GersCodePage.ebcdicToAscii(buffer));
 		} else {
 			retStr = new String(buffer, 0, nameLen, StandardCharsets.ISO_8859_1);
 		}

@@ -50,10 +50,10 @@ import org.genevaers.testframework.yamlreader.Spec;
 import org.genevaers.testframework.yamlreader.XMLFile;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FileProcessor;
+import org.genevaers.utilities.GersCodePage;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Substitution;
 import org.genevaers.utilities.GersEnvironment;
-import org.genevaers.utilities.GersFilesUtils;
 import org.genevaers.utilities.menu.Menu;
 import org.w3c.dom.NodeList;
 
@@ -822,7 +822,7 @@ public class TestDriver {
               fileIn = new ZFile(dataset,"rb,type=record,recfm=" + recfm.toLowerCase() + ",lrecl=" + lrecl + ",noseek");
               byte[] recBuf = new byte[Integer.parseInt(lrecl)];
               while (fileIn.read(recBuf) != -1) {
-                  ByteBuffer convbb = ByteBuffer.wrap(GersFilesUtils.ebcdicToAscii(recBuf));
+                  ByteBuffer convbb = ByteBuffer.wrap(GersCodePage.ebcdicToAscii(recBuf));
                   convbb.position(recBuf.length);
                   fw.writeArray(convbb);
               }

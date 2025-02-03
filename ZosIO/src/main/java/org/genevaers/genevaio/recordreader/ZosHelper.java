@@ -24,8 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
-import org.genevaers.utilities.GersFilesUtils;
-
+import org.genevaers.utilities.GersCodePage;
 import com.google.common.flogger.FluentLogger;
 import com.ibm.jzos.RcException;
 import com.ibm.jzos.ZFile;
@@ -97,9 +96,9 @@ public class ZosHelper {
             int count = 0;
             while ((line = in.readLine()) != null) {
                 if(recfm.equals("fb")) {
-                    fileOut.write(GersFilesUtils.asciiToEbcdic(StringUtils.rightPad(line, Integer.parseInt(lrecl))));
+                    fileOut.write(GersCodePage.asciiToEbcdic(StringUtils.rightPad(line, Integer.parseInt(lrecl))));
                 } else {
-                    fileOut.write(GersFilesUtils.asciiToEbcdic(line)); 
+                    fileOut.write(GersCodePage.asciiToEbcdic(line)); 
                 }
                 count++;
             }

@@ -22,7 +22,7 @@ import java.nio.ByteBuffer;
 
 
 import org.genevaers.repository.calculationstack.CalcStack.CalcStackOpcode;
-import org.genevaers.utilities.GersFilesUtils;
+import org.genevaers.utilities.GersCodePage;
 
 public class CalcStackEntry {
 
@@ -79,8 +79,8 @@ public class CalcStackEntry {
         String os = System.getProperty("os.name");
 		if(os.startsWith("z")) {
             //On z/OS these strings will need to be EBCDIC
-            buffer.put(GersFilesUtils.asciiToEbcdic(str), 0, str.length());
-            buffer.put(GersFilesUtils.asciiToEbcdic(CalcStack.spaces), 0, len - str.length());
+            buffer.put(GersCodePage.asciiToEbcdic(str), 0, str.length());
+            buffer.put(GersCodePage.asciiToEbcdic(CalcStack.spaces), 0, len - str.length());
         } else {
             buffer.put(str.getBytes(), 0, str.length());
             buffer.put(CalcStack.spaces.getBytes(), 0, len - str.length());

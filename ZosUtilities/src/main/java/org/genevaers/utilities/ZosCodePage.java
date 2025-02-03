@@ -22,9 +22,9 @@ package org.genevaers.utilities;
 
 import com.ibm.jzos.ZUtil;
 
-public class ZosCodePage {
+public class ZosCodePage extends GersCodePage {
 
-    public static String getCodePage() {
+    public String getCodePage() {
         return ZUtil.getCodePageCurrentLocale();
     }
 }

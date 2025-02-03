@@ -21,7 +21,7 @@ package org.genevaers.genevaio.recordreader;
 import java.io.File;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
-import org.genevaers.utilities.GersFilesUtils;
+import org.genevaers.utilities.GersCodePage;
 
 public abstract class RecordFileReader {
 	private static boolean spacesConverted = false;
@@ -38,7 +38,7 @@ public abstract class RecordFileReader {
 
 	public static void setSpacesEBCDIC() {
 		if(spacesConverted == false) {
-			spaces = new String(GersFilesUtils.asciiToEbcdic(spaces));
+			spaces = new String(GersCodePage.asciiToEbcdic(spaces));
 			spacesConverted = true;
 		}
 	}

@@ -20,7 +20,7 @@ package org.genevaers.genevaio.vdpfile;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-import org.genevaers.utilities.GersFilesUtils;
+import org.genevaers.utilities.GersCodePage;
 
 public class VDPFileRecordReader {
 	protected byte[] stringBuffer = new byte[8192];
@@ -44,7 +44,7 @@ public class VDPFileRecordReader {
 	protected  String convertStringIfNeeded(byte[] buffer, int nameLen) throws Exception {
 		String retStr;
 		if(isEBCDIC()) {
-			retStr = new String(GersFilesUtils.ebcdicToAscii(buffer));
+			retStr = new String(GersCodePage.ebcdicToAscii(buffer));
 		} else {
 			retStr = new String(buffer, 0, nameLen, StandardCharsets.ISO_8859_1);
 		}

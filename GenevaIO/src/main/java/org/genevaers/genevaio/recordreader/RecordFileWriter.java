@@ -22,9 +22,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import org.apache.commons.lang3.StringUtils;
+import org.genevaers.utilities.GersCodePage;
 import org.genevaers.utilities.GersConfigration;
-import org.genevaers.utilities.GersFilesUtils;
-
 import com.google.common.flogger.FluentLogger;
 
 public abstract class RecordFileWriter {
@@ -44,7 +43,7 @@ public abstract class RecordFileWriter {
 
 	public static void setSpacesEBCDIC() {
 		if(spacesConverted == false) {
-			spaces = new String(GersFilesUtils.asciiToEbcdic(spaces));
+			spaces = new String(GersCodePage.asciiToEbcdic(spaces));
 			spacesConverted = true;
 		}
 	}
@@ -74,7 +73,7 @@ public abstract class RecordFileWriter {
 		//We can also introduce a factory to select the appropriate
 		//record writer to use too.
 		if (GersConfigration.isZos()) {
-			return GersFilesUtils.asciiToEbcdic(str);
+			return GersCodePage.asciiToEbcdic(str);
 		} else {
 			if(str != null) {
 				retStr = str.getBytes();

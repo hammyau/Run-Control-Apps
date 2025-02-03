@@ -22,9 +22,6 @@ package org.genevaers.utilities;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -39,8 +36,6 @@ public class GersFilesUtils {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private  Collection<GersFile> gersFiles = new ArrayList<>();
-
-    private String codpage = null;
 
     public Collection<GersFile> getGersFiles(String dir) {
         gersFiles.clear();
@@ -76,34 +71,5 @@ public class GersFilesUtils {
         gersFiles.clear();
     }
 
-    public String getCodePage() {
-        if (GersConfigration.isZos() && codpage == null) {
-            try {
-                Class<?> rrc = Class.forName("org.genevaers.utilities.ZosGersCodePage");
-                Constructor<?>[] constructors = rrc.getConstructors();
-                codpage = ((GersFilesUtils) constructors[0].newInstance()).getCodePage();
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                    | InvocationTargetException | ClassNotFoundException e) {
-                logger.atSevere().log("getGersFiles failed %s", e.getMessage());
-            }
-        }
-        return codpage;
-    }
-
-    public static byte[] asciiToEbcdic(String str) {
-        Charset utf8charset = Charset.forName("UTF-8");
-        Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
-        ByteBuffer inputBuffer = ByteBuffer.wrap(str.getBytes());
-        CharBuffer data = utf8charset.decode(inputBuffer);
-        return ebccharset.encode(data).array();
-    }
-
-    public static byte[] ebcdicToAscii(byte[] buf) {
-        Charset utf8charset = Charset.forName("ISO8859-1");
-        Charset ebccharset = Charset.forName(GersConfigration.getZosCodePage());
-        ByteBuffer inputBuffer = ByteBuffer.wrap(buf);
-        CharBuffer data = ebccharset.decode(inputBuffer);
-        return utf8charset.encode(data).array();
-    }
 
 }
