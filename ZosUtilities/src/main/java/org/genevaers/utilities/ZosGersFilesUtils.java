@@ -38,7 +38,7 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 
 	static Collection<GersFile> gersFiles = new ArrayList<>();
 	
-	public static Collection<GersFile> getGersFiles(String dir) {
+	public Collection<GersFile> getGersFiles(String dir) {
 		try {
 			String ddname = "//DD:" + dir;
 			ZFile dd = new ZFile(ddname, "r");
@@ -83,7 +83,4 @@ public class ZosGersFilesUtils extends GersFilesUtils{
 		return gersFiles;
 	}
 
-    public static String getCodePage() {
-        return ZUtil.getCodePageCurrentLocale();
-    }
 }
