@@ -54,6 +54,7 @@ import org.genevaers.utilities.GersCodePage;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Substitution;
 import org.genevaers.utilities.GersEnvironment;
+import org.genevaers.utilities.GersFilesUtils;
 import org.genevaers.utilities.menu.Menu;
 import org.w3c.dom.NodeList;
 
@@ -104,6 +105,7 @@ public class TestDriver {
 
 	public static boolean processSpecList() {
 		try {
+			GersConfigration.initialise();
 			initFreeMarkerConfiguration();
 			setupTestPaths();
 			checkExistsAndProcessSpeclist();
