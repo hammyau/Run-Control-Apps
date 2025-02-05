@@ -1,5 +1,7 @@
 package org.genevaers.compilers.extract.astnodes;
 
+import org.genevaers.compilers.extract.astnodes.ASTFactory.Type;
+
 /*
  * Copyright Contributors to the GenevaERS Project.
 								SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation
@@ -21,6 +23,7 @@ package org.genevaers.compilers.extract.astnodes;
 
 
 import org.genevaers.genevaio.ltfile.LTFileObject;
+import org.genevaers.repository.components.enums.DataType;
 
 public class SubStringASTNode extends StringFunctionASTNode implements Assignable{
 
@@ -43,6 +46,10 @@ public class SubStringASTNode extends StringFunctionASTNode implements Assignabl
         return startOffest;
     }
 
+    public int getStartOffestInt() {
+        return Integer.parseInt(startOffest);
+    }
+
     public void setStartOffest(String startOffest) {
         this.startOffest = startOffest;
     }
@@ -52,4 +59,10 @@ public class SubStringASTNode extends StringFunctionASTNode implements Assignabl
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getAssignableLength'");
     }
- }
+ 
+    @Override
+    public DataType getDataType() {
+        return DataType.ALPHANUMERIC;
+    }
+
+}

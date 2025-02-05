@@ -51,11 +51,16 @@ import org.genevaers.compilers.extract.emitters.stringcomparisonemitters.SFXXEmi
 import org.genevaers.compilers.extract.emitters.stringcomparisonemitters.StringComparisonEmitter;
 import org.genevaers.genevaio.ltfile.LTFileObject;
 import org.genevaers.genevaio.ltfile.LTRecord;
+import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
+import org.genevaers.genevaio.ltfile.LogicTableF2;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
+import com.google.common.flogger.FluentLogger;
+
 public class StringComparisonAST extends ExtractBaseAST implements EmittableASTNode{
+    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
     private String op;
     private Integer goto1;
@@ -99,6 +104,7 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
     private ExtractBaseAST lhs;
     private ExtractBaseAST rhs;
     private DataType lhsCastTo;
+    private DataType rhsCastTo;
 
     public StringComparisonAST() {
         type = ASTFactory.Type.STRINGCOMP;
@@ -150,33 +156,67 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
 
     @Override
     public void emit() {
-        if(children.size() < 2) {
-            int bang = 1;
-        }
-        ExtractBaseAST lhsin = (ExtractBaseAST) children.get(0);
-        ExtractBaseAST rhsin = (ExtractBaseAST) children.get(1);
-        StringComparisonEmitter emitter = getComparisonEmitter(lhsin, rhsin); 
-        if(emitter != null) {
-            emitter.setLtEmitter(ltEmitter);
-            ltfo = emitter.getLTEntry(op, lhs, rhs);
-            applyComparisonRules(op, lhsin, rhsin);
-            if(ltfo != null) {
-                ltEmitter.addToLogicTable((LTRecord)ltfo);
-
-                goto1 = ltEmitter.getNumberOfRecords();
-                ((LTRecord)ltfo).setGotoRow1(goto2);
-                ((LTRecord)ltfo).setGotoRow2( goto2 );
-            }
+        if (children.size() < 2) {
+            logger.atSevere().log("String Comparison with less than 3 child nodes");
         } else {
-            int workToDo = 1;
+            ExtractBaseAST lhsin = (ExtractBaseAST) children.get(0);
+            ExtractBaseAST rhsin = (ExtractBaseAST) children.get(1);
+            lhs = lhsin;
+            rhs = rhsin;
+            useSubstringTypes(lhsin, rhsin);
+            decastOperands(lhsin, rhsin);
+            StringComparisonEmitter emitter = emitters.get(new ComparisonKey(lhs.getType(), rhs.getType()));
+            if (emitter != null) {
+                emitter.setLtEmitter(ltEmitter);
+                ltfo = emitter.getLTEntry(op, lhs, rhs);
+                applyComparisonRules(op, lhsin, rhsin);
+                overrideSubstrings((LTRecord)ltfo, lhsin, rhsin);
+                if (ltfo != null) {
+                    ltEmitter.addToLogicTable((LTRecord) ltfo);
+
+                    goto1 = ltEmitter.getNumberOfRecords();
+                    ((LTRecord) ltfo).setGotoRow1(goto2);
+                    ((LTRecord) ltfo).setGotoRow2(goto2);
+                }
+            } else {
+                logger.atSevere().log("Unable to find comparison emitter for types %s and %s", lhsin.getType(),
+                        rhsin.getType());
+            }
         }
     }
 
+    private void overrideSubstrings(LTRecord ltr, ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
+        if(lhsin.getType() == Type.SUBSTR) {
+            SubStringASTNode lhsstr = (SubStringASTNode)lhsin;            
+            if(ltr.getRecordType() == LtRecordType.F2) {
+                LogicTableF2 f2 = (LogicTableF2)ltr;
+                LogicTableArg arg = f2.getArg1();
+                arg.setFieldLength((short)lhsstr.getLength());
+                arg.setStartPosition((short)(arg.getStartPosition() + lhsstr.getStartOffestInt()));
+            }
+        }
+        if(rhsin.getType() == Type.SUBSTR) {
+            SubStringASTNode rhsstr = (SubStringASTNode)rhsin;            
+            if(ltr.getRecordType() == LtRecordType.F2) {
+                LogicTableF2 f2 = (LogicTableF2)ltr;
+                LogicTableArg arg2 = f2.getArg2();
+                arg2.setFieldLength((short)rhsstr.getLength());
+                arg2.setStartPosition((short)(arg2.getStartPosition() + rhsstr.getStartOffestInt()));
+            }
+        }
+    }
 
-    private StringComparisonEmitter getComparisonEmitter( ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
-        //The real type can be under a cast.
-        lhs = lhsin;
-        rhs = rhsin;
+    private void useSubstringTypes(ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
+        if(lhsin.getType() == Type.SUBSTR) {
+            lhs = ((ExtractBaseAST)lhsin.getChild(0));            
+        }
+        if(rhsin.getType() == Type.SUBSTR) {
+            rhs = ((ExtractBaseAST)rhsin.getChild(0));            
+        }
+    }
+
+    private void decastOperands(ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
+        // The real type can be under a cast. Or a substring
         if(lhsin.getType() == Type.CAST){
             //add a decast to the node
             //note we need to change the formatID of the datasource
@@ -184,7 +224,13 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
             lhs = (ExtractBaseAST) cast.decast();
             lhsCastTo = ((DataTypeAST)cast.getChildIterator().next()).getDatatype();
         }
-        return emitters.get(new ComparisonKey(lhs.getType(), rhs.getType()));
+        if(rhsin.getType() == Type.CAST){
+            //add a decast to the node
+            //note we need to change the formatID of the datasource
+            CastAST cast = (CastAST) rhsin;
+            rhs = (ExtractBaseAST) cast.decast();
+            rhsCastTo = ((DataTypeAST)cast.getChildIterator().next()).getDatatype();
+        }
     }
 
     public void setComparisonOperator(String op) {
