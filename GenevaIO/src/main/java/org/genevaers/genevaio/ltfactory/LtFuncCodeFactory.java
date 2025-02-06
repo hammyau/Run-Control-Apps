@@ -1691,7 +1691,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         nf1.setArg(getColumnArg(vc));
         if(!vc.isSigned()) {
             //This should generate a warning
-            logger.atWarning().log("Accumulator assigments should be signed. Changing for %s", vc.getName());
+            logger.atWarning().log("Accumulator assignments should be signed. Changing for %s", vc.getName());
             warning = GenerationWarning.COLUMN_SHOULD_BE_SIGNED;
             nf1.getArg().setSignedInd(true);
         }
