@@ -54,6 +54,7 @@ import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.ltfile.LogicTableArg;
 import org.genevaers.genevaio.ltfile.LogicTableF1;
 import org.genevaers.genevaio.ltfile.LogicTableF2;
+import org.genevaers.repository.Repository;
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.LtRecordType;
 
@@ -61,6 +62,7 @@ import com.google.common.flogger.FluentLogger;
 
 public class StringComparisonAST extends ExtractBaseAST implements EmittableASTNode{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
+    private static final String OVERFLOW = "SUBSTR out of bounds for %s";
 
     private String op;
     private Integer goto1;
@@ -190,19 +192,24 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
             SubStringASTNode lhsstr = (SubStringASTNode)lhsin;            
             if(ltr.getRecordType() == LtRecordType.F2) {
                 LogicTableF2 f2 = (LogicTableF2)ltr;
-                LogicTableArg arg = f2.getArg1();
-                arg.setFieldLength((short)lhsstr.getLength());
-                arg.setStartPosition((short)(arg.getStartPosition() + lhsstr.getStartOffestInt()));
+                checkAndUpdateArg(lhsstr, f2.getArg1());
             }
         }
         if(rhsin.getType() == Type.SUBSTR) {
             SubStringASTNode rhsstr = (SubStringASTNode)rhsin;            
             if(ltr.getRecordType() == LtRecordType.F2) {
                 LogicTableF2 f2 = (LogicTableF2)ltr;
-                LogicTableArg arg2 = f2.getArg2();
-                arg2.setFieldLength((short)rhsstr.getLength());
-                arg2.setStartPosition((short)(arg2.getStartPosition() + rhsstr.getStartOffestInt()));
+                checkAndUpdateArg(rhsstr, f2.getArg2());
             }
+        }
+    }
+
+    private void checkAndUpdateArg(SubStringASTNode sstr, LogicTableArg arg) {
+        if(arg.getStartPosition() + sstr.getStartOffestInt() + sstr.getLength() < arg.getStartPosition() + arg.getFieldLength()) {
+            arg.setFieldLength((short)sstr.getLength());
+            arg.setStartPosition((short)(arg.getStartPosition() + sstr.getStartOffestInt()));
+        } else {
+            Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(OVERFLOW, sstr.getMessageName())));
         }
     }
 

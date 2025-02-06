@@ -65,4 +65,28 @@ public class SubStringASTNode extends StringFunctionASTNode implements Assignabl
         return DataType.ALPHANUMERIC;
     }
 
+    @Override
+    public String getMessageName() {
+        ExtractBaseAST c = (ExtractBaseAST) getChild(0);
+        String name = "";
+        switch (c.getType()) {
+            case LRFIELD:
+                name = ((FieldReferenceAST)c).getMessageName();
+                break;
+            case PRIORLRFIELD:
+                name = ((FieldReferenceAST)c).getMessageName();
+                break;
+            case LOOKUPFIELDREF:
+                name = ((LookupFieldRefAST)c).getMessageName();                
+                break;
+            case COLUMNREF:
+                name = ((ColumnRefAST)c).getMessageName();                                
+                break;
+        
+            default:
+                break;
+        }
+        return name;
+    }
+
 }
