@@ -536,10 +536,12 @@ public class Repository {
 	}
 
 	public static void addErrorMessage(CompilerMessage err) {
+		logger.atSevere().log(err.getDetail());
 		compilerErrors.add(err);
 	}
 
 	public static void addWarningMessage(CompilerMessage warn) {
+		logger.atWarning().log(warn.getDetail());
 		warnings.add(warn);
 	}
 
