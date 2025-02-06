@@ -93,11 +93,8 @@ public class ExtractPhaseCompiler {
 			buildTheJoinLogicTable();
 			buildTheExtractLogicTable();
 			wholeViewChecks();
-
-		} else{
-			status = Status.ERROR;
 		}
-		return status;
+		return Repository.getCompilerErrors().size() > 0 ? Status.ERROR : Status.OK;
 	}
 
 	public static void buildTheAST() {
