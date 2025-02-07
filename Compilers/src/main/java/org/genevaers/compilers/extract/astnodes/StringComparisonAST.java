@@ -63,6 +63,7 @@ import com.google.common.flogger.FluentLogger;
 public class StringComparisonAST extends ExtractBaseAST implements EmittableASTNode{
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static final String OVERFLOW = "SUBSTR out of bounds for %s";
+    private static final String NEEDLE_ERROR = "Search for length %d greater than target length %d";
 
     private String op;
     private Integer goto1;
@@ -107,6 +108,8 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
     private ExtractBaseAST rhs;
     private DataType lhsCastTo;
     private DataType rhsCastTo;
+    private int lhsLength;
+    private int rhsLength;
 
     public StringComparisonAST() {
         type = ASTFactory.Type.STRINGCOMP;
@@ -193,24 +196,50 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
             if(ltr.getRecordType() == LtRecordType.F2) {
                 LogicTableF2 f2 = (LogicTableF2)ltr;
                 checkAndUpdateArg(lhsstr, f2.getArg1());
+            } else {
+                LogicTableF1 f1 = (LogicTableF1)ltr;
+                lhsLength = checkAndUpdateArg(lhsstr, f1.getArg());
             }
         }
         if(rhsin.getType() == Type.SUBSTR) {
             SubStringASTNode rhsstr = (SubStringASTNode)rhsin;            
             if(ltr.getRecordType() == LtRecordType.F2) {
                 LogicTableF2 f2 = (LogicTableF2)ltr;
-                checkAndUpdateArg(rhsstr, f2.getArg2());
+                rhsLength = checkAndUpdateArg(rhsstr, f2.getArg2());
+            } else {
+                LogicTableF1 f1 = (LogicTableF1)ltr;
+                rhsLength = checkAndUpdateArg(rhsstr, f1.getArg());
             }
         }
-    }
+        if(ltr.getRecordType() == LtRecordType.F2) {
+            LogicTableF2 f2 = (LogicTableF2)ltr;
+            lhsLength = f2.getArg1().getFieldLength();
+            rhsLength = f2.getArg2().getFieldLength();
+        } else {
+            LogicTableF1 f1 = (LogicTableF1)ltr;
+            if(f1.getFunctionCode().charAt(1) == 'C') {
+                lhsLength = f1.getArg().getValue().length();
+                rhsLength = f1.getArg().getFieldLength();
+            } else {
+                rhsLength = f1.getArg().getValue().length();
+                lhsLength = f1.getArg().getFieldLength();
+            }
+        }
+        if(rhsLength > lhsLength) {
+            logger.atInfo().log("Emit from source %d column %d", currentViewColumnSource.getSequenceNumber(), currentViewColumnSource.getColumnNumber());
+            Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(NEEDLE_ERROR, rhsLength, lhsLength)));
+        }
+}
 
-    private void checkAndUpdateArg(SubStringASTNode sstr, LogicTableArg arg) {
-        if(arg.getStartPosition() + sstr.getStartOffestInt() + sstr.getLength() < arg.getStartPosition() + arg.getFieldLength()) {
+    private int checkAndUpdateArg(SubStringASTNode sstr, LogicTableArg arg) {
+        if(arg.getStartPosition() + sstr.getStartOffestInt() + sstr.getLength() <= arg.getStartPosition() + arg.getFieldLength()) {
             arg.setFieldLength((short)sstr.getLength());
             arg.setStartPosition((short)(arg.getStartPosition() + sstr.getStartOffestInt()));
         } else {
+            logger.atInfo().log("Emit from source %d column %d", currentViewColumnSource.getSequenceNumber(), currentViewColumnSource.getColumnNumber());
             Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(OVERFLOW, sstr.getMessageName())));
         }
+        return sstr.getLength();
     }
 
     private void useSubstringTypes(ExtractBaseAST lhsin, ExtractBaseAST rhsin) {

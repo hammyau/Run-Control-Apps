@@ -262,7 +262,7 @@ public class ExtractPhaseCompiler {
 		try {
 			ecc.processLogicAndAddNodes(vcsn);
 			if(Repository.newErrorsDetected()) {
-				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
+//				logger.atSevere().log("%d Errors detected. Logic Table will not be written.", Repository.getCompilerErrors().size());
 				status = Status.ERROR;
 			}
 		} catch (IOException e) {

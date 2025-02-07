@@ -23,6 +23,7 @@ package org.genevaers.compilers.extract;
 import org.genevaers.compilers.extract.astnodes.ColumnRefAST;
 import org.genevaers.compilers.extract.astnodes.ExtractBaseAST;
 import org.genevaers.compilers.extract.astnodes.FieldReferenceAST;
+import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
 import org.genevaers.compilers.extract.astnodes.StringAtomAST;
 import org.genevaers.compilers.extract.astnodes.SubStringASTNode;
@@ -66,6 +67,9 @@ public class StringDataTypeChecker {
             break;
             case SUBSTR:
             dtype = ((SubStringASTNode)node).getDataType();
+            break;
+            case LEFT:
+            dtype = ((LeftASTNode)node).getDataType();
             break;
             default:
             break;

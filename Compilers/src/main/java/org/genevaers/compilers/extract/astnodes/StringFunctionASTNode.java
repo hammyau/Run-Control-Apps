@@ -31,6 +31,10 @@ public class StringFunctionASTNode extends FormattedASTNode {
         return Integer.valueOf(length);
     }
 
+    public String getLengthString() {
+        return length;
+    }
+
     public void setLength(String length) {
         this.length = length;
     }
