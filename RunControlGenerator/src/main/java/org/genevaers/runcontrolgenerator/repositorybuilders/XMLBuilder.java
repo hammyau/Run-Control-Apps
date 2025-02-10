@@ -57,20 +57,25 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 		String activeDir = GersConfigration.getActiveXMLDirectory();
 		logger.atInfo().log("Reading XML from %s", activeDir);
 		Collection<GersFile> gfs = new GersFilesUtils().getGersFiles(activeDir);
-		logger.atInfo().log("found %d files in %s", gfs.size(), activeDir);
-		for (GersFile gf : gfs) {
-			logger.atFine().log("Read XML file from %s", gf.getName());
-			try {
-				this.inputReader = gf.getReader(gf.getName());
-				InputReport ir = new InputReport();
-				ir.setDdName(getXMLDirectory());
-				ir.setMemberName(gf.getName());
-				retval = buildFromXML(ir);
-				Repository.addInputReport(ir);
-			} catch (FileNotFoundException e) {
-				logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
-				retval = Status.ERROR;
+		if(gfs != null) {
+			logger.atInfo().log("found %d files in %s", gfs.size(), activeDir);
+			for (GersFile gf : gfs) {
+				logger.atFine().log("Read XML file from %s", gf.getName());
+				try {
+					this.inputReader = gf.getReader(gf.getName());
+					InputReport ir = new InputReport();
+					ir.setDdName(getXMLDirectory());
+					ir.setMemberName(gf.getName());
+					retval = buildFromXML(ir);
+					Repository.addInputReport(ir);
+				} catch (FileNotFoundException e) {
+					logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed " + e.getMessage());
+					retval = Status.ERROR;
+				}
 			}
+		} else {
+			logger.atSevere().withStackTrace(StackSize.FULL).log("Repo build failed: no XML files found");
+			retval = Status.ERROR;
 		}
 	}
 
