@@ -57,7 +57,7 @@ public abstract class XMLBuilder implements RepositoryBuilder{
 		String activeDir = GersConfigration.getActiveXMLDirectory();
 		logger.atInfo().log("Reading XML from %s", activeDir);
 		Collection<GersFile> gfs = new GersFilesUtils().getGersFiles(activeDir);
-		if(gfs != null) {
+		if(gfs != null && gfs.size() > 0) {
 			logger.atInfo().log("found %d files in %s", gfs.size(), activeDir);
 			for (GersFile gf : gfs) {
 				logger.atFine().log("Read XML file from %s", gf.getName());
