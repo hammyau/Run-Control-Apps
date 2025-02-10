@@ -217,7 +217,7 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
             rhsLength = f2.getArg2().getFieldLength();
         } else {
             LogicTableF1 f1 = (LogicTableF1)ltr;
-            if(f1.getFunctionCode().charAt(1) == 'C') {
+            if(f1.getFunctionCode().charAt(2) == 'C') {
                 lhsLength = f1.getArg().getValue().length();
                 rhsLength = f1.getArg().getFieldLength();
             } else {
@@ -229,7 +229,7 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
             logger.atInfo().log("Emit from source %d column %d", currentViewColumnSource.getSequenceNumber(), currentViewColumnSource.getColumnNumber());
             Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(NEEDLE_ERROR, rhsLength, lhsLength)));
         }
-}
+    }   
 
     private int checkAndUpdateArg(SubStringASTNode sstr, LogicTableArg arg) {
         if(arg.getStartPosition() + sstr.getStartOffestInt() + sstr.getLength() <= arg.getStartPosition() + arg.getFieldLength()) {
