@@ -114,12 +114,11 @@ public class ReportWriter {
                 nodeMap.put("numextviews", Repository.getNumberOfExtractViews());
                 nodeMap.put("numrefviews", Repository.getNumberOfReferenceViews());
             }
-            logger.atInfo().log(GersConfigration.getReportFileName());
             generateTemplatedOutput(template, nodeMap, GersConfigration.getReportFileName());
+            logger.atInfo().log(GersConfigration.getReportFileName() +" Generated");
         } catch (IOException e) {
             logger.atSevere().log("Report Writer error %s",e.getMessage());
         }
-		logger.atInfo().log("Report Generated");
 	}
 
 

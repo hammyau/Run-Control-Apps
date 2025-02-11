@@ -49,9 +49,9 @@ public class RCAApp {
              logger.atSevere().log("Invalid analysis configuration. No report requested");
         }
         if (ranOkay == Status.OK) {
-            System.out.println("Run control analyser completed");
+            logger.atInfo().log("Run control analyser completed");
         } else {
-            System.out.println("Run control analyser failed. See log for details.");
+            logger.atSevere().log("Run control analyser failed. See log for details.");
         }
     }
 
