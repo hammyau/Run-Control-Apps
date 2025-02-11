@@ -34,10 +34,9 @@ import org.genevaers.runcontrolgenerator.RCGApp;
 public class Runner {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	private static Status status = Status.OK;
-    private static StringBuilder header;
+    private static StringBuilder header = new StringBuilder();
 
     public static void main(String[] args) {
-        header = new StringBuilder();
 		header.append(String.format("GenevaERS RunControls version %s\n", Runner.getVersion()));
 		header.append(String.format("Java Vendor %s\n", System.getProperty("java.vendor")));
 		header.append(String.format("Java Version %s\n", System.getProperty("java.version")));
