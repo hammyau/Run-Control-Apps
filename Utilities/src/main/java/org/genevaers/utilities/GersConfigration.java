@@ -203,6 +203,14 @@ public class GersConfigration {
         return linesRead;
     }
 
+    public static String getLinesReadString() {
+        StringBuilder read = new StringBuilder();
+        for (String string : linesRead) {
+            read.append(string+"\n");
+        }
+        return read.toString();
+    }
+
     public static List<String> getOptionsInEffect() {
         List<String> optsInEfect = new ArrayList<>();
         for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
