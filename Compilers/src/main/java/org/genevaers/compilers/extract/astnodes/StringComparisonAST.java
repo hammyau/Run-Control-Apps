@@ -177,6 +177,7 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
                 applyComparisonRules(op, lhsin, rhsin);
                 overrideSubstrings((LTRecord)ltfo, lhsin, rhsin);
                 if (ltfo != null) {
+                    notContainsFix(op, (LTRecord)ltfo);
                     ltEmitter.addToLogicTable((LTRecord) ltfo);
 
                     goto1 = ltEmitter.getNumberOfRecords();
@@ -187,6 +188,20 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
                 logger.atSevere().log("Unable to find comparison emitter for types %s and %s", lhsin.getType(),
                         rhsin.getType());
             }
+        }
+    }
+
+    private void notContainsFix(String op, LTRecord ltr) {
+        if(!op.equals("CONTAINS")) {
+            ltr.setFunctionCode(ltr.getFunctionCode().replace("SF", "CF"));
+            if(ltr.getRecordType() == LtRecordType.F2) {
+                LogicTableF2 f2 = (LogicTableF2)ltr;
+                f2.setCompareType(StringComparisonEmitter.getCompareType(op));
+            } else {
+                LogicTableF1 f1 = (LogicTableF1)ltr;
+                f1.setCompareType(StringComparisonEmitter.getCompareType(op));
+            }
+            
         }
     }
 
