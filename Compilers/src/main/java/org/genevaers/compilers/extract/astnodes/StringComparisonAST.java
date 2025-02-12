@@ -191,8 +191,8 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
     }
 
     private void overrideSubstrings(LTRecord ltr, ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
-        if(lhsin.getType() == Type.SUBSTR) {
-            SubStringASTNode lhsstr = (SubStringASTNode)lhsin;            
+        if(lhsin instanceof StringFunctionASTNode) {
+            StringFunctionASTNode lhsstr = (StringFunctionASTNode)lhsin;            
             if(ltr.getRecordType() == LtRecordType.F2) {
                 LogicTableF2 f2 = (LogicTableF2)ltr;
                 checkAndUpdateArg(lhsstr, f2.getArg1());
@@ -201,8 +201,9 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
                 lhsLength = checkAndUpdateArg(lhsstr, f1.getArg());
             }
         }
-        if(rhsin.getType() == Type.SUBSTR) {
-            SubStringASTNode rhsstr = (SubStringASTNode)rhsin;            
+
+        if(rhsin instanceof StringFunctionASTNode) {
+            StringFunctionASTNode rhsstr = (StringFunctionASTNode)rhsin;            
             if(ltr.getRecordType() == LtRecordType.F2) {
                 LogicTableF2 f2 = (LogicTableF2)ltr;
                 rhsLength = checkAndUpdateArg(rhsstr, f2.getArg2());
@@ -211,6 +212,7 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
                 rhsLength = checkAndUpdateArg(rhsstr, f1.getArg());
             }
         }
+
         if(ltr.getRecordType() == LtRecordType.F2) {
             LogicTableF2 f2 = (LogicTableF2)ltr;
             lhsLength = f2.getArg1().getFieldLength();
@@ -231,10 +233,10 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
         }
     }   
 
-    private int checkAndUpdateArg(SubStringASTNode sstr, LogicTableArg arg) {
-        if(arg.getStartPosition() + sstr.getStartOffestInt() + sstr.getLength() <= arg.getStartPosition() + arg.getFieldLength()) {
+    private int checkAndUpdateArg(StringFunctionASTNode sstr, LogicTableArg arg) {
+        if(sstr.getChildStartPosition() + sstr.getLength() <= arg.getStartPosition() + arg.getFieldLength()) {
             arg.setFieldLength((short)sstr.getLength());
-            arg.setStartPosition((short)(arg.getStartPosition() + sstr.getStartOffestInt()));
+            arg.setStartPosition((short)(sstr.getChildStartPosition()));
         } else {
             logger.atInfo().log("Emit from source %d column %d", currentViewColumnSource.getSequenceNumber(), currentViewColumnSource.getColumnNumber());
             Repository.addErrorMessage(ExtractBaseAST.makeCompilerMessage(String.format(OVERFLOW, sstr.getMessageName())));
@@ -243,10 +245,10 @@ public class StringComparisonAST extends ExtractBaseAST implements EmittableASTN
     }
 
     private void useSubstringTypes(ExtractBaseAST lhsin, ExtractBaseAST rhsin) {
-        if(lhsin.getType() == Type.SUBSTR) {
+        if(lhsin instanceof StringFunctionASTNode) {
             lhs = ((ExtractBaseAST)lhsin.getChild(0));            
         }
-        if(rhsin.getType() == Type.SUBSTR) {
+        if(rhsin instanceof StringFunctionASTNode) {
             rhs = ((ExtractBaseAST)rhsin.getChild(0));            
         }
     }

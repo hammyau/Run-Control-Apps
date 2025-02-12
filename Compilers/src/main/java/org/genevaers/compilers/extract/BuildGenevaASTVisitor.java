@@ -753,7 +753,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             String op = ctx.children.get(1).getText();
             ExtractBaseAST rhs = visit(ctx.children.get(2));
             if(StringDataTypeChecker.allows(lhs, rhs, op)) {
-                if(op.equalsIgnoreCase("CONTAINS")) {
+                if(op.equalsIgnoreCase("CONTAINS") || op.equalsIgnoreCase("BEGINS_WITH") || op.equalsIgnoreCase("ENDS_WITH")) {
                     StringComparisonAST strcmp = (StringComparisonAST)ASTFactory.getNodeOfType(ASTFactory.Type.STRINGCOMP);
                     strcmp.addChildIfNotNull(lhs);
                     strcmp.setComparisonOperator(op);
