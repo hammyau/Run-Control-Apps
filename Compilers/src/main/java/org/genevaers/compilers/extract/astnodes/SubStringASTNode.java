@@ -39,4 +39,8 @@ public class SubStringASTNode extends StringFunctionASTNode implements Assignabl
         return null;
     }
 
- }
+    @Override
+    public int getChildStartPosition() {
+        return super.getChildStartPosition() + getStartOffestInt();
+    }
+}
