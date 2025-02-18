@@ -1,7 +1,8 @@
 package org.genevaers.compilers.extract.astnodes;
 
 import org.genevaers.genevaio.ltfile.LTFileObject;
-
+import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.LRField;
 
 /*
  * Copyright Contributors to the GenevaERS Project.
@@ -25,6 +26,7 @@ import org.genevaers.genevaio.ltfile.LTFileObject;
 
 import org.genevaers.repository.components.enums.DataType;
 import org.genevaers.repository.components.enums.DateCode;
+import org.genevaers.repository.jltviews.JLTView;
 
 public class StringFunctionASTNode extends FormattedASTNode implements Assignable{
 
@@ -101,7 +103,10 @@ public class StringFunctionASTNode extends FormattedASTNode implements Assignabl
             case PRIORLRFIELD:
                 return ((FieldReferenceAST)c).getRef().getStartPosition();
             case LOOKUPFIELDREF:
-                return ((LookupFieldRefAST)c).getRef().getStartPosition();
+                LookupFieldRefAST lkf = (LookupFieldRefAST) getChild(0);
+                JLTView jv = Repository.getJoinViews().getJLTViewFromLookup(lkf.getLookup(), false);
+                LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());
+                return redFld.getStartPosition();
             case COLUMNREF:
                 return ((ColumnRefAST)c).getViewColumn().getStartPosition();
             default:
