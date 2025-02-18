@@ -18,7 +18,27 @@
  */
 
  /**
-  * In memory data store of Run Control Data.
+  * <p>In memory data store of Run Control Data.</p>
+  *
+  * <p><b>Note:</b> The build of the Repository is dependent upon the ComponentGenerator.  
+  * It defines the components stored in the Repository.</p>
+  *
+  * <p>The components stored in the Repository are:</p>
+  <ul>
+    <li>ControlRecords</li>
+    <li>LogicalFile</li>
+    <li>PhysicalFiles</li>
+    <li>UserExits</li>
+    <li>procedures - The same collection as UserExits but keyed by module name</li>
+    <li>LogicalRecords</li>
+    <li>LRFields</li>
+    <li>LRIndexs</li>
+    <li>LookupPaths</li>
+    <li>Views</li>
+    <li>FormatViews</li>
+  </ul>
+  * Detail the ComponentCollection
+
   */ 
 package org.genevaers.repository;
 
