@@ -19,7 +19,7 @@
 
  /**
   * <p>Classes to store the Components and additional data for Run Control processing eg. errors and warnings.</p>
-  * <p>The {@link Repository.data.ComponentCollection} provides a common way to manage the Components.</p>
+  * <p>The { Repository.data.ComponentCollection} provides a common way to manage the Components.</p>
   */ 
 package org.genevaers.repository.data;
 

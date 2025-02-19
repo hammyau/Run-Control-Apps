@@ -53,6 +53,9 @@ import org.genevaers.repository.jltviews.UniqueKeys;
 
 import com.google.common.flogger.FluentLogger;
 
+/**
+ * A class of static functions to manage the Repository collections.
+ */
 public class Repository {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
