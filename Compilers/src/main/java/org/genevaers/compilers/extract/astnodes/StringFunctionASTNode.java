@@ -108,7 +108,7 @@ public class StringFunctionASTNode extends FormattedASTNode implements Assignabl
                 LRField redFld = jv.getRedFieldFromLookupField(lkf.getRef().getComponentId());
                 return redFld.getStartPosition();
             case COLUMNREF:
-                return ((ColumnRefAST)c).getViewColumn().getStartPosition();
+                return ((ColumnRefAST)c).getViewColumn().getExtractAreaPosition();
             default:
                 return 0;
         }
