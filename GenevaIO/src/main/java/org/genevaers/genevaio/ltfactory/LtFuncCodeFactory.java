@@ -1268,7 +1268,7 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
 
     @Override
     public LTFileObject getSFEX(LRField f, ViewColumn c2) {
-        LogicTableF2 sfex = makeF2FromFieldAndColumn(f, c2);
+        LogicTableF2 sfex = makeF2FromFieldAndColumnRef(f, c2);
         sfex.setFunctionCode("SFEX");
         sfex.setCompareType(LtCompareType.CONTAINS);
         return sfex;
@@ -1638,6 +1638,24 @@ public class LtFuncCodeFactory implements LtFunctionCodeFactory{
         dte.setArg1(arg1);
         
         dte.setArg2(getColumnArg(vc));
+        dte.setCompareType(LtCompareType.EQ);
+        return dte;
+    }
+
+    private LogicTableF2 makeF2FromFieldAndColumnRef(LRField f, ViewColumn vc) {
+        LogicTableF2 dte = new LogicTableF2();
+        // want a function to get a populated arg from the field
+        LogicTableArg arg1 = getArgFromField(f);
+        dte.setRecordType(LtRecordType.F2);
+        //TODO this can rise as a common function
+        //These may be at adder level
+        dte.setViewId(vc.getViewId());
+        dte.setColumnId(vc.getComponentId());
+        dte.setSuffixSeqNbr((short)vc.getColumnNumber());
+
+        dte.setArg1(arg1);
+        
+        dte.setArg2(getColumnRefArg(vc));
         dte.setCompareType(LtCompareType.EQ);
         return dte;
     }
