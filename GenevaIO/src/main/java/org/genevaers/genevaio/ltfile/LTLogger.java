@@ -22,11 +22,21 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.genevaers.repository.components.enums.DataType;
+import org.genevaers.repository.components.enums.LtCompareType;
 import org.genevaers.utilities.GersFile;
 
 import com.google.common.flogger.FluentLogger;
 import com.google.common.flogger.StackSize;
 
+/**
+ * Text logger for the contents of a Logic Table
+ * 
+ * Perhaps a better way of implementing this is to add a log interface to each 
+ * function code type.
+ * Then implement the function for the possible codes within?
+ * That is how the C++ version does it.
+ * It may also be that we could add the logger to part of the Component Generation?
+ */
 public class LTLogger {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -188,31 +198,31 @@ public class LTLogger {
 			case "CFCX":
 			case "SFCX": {
 				LogicTableF1 cx = (LogicTableF1) ltr;
-				return(String.format(COMPARISON, leadin, cx.getArg().getValue().getPrintString(), cx.getCompareType(), getColRefArgDetails(cx.getArg()) , getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, cx.getArg().getValue().getPrintString(), getCompareCode(cx.getCompareType()), getColRefArgDetails(cx.getArg()) , getGotos(ltr)));
 			}
 			case "CFXC":
 			case "SFXC": {
 				LogicTableF1 cx = (LogicTableF1) ltr;
-				return(String.format(COMPARISON, leadin, getColRefArgDetails(cx.getArg()), cx.getCompareType(), cx.getArg().getValue().getPrintString(), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getColRefArgDetails(cx.getArg()), getCompareCode(cx.getCompareType()), cx.getArg().getValue().getPrintString(), getGotos(ltr)));
 			}
 			case "CFXX":
 			case "SFXX": {
 				LogicTableF2 xx = (LogicTableF2) ltr;
-				return(String.format(COMPARISON, leadin, getColRefArgDetails(xx.getArg1()), xx.getCompareType(), getColRefArgDetails(xx.getArg2()), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getColRefArgDetails(xx.getArg1()), getCompareCode(xx.getCompareType()), getColRefArgDetails(xx.getArg2()), getGotos(ltr)));
 			}
 			case "SFCE": 
 			case "SFCL": 
 			case "CFCE": 
 			case "CFCL": {
 					LogicTableF1 cf = (LogicTableF1) ltr;
-				return(String.format(COMPARISON, leadin, cf.getArg().getValue().getPrintString(), cf.getCompareType(), getFullArg(cf.getArg()) , getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, cf.getArg().getValue().getPrintString(), getCompareCode(cf.getCompareType()), getFullArg(cf.getArg()) , getGotos(ltr)));
 			}
 			case "SFEC":
 			case "SFLC":
 			case "CFEC":
 			case "CFLC":
 				LogicTableF1 cf = (LogicTableF1) ltr;
-				return(String.format(COMPARISON, leadin, getFullArg(cf.getArg()), cf.getCompareType(), cf.getArg().getValue().getPrintString(), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getFullArg(cf.getArg()), getCompareCode(cf.getCompareType()), cf.getArg().getValue().getPrintString(), getGotos(ltr)));
 			case "SFEE":
 			case "SFEL":
 			case "SFLE":
@@ -223,11 +233,11 @@ public class LTLogger {
 			case "CFLE":
 			case "CFLP":
 				LogicTableF2 cfee = (LogicTableF2) ltr;
-				return(String.format(COMPARISON, leadin, getFullArg(cfee.getArg1()), cfee.getCompareType(),	getFullArg(cfee.getArg2()), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getFullArg(cfee.getArg1()), getCompareCode(cfee.getCompareType()),	getFullArg(cfee.getArg2()), getGotos(ltr)));
 			case "SFCC":
 			case "CFCC":
 				LogicTableCC cfcc = (LogicTableCC) ltr;
-			return(String.format(CCCOMP, leadin, cfcc.getValue1().getPrintString(), cfcc.getCompareType(),	cfcc.getValue2().getPrintString(), getGotos(ltr)));
+			return(String.format(CCCOMP, leadin, cfcc.getValue1().getPrintString(), getCompareCode(cfcc.getCompareType()),	cfcc.getValue2().getPrintString(), getGotos(ltr)));
 			case "DIMN":
 			case "DIM4":
 				LogicTableName ln = (LogicTableName) ltr;
@@ -275,10 +285,10 @@ public class LTLogger {
 			case "CFLA":
 			case "CFPA":
 				LogicTableNameF1 cfea = (LogicTableNameF1) ltr;
-				return(String.format(COMPARISON, leadin, getFullArg(cfea.getArg()), cfea.getCompareType(), cfea.getAccumulatorName(), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getFullArg(cfea.getArg()), getCompareCode(cfea.getCompareType()), cfea.getAccumulatorName(), getGotos(ltr)));
 			case "CFXA":
 				LogicTableNameF1 cfxa = (LogicTableNameF1) ltr;
-				return(String.format(COMPARISON, leadin, getColRefArgDetails(cfxa.getArg()), cfxa.getCompareType(), cfxa.getAccumulatorName(), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getColRefArgDetails(cfxa.getArg()), getCompareCode(cfxa.getCompareType()), cfxa.getAccumulatorName(), getGotos(ltr)));
 			case "CFEX":
 			case "CFPX":
 			case "CFLX":
@@ -286,7 +296,7 @@ public class LTLogger {
 			case "SFPX":
 			case "SFLX":
 				LogicTableF2 sfex = (LogicTableF2) ltr;
-				return(String.format(COMPARISON, leadin, getFullArg(sfex.getArg1()), sfex.getCompareType(), getColRefArgDetails(sfex.getArg2()), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getFullArg(sfex.getArg1()), getCompareCode(sfex.getCompareType()), getColRefArgDetails(sfex.getArg2()), getGotos(ltr)));
 			case "CFXE":
 			case "CFXP":
 			case "CFXL":
@@ -294,7 +304,7 @@ public class LTLogger {
 			case "SFXP":
 			case "SFXL":
 				LogicTableF2 sfxe = (LogicTableF2) ltr;
-				return(String.format(COMPARISON, leadin, getColRefArgDetails(sfxe.getArg1()),  sfxe.getCompareType(), getFullArg(sfxe.getArg2()), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, getColRefArgDetails(sfxe.getArg1()),  getCompareCode(sfxe.getCompareType()), getFullArg(sfxe.getArg2()), getGotos(ltr)));
 			case "SFAE":
 			case "SFAL":
 			case "SFAP":
@@ -303,10 +313,10 @@ public class LTLogger {
 			case "CFAL":
 			case "CFAP":
 				LogicTableNameF1 cfae = (LogicTableNameF1) ltr;
-				return(String.format(COMPARISON, leadin, cfae.getAccumulatorName(), cfae.getCompareType(), getFullArg(cfae.getArg()), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, cfae.getAccumulatorName(), getCompareCode(cfae.getCompareType()), getFullArg(cfae.getArg()), getGotos(ltr)));
 			case "CFAX":
 				LogicTableNameF1 cfax = (LogicTableNameF1) ltr;
-				return(String.format(COMPARISON, leadin, cfax.getAccumulatorName(), cfax.getCompareType(), getColRefArgDetails(cfax.getArg()), getGotos(ltr)));
+				return(String.format(COMPARISON, leadin, cfax.getAccumulatorName(), getCompareCode(cfax.getCompareType()), getColRefArgDetails(cfax.getArg()), getGotos(ltr)));
 			case "CTC":
 				LogicTableF1 ctc = (LogicTableF1) ltr;
 				return(String.format(CTASSIGNMENT, leadin, ctc.getArg().getValue().getPrintString()));
@@ -516,6 +526,20 @@ public class LTLogger {
 				return "S";
 			default:
 				return "?";
+		}
+	}
+
+	private static String getCompareCode(LtCompareType comp) {
+		switch (comp) {
+			case CONTAINS:
+				return "CO";
+			case BEGINS:
+				return "BW";
+			case ENDS:
+				return "EW";
+		
+			default:
+				return comp.toString();
 		}
 	}
 
