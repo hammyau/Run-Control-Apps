@@ -42,8 +42,14 @@ public class GenevaWholeGenerator extends GeneratorBase {
         writeRecord2ComponentMapping("VDPRecs2Components", nodeMap);
         writeVDPManagmentRecords("VDPMngrecs", nodeMap);
         writeLogicTableRecordsAndFunctionCodes("LTandFCs", nodeMap);
+        writeFunctionCodeDescriptions("FCDescriptions", nodeMap);
         logger.atConfig().log("-----------------------------");
         logger.atInfo().log(" ");
+    }
+
+    private void writeFunctionCodeDescriptions(String name, Map<String, Object> nodeMap) {
+        Path to = getPathToWriteJavaObjecPath(name);
+        writeModelWithTemplateToPath(nodeMap, "ltFcDescriptions.ftl", to);
     }
 
     private void writeLogicTableRecordsAndFunctionCodes(String name, Map<String, Object> nodeMap) {
