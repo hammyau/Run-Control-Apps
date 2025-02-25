@@ -1,0 +1,28 @@
+---
+name: "CMCONT"
+title: "Contains for cases"
+description: "Exercise the SFxx function codes"
+category: "PeTests/Comparison/SearchFor"
+cq: ""
+note: ""
+tests:
+- name: "CONTSUB"
+  header: "CONTAINS with SUBSTR SFxx"
+  description: "Contains (SFxx) with SUBSTR, LEFT, RIGHT "
+  source: "WBXML"
+  xmlfiles:
+  - name: "ContainsWithSubstr.xml"
+  eventfiles:
+  - ddname: "CONCAT"
+    filename: "STRING"
+  reffiles:
+  - ddname: "CONCATL"
+    filename: "STRINGL"
+  extractfiles:
+  - ddname: "CMOUT01"
+    space: "TRK"
+    primary: "1"
+    secondary: "1"
+    recfm: "FB"
+    lrecl: "64"
+ 
