@@ -11,7 +11,7 @@ tests:
   description: "Contains (SFxx) with SUBSTR, LEFT, RIGHT "
   source: "WBXML"
   xmlfiles:
-  - name: "ContainsWithSubstr.xml"
+  - name: "ContainsWithSubstr[1613].xml"
   eventfiles:
   - ddname: "CONCAT"
     filename: "STRING"
