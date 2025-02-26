@@ -16,7 +16,7 @@ tests:
   - ddname: "CONCAT"
     filename: "STRING"
   reffiles:
-  - ddname: "CONCATL"
+  - ddname: "CONTARG"
     filename: "STRINGL"
   extractfiles:
   - ddname: "CMOUT01"
