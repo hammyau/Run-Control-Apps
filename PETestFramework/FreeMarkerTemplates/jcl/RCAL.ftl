@@ -60,7 +60,7 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 
 . /etc/profile
 export A2E=-ofrom=ISO8859-1,to=IBM-1047
-export JAVA_HOME=/Java/J11.0_64
+export JAVA_HOME=/Java/J17.0_64
 export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"
 
 export APP_HOME=${env["GERS_RCA_JAR_DIR"]}
