@@ -27,8 +27,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -52,9 +50,11 @@ import org.genevaers.testframework.yamlreader.Spec;
 import org.genevaers.testframework.yamlreader.XMLFile;
 import org.genevaers.utilities.CommandRunner;
 import org.genevaers.utilities.FileProcessor;
+import org.genevaers.utilities.GersCodePage;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.Substitution;
 import org.genevaers.utilities.GersEnvironment;
+import org.genevaers.utilities.GersFilesUtils;
 import org.genevaers.utilities.menu.Menu;
 import org.w3c.dom.NodeList;
 
@@ -86,7 +86,7 @@ public class TestDriver {
 	private static final String LOCALROOT = "LOCALROOT";
 	private static final String TSO_USERID = "TSO_USERID";
 	private Map<String, String> envVars;
-
+	
 	TestDriver() {
 		GersEnvironment.initialiseFromTheEnvironment();
 		envVars = GersEnvironment.getEnvironmentVariables();
@@ -105,6 +105,7 @@ public class TestDriver {
 
 	public static boolean processSpecList() {
 		try {
+			GersConfigration.initialise();
 			initFreeMarkerConfiguration();
 			setupTestPaths();
 			checkExistsAndProcessSpeclist();
@@ -491,7 +492,7 @@ public class TestDriver {
 			File xmlfile = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName()).toFile();
 			filesIn.add(xmlfile);
 			File outxmlfile = xmlFolder.resolve("XML" + xmlNum++).toFile();
-			substs.add(new Substitution("?>", " encoding=\"IBM-1047\"?>", 1, 1));
+			substs.add(new Substitution("?>", " ?>", 1, 1));
 			for (Replacement r : xml.getReplacements()) {
 				substs.add(new Substitution(r.getReplace(), r.getWith()));
 			}
@@ -823,7 +824,7 @@ public class TestDriver {
               fileIn = new ZFile(dataset,"rb,type=record,recfm=" + recfm.toLowerCase() + ",lrecl=" + lrecl + ",noseek");
               byte[] recBuf = new byte[Integer.parseInt(lrecl)];
               while (fileIn.read(recBuf) != -1) {
-                  ByteBuffer convbb = ByteBuffer.wrap(ebcdicToAscii(recBuf));
+                  ByteBuffer convbb = ByteBuffer.wrap(GersCodePage.ebcdicToAscii(recBuf));
                   convbb.position(recBuf.length);
                   fw.writeArray(convbb);
               }
@@ -842,15 +843,4 @@ public class TestDriver {
           }
           return copied;
       }
-
-      private static byte[] ebcdicToAscii(byte[] buf) {
-        Charset utf8charset = Charset.forName("ISO8859-1");
-        Charset ebccharset = Charset.forName("IBM-1047");
-        ByteBuffer inputBuffer = ByteBuffer.wrap(buf);
-        CharBuffer data = ebccharset.decode(inputBuffer);
-        return utf8charset.encode(data).array();
-      }
-  
-
-
 }

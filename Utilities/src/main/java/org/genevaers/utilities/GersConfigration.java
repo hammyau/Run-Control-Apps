@@ -1,7 +1,5 @@
 package org.genevaers.utilities;
 
-import java.net.URI;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +35,6 @@ public class GersConfigration {
 
     //General Parm names
     public static final String RCA_PARM_FILENAME = "RCAPARM";
-
-//    public static final String PARMFILE = "PARMFILE";
-//    public static final String ZOSPARMFILE = "ZOSPARMFILE";
 
     public static final String REPORT_FILE = "RCARPT";
     public static final String LOG_FILE = "RCALOG";
@@ -113,12 +108,14 @@ public class GersConfigration {
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     private static boolean zos;
+    private static String zosCodePage;
 
     public static void initialise() {
         clear();
 		String os = System.getProperty("os.name");
 		logger.atFine().log("Operating System %s", os);
 		zos = os.startsWith("z");
+        zosCodePage = new GersCodePage().getCodePage();
  
         parmToValue.put(GENERATE, new ConfigEntry("N", false));
 
@@ -187,43 +184,6 @@ public class GersConfigration {
         }
 	}
 
-    // public static String getXLTFileName() {
-    //     return getCWDPrefix() + parmToValue.get(XLT_DDNAME).getValue();
-    // }
-
-    // public static String getVdpDdname() {
-    //     return parmToValue.get(VDP_DDNAME).getValue();
-    // }
-
-    // public static String getVdpFileName() {
-    //     return getCWDPrefix() + parmToValue.get(VDP_DDNAME).getValue();
-    // }
-
-    // public static String getJLTFileName() {
-    //     return getCWDPrefix() + parmToValue.get(JLT_DDNAME).getValue();
-    // }
-
-	// public static void overrideVDPFile(String vdpFile) {
-    //     if(vdpFile.length() > 0) {
-    //         ConfigEntry pv = parmToValue.get(VDP_DDNAME);
-    //         pv.setValue(vdpFile);
-    //     }
-	// }
-
-	// public static void overrideXLTFile(String xltFile) {
-    //     if(xltFile.length() > 0) {
-    //         ConfigEntry pv = parmToValue.get(XLT_DDNAME);
-    //         pv.setValue(xltFile);
-    //     }
-	// }
-
-	// public static void overrideJLTFile(String jltFile) {
-    //     if(jltFile.length() > 0) {
-    //         ConfigEntry pv = parmToValue.get(JLT_DDNAME);
-    //         pv.setValue(jltFile);
-    //     }
-	// }
-
     public static String getParm(String parm) {
         ConfigEntry cfe = parmToValue.get(parm);
         if(cfe != null) {
@@ -241,6 +201,14 @@ public class GersConfigration {
         return linesRead;
     }
 
+    public static String getLinesReadString() {
+        StringBuilder read = new StringBuilder();
+        for (String string : linesRead) {
+            read.append(string+"\n");
+        }
+        return read.toString();
+    }
+
     public static List<String> getOptionsInEffect() {
         List<String> optsInEfect = new ArrayList<>();
         for(Entry<String, ConfigEntry> parm : parmToValue.entrySet()) {
@@ -253,6 +221,10 @@ public class GersConfigration {
 
     public static boolean isZos() {
         return zos;
+    }
+
+    public static String getZosCodePage() {
+        return zosCodePage;
     }
 
     public static void setCurrentWorkingDirectory(String cwd) {

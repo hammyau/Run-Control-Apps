@@ -20,8 +20,6 @@ package org.genevaers.genevaio.wbxml;
  */
 
 
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.io.Reader;
 import java.util.Collection;
 import java.util.TreeMap;
@@ -31,8 +29,6 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
-
-import org.genevaers.repository.data.InputReport;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -125,8 +121,6 @@ public class WBXMLSaxIterator {
             eventType = reader.next();
 
             if (eventType == XMLEvent.START_ELEMENT) {
-                // System.out.println(eventType);
-                // System.out.println(reader.getName().getLocalPart());
                 String elementName = reader.getName().getLocalPart();
                 switch (elementName) {
                     case "safrxml":
@@ -220,10 +214,8 @@ public class WBXMLSaxIterator {
             }
 
             if (eventType == XMLEvent.END_ELEMENT) {
-                // System.out.println(reader.getName().getLocalPart());
-                // if </staff>
                 if (reader.getName().getLocalPart().equals("safrxml")) {
-                    logger.atInfo().log("All Done");
+                    logger.atInfo().log("WBXML Read");
                 }
             }
 
@@ -257,8 +249,6 @@ public class WBXMLSaxIterator {
             }
 
             if (eventType == XMLEvent.END_ELEMENT) {
-                // System.out.println(reader.getName().getLocalPart());
-                // if </staff>
                 if (reader.getName().getLocalPart().equals("Record")) {
                     rp.endRecord();
                     addCatalogEntry(elementName, rp);

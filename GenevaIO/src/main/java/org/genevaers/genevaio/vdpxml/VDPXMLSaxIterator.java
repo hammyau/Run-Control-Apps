@@ -19,29 +19,17 @@ package org.genevaers.genevaio.vdpxml;
  * under the License.
  */
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.Reader;
 import java.util.Collection;
 import java.util.TreeMap;
 
 import javax.xml.XMLConstants;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
-import org.genevaers.genevaio.wbxml.GenerationParser;
-import org.genevaers.genevaio.wbxml.LookupSourceKeyRecordParser;
-import org.genevaers.genevaio.wbxml.LookupStepRecordParser;
 import org.genevaers.genevaio.wbxml.RecordParser;
-import org.genevaers.genevaio.wbxml.ViewColumnSourceRecordParser;
-import org.genevaers.repository.Repository;
-import org.xml.sax.SAXException;
-
 import com.google.common.flogger.FluentLogger;
 
 public class VDPXMLSaxIterator {
@@ -267,7 +255,7 @@ public class VDPXMLSaxIterator {
                 // System.out.println(reader.getName().getLocalPart());
                 // if </staff>
                 if (reader.getName().getLocalPart().equals("safrxml")) {
-                    logger.atInfo().log("All Done");
+                    logger.atInfo().log("VDP XML read");
                 }
             }
 

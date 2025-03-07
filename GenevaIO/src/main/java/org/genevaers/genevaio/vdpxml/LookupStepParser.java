@@ -1,13 +1,10 @@
 package org.genevaers.genevaio.vdpxml;
 
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.events.XMLEvent;
+
 
 /*
  * Copyright Contributors to the GenevaERS Project. SPDX-License-Identifier: Apache-2.0 (c) Copyright IBM Corporation 2008.
@@ -31,14 +28,16 @@ import org.genevaers.repository.components.LogicalRecord;
 import org.genevaers.repository.components.LookupPath;
 import org.genevaers.repository.components.LookupPathKey;
 import org.genevaers.repository.components.LookupPathStep;
-import org.genevaers.repository.components.PhysicalFile;
 import org.xml.sax.Attributes;
+
+import com.google.common.flogger.FluentLogger;
 
 /**
  * This class will parse a Join-Target Record element into a
  * LookupPathStepTransfer object.
  */
 public class LookupStepParser extends BaseParser {
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	private LookupPathStep lookupStep;
 	private LookupPath currentLookupPath;
@@ -53,7 +52,7 @@ public class LookupStepParser extends BaseParser {
 	private LookupTargetKeyParser lktrgp;
 
 	public LookupStepParser() {
-		sectionName = "Step";
+		sectionName = "Steps";
 	}
 
 	@Override
@@ -75,6 +74,7 @@ public class LookupStepParser extends BaseParser {
 				stepNumber = Integer.parseInt(attributes.get("Number"));
 				lookupStep.setStepNum(stepNumber);
 				currentLookupPath.addStep(lookupStep);
+				logger.atFiner().log("Add Step %d to Lookup %s",stepNumber, currentLookupPath.getName());
 				break;
 			case "SOURCE":
 				logger.atFine().log("Source");
