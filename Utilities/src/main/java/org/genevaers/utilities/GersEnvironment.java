@@ -75,6 +75,10 @@ public class GersEnvironment {
 		}
 		getEnvVarOrDefault("VDPXSD", pmhlq + ".GVBXSD(GVBSVDP)");
 		getEnvVarOrDefault("GERS_TEST_HLQ", "");
+		getEnvVarOrDefault("GERS_JOB_ACCT_INFO", "");
+		getEnvVarOrDefault("GERS_JOB_CLASS", "");
+		getEnvVarOrDefault("GERS_MSG_LEVEL", "");
+		getEnvVarOrDefault("GERS_MSG_CLASS", "");
 		getEnvVarOrDefault("GERS_DB2_SUBSYSTEM", "DM12");
 		getEnvVarOrDefault("GERS_DB2_LOAD_LIB", "DSN.V12R1M0.SDSNLOAD");
 		getEnvVarOrDefault("GERS_DB2_EXIT_LIB", "DSN.V12R1M0.SDSNEXIT");
