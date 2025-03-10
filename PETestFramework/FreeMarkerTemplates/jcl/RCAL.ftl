@@ -50,7 +50,7 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 
 . /etc/profile
 export A2E=-ofrom=ISO8859-1,to=IBM-1047
-export JAVA_HOME=/Java/J17.0_64
+export JAVA_HOME=${env["GERS_JAVA_HOME"]}
 export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"
 
 export APP_HOME=${env["GERS_RCA_JAR_DIR"]}
@@ -62,8 +62,6 @@ LIBPATH="$LIBPATH":"$JAVA_HOME"/lib
 LIBPATH="$LIBPATH":"$JAVA_HOME"/lib/j9vm
 export LIBPATH="$LIBPATH":
 # Customize your CLASSPATH here
-
-
 # Add Application required jars to end of CLASSPATH
 CLASSPATH="$CLASSPATH":"$APP_HOME"/"$APP_NAME"
 echo $CLASSPATH

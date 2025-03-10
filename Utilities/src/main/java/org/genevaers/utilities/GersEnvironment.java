@@ -79,6 +79,7 @@ public class GersEnvironment {
 		getEnvVarOrDefault("GERS_JOB_CLASS", "A");
 		getEnvVarOrDefault("GERS_MSG_LEVEL", "(1,1)");
 		getEnvVarOrDefault("GERS_MSG_CLASS", "H");
+		getEnvVarOrDefault("GERS_JAVA_HOME", "/Java/J17.0_64");
 		getEnvVarOrDefault("GERS_JVM_PROC_LIB", "AJV.V11R0M0.PROCLIB");
 		getEnvVarOrDefault("GERS_JZOS_LOAD_LIB", "AJV.V11R0M0.SIEALNKE");
 		getEnvVarOrDefault("GERS_DB2_SUBSYSTEM", "DM12");
