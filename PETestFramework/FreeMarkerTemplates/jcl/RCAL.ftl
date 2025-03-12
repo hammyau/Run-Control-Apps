@@ -1,12 +1,12 @@
-//${test.name}L JOB (ACCT),'REGRESSION JOB',
+//${test.name}L JOB (${env["GERS_JOB_ACCT_INFO"]}),'REGRESSION JOB',
 //          NOTIFY=&SYSUID.,
-//          CLASS=A,
-//          MSGLEVEL=(1,1),
-//          MSGCLASS=H
+//          CLASS=${env["GERS_JOB_CLASS"]},
+//          MSGLEVEL=${env["GERS_MSG_LEVEL"]},
+//          MSGCLASS=${env["GERS_MSG_CLASS"]}
 //*
-//         JCLLIB ORDER=AJV.V11R0M0.PROCLIB
+//         JCLLIB ORDER=${env["GERS_JVM_PROC_LIB"]}
 //*
-//JOBLIB   DD DISP=SHR,DSN=AJV.V11R0M0.SIEALNKE
+//JOBLIB   DD DISP=SHR,DSN=${env["GERS_JZOS_LOAD_LIB"]}
 //*
 //*The following DDs can/should be present in the calling JCL
 //*
@@ -37,22 +37,12 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
  IF LASTCC > 0  THEN        /* IF OPERATION FAILED,     */    -
      SET MAXCC = 0          /* PROCEED AS NORMAL ANYWAY */
 //*********************************************************************
-//*
+//* Execute the Run-Control App
 //*******************************************************************
 //*
-//* Batch job to run the Java VM
-//*
-//* Tailor the proc and job for your installation:
-//* 1.) Modify the Job card per your installation's requirements
-//* 2.) Modify the PROCLIB card to point to this PDS
-//* 3.) edit JAVA_HOME to point the location of the SDK
-//* 4.) edit APP_HOME to point the location of your app (if any)
-//* 5.) Modify the CLASSPATH as required to point to your Java code
-//* 6.) Modify JAVACLS and ARGS to launch desired Java class
-//*
-//*******************************************************************
 //JAVA EXEC PROC=JVMPRC16,
 // JAVACLS='org.genevaers.rcapps.Runner'
+//*
 //STDENV DD *
 # This is a shell script which configures
 # any environment variables for the Java JVM.
@@ -60,7 +50,7 @@ ${env["GERS_TEST_HLQ"]}.${test.dataSet}</#macro>
 
 . /etc/profile
 export A2E=-ofrom=ISO8859-1,to=IBM-1047
-export JAVA_HOME=/Java/J17.0_64
+export JAVA_HOME=${env["GERS_JAVA_HOME"]}
 export IBM_JAVA_OPTIONS="-Dfile.encoding=ISO8859-1"
 
 export APP_HOME=${env["GERS_RCA_JAR_DIR"]}
@@ -72,8 +62,6 @@ LIBPATH="$LIBPATH":"$JAVA_HOME"/lib
 LIBPATH="$LIBPATH":"$JAVA_HOME"/lib/j9vm
 export LIBPATH="$LIBPATH":
 # Customize your CLASSPATH here
-
-
 # Add Application required jars to end of CLASSPATH
 CLASSPATH="$CLASSPATH":"$APP_HOME"/"$APP_NAME"
 echo $CLASSPATH
