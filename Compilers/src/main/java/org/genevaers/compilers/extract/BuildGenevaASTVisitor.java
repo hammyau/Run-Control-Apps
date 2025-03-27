@@ -560,6 +560,9 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             lkRef.setLookup(lookup);
             lkRef.resolveLookup(lookup);
             Repository.getDependencyCache().addLookupIfAbsent(lkname, lookup);
+            if(lookup.isActive() == false) {
+                lkRef.addError("Lookup " + lkname + " is not active");
+            }
 		} else {
             logger.atSevere().log("addLookupReferenceToNode null lookup for %s\n", lkname);
         }		

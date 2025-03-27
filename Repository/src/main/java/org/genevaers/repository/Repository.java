@@ -639,4 +639,10 @@ public class Repository {
 		return maxVdpXmLRID;
 	}
 
+	public static void setCurrentLookupPathState(int val) {
+		if(currentlp != null) {
+			currentlp.setStatus(val);
+		}
+	}
+
 }

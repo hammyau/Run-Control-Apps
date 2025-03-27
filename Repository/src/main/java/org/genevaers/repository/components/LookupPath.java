@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.genevaers.repository.Repository;
+import org.genevaers.repository.components.enums.LrStatus;
 
 import com.google.common.flogger.FluentLogger;
 
@@ -37,6 +38,7 @@ public class LookupPath extends ComponentNode {
 	private int targetLFid = 0;
 	private int destLrLfid;
 	private Boolean optimizable;
+	private int status;
 
 	private Map<Integer, Integer> lr2lf = new HashMap<>();
 
@@ -207,5 +209,13 @@ public class LookupPath extends ComponentNode {
 				logger.atInfo().log("    Step %d", k.getKeyNumber());
 			}
 		}
+	}
+
+	public boolean isActive() {
+		return status == 1;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }
