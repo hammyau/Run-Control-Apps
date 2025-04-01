@@ -218,4 +218,24 @@ public class LookupPath extends ComponentNode {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
+	public boolean isSymbolNotDefined(String s) {
+		boolean notFound = true;
+		logger.atInfo().log("Lookup %s looking for symbol %s", name, s);
+		Iterator<LookupPathStep> sti = steps.iterator();
+		while (notFound && sti.hasNext()) {
+			LookupPathStep st = sti.next();
+			logger.atInfo().log("  Step %d", st.getStepNum());
+			Iterator<LookupPathKey> ki = st.getKeyIterator();
+			while (notFound && ki.hasNext()) {
+				LookupPathKey k = ki.next();
+				String sym = k.getSymbolicName();
+				if(sym.length() > 0 && sym.equals(s.substring(1))) {
+					notFound = false;
+					logger.atFine().log("Found Symbol %s", s);
+				}
+			}
+		}
+		return notFound;
+	}
 }

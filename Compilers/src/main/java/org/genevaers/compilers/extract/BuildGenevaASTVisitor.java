@@ -48,6 +48,7 @@ import org.genevaers.compilers.extract.astnodes.IfAST;
 import org.genevaers.compilers.extract.astnodes.LFAstNode;
 import org.genevaers.compilers.extract.astnodes.LeftASTNode;
 import org.genevaers.compilers.extract.astnodes.LookupFieldRefAST;
+import org.genevaers.compilers.extract.astnodes.LookupPathAST;
 import org.genevaers.compilers.extract.astnodes.LookupPathRefAST;
 import org.genevaers.compilers.extract.astnodes.NumAtomAST;
 import org.genevaers.compilers.extract.astnodes.RepeatAST;
@@ -545,6 +546,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         if(ctx.symbollist() != null) {
             lkRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
             lkRef.setSymbols((SymbolList) visitSymbollist(ctx.symbollist()));
+            checkSymbolListValid(lkRef);
         }
         if(ctx.effDate() != null) {
             lkRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
@@ -583,6 +585,7 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
         if(ctx.symbollist() != null) {
             lkfieldRef.addChildIfNotNull(visitSymbollist(ctx.symbollist()));
             lkfieldRef.setSymbols((SymbolList) visitSymbollist(ctx.symbollist()));
+            checkSymbolListValid(lkfieldRef);
         }
         if(ctx.effDate() != null) {
             lkfieldRef.addChildIfNotNull(visitEffDate(ctx.effDate()));
@@ -594,6 +597,15 @@ public class BuildGenevaASTVisitor extends GenevaERSBaseVisitor<ExtractBaseAST> 
             logger.atSevere().log("visitLookupField null lookup for %s",fullName);
         }
         return lkfieldRef;
+    }
+
+    private void checkSymbolListValid(LookupPathAST lkref) {
+        for (String s : lkref.getSymbols().getSymbols()) {
+            //Is the symbol defined in the lookup?
+            if(lkref.getLookup().isSymbolNotDefined(s)) {
+                lkref.addError("Symbol " + s + " not defined in lookup " + lkref.getLookup().getName());
+            }
+        }
     }
 
 	@Override public ExtractBaseAST visitExprStringAtom(GenevaERSParser.ExprStringAtomContext ctx) { 
