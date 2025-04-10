@@ -28,6 +28,13 @@ import org.genevaers.repository.components.enums.LrStatus;
 
 import com.google.common.flogger.FluentLogger;
 
+/**
+ * A Lookup Path is used to reference data.
+ * <p>A Lookup Path is akin to an SQL query.</p>
+ * <p>It has of a number of LookupPathStep objects. Akin to a Join statement in an SQL query.</p>
+ * <p>Each LokkupPathStep has a number of LookupPathKey onjects. Akin to the ON clauses of an SQL Join</p>
+ * <p>See the TBD discussion of Lookup Paths and Reference Phase generation.</p>
+ */
 public class LookupPath extends ComponentNode {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
