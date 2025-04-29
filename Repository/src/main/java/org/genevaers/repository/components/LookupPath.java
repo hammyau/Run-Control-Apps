@@ -28,6 +28,13 @@ import org.genevaers.repository.components.enums.LrStatus;
 
 import com.google.common.flogger.FluentLogger;
 
+/**
+ * A Lookup Path is used to reference data.
+ * <p>A Lookup Path is akin to an SQL query.</p>
+ * <p>It has of a number of LookupPathStep objects. Akin to a Join statement in an SQL query.</p>
+ * <p>Each LokkupPathStep has a number of LookupPathKey onjects. Akin to the ON clauses of an SQL Join</p>
+ * <p>See the TBD discussion of Lookup Paths and Reference Phase generation.</p>
+ */
 public class LookupPath extends ComponentNode {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
@@ -217,5 +224,25 @@ public class LookupPath extends ComponentNode {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public boolean isSymbolNotDefined(String s) {
+		boolean notFound = true;
+		logger.atInfo().log("Lookup %s looking for symbol %s", name, s);
+		Iterator<LookupPathStep> sti = steps.iterator();
+		while (notFound && sti.hasNext()) {
+			LookupPathStep st = sti.next();
+			logger.atInfo().log("  Step %d", st.getStepNum());
+			Iterator<LookupPathKey> ki = st.getKeyIterator();
+			while (notFound && ki.hasNext()) {
+				LookupPathKey k = ki.next();
+				String sym = k.getSymbolicName();
+				if(sym.length() > 0 && sym.equals(s.substring(1))) {
+					notFound = false;
+					logger.atFine().log("Found Symbol %s", s);
+				}
+			}
+		}
+		return notFound;
 	}
 }
