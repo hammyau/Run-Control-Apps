@@ -37,7 +37,7 @@ public class GersEnvironment {
 	}
 
 	public static void initialiseFromTheEnvironment() {
-		environmentVariables = System.getenv();
+		environmentVariables.putAll(System.getenv());
 
 		getEnvVarOrDefault("OSNAME", System.getProperty("os.name"));
 
