@@ -37,8 +37,6 @@ public class GersEnvironment {
 	}
 
 	public static void initialiseFromTheEnvironment() {
-		environmentVariables = System.getenv();
-
 		getEnvVarOrDefault("OSNAME", System.getProperty("os.name"));
 
 		String locroot = System.getProperty("user.dir");
@@ -112,11 +110,11 @@ public class GersEnvironment {
 	}
 
 	private static String getEnvVarOrDefault(String env, String def) {
-		String value = environmentVariables.get(env);
+        String value = System.getenv(env);
 		if (value == null) {
 			value = def;
-			environmentVariables.put(env.toUpperCase(), value);
 		}
+		environmentVariables.put(env.toUpperCase(), value);
 		return value;
 	}
 
