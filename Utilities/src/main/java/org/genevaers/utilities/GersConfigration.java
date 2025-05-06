@@ -47,6 +47,7 @@ public class GersConfigration {
     public static final String XLTOLD_DDNAME = "XLTOLD";
     public static final String JLTOLD_DDNAME = "JLTOLD";
     public static final String VDPOLD_DDNAME = "VDPOLD";
+    public static final String LTCOV = "LTCOV";
     
     public static final String GENERATE = "GENERATE_RC_FILES";
     public static final String WRITE_VDPXML = "GENERATE_VDPXML";
@@ -150,6 +151,7 @@ public class GersConfigration {
         parmToValue.put(COMPARE, new ConfigEntry("N", false));
         parmToValue.put(RCA_REPORT, new ConfigEntry("N", true));
         parmToValue.put(REPORT_FORMAT, new ConfigEntry("TXT", false));
+        parmToValue.put(COVERAGE, new ConfigEntry("N", false));
 
         parmToValue.put(DB_SCHEMA, new ConfigEntry("", false));
         parmToValue.put(ENVIRONMENT_ID, new ConfigEntry("", false));
@@ -275,6 +277,10 @@ public class GersConfigration {
 
     public static boolean isRcaReport() {
         return parmToValue.get(RCA_REPORT).getValue().equalsIgnoreCase("Y");
+    }
+
+    public static boolean isCoverage() {
+        return parmToValue.get(COVERAGE).getValue().equalsIgnoreCase("Y");
     }
 
     public static boolean isNumberModeStandard() {
