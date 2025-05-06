@@ -186,7 +186,7 @@ public class RCAFrameworkHTMLWriter {
 	private DomContent functionCodeCoverage() {
 		return a().withText("Function Code Coverage")
 				.withClass(MENU_CLASS)
-				.withHref("ltcov.html")
+				.withHref("../ltcov.html")
 				.withTarget(PAGE_IFRAME);
 	}
 
