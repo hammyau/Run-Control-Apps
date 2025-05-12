@@ -4,6 +4,6 @@
 # These are explicitly windows files and should use crlf
 *.bat           text eol=crlf
 #
-# Explicitly declare text files you want to always be normalized and converted to native line endings on checkout.
+# Explicitly declare text files those should be LF.
 *.ftl  text eol=lf
 
