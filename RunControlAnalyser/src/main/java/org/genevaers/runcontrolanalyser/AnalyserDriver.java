@@ -85,6 +85,9 @@ public class AnalyserDriver {
 			if (GersConfigration.isRcaReport()) {
 				generateRcaPrint(root);
 			}
+			if (GersConfigration.isAggregate()) {
+				ltCoverageAnalyser.aggregateCoverage();;
+			}
 		}
 		setStatus(numVDPDiffs, numXLTDiffs, numJLTDiffs);
 		return status;

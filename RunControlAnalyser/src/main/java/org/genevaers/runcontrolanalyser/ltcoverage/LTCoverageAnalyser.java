@@ -176,7 +176,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
     private static void aggregateLTFromPath(Path p) {
         Path testPath = p.getParent();
         logger.atInfo().log(testPath.toString());  
-        Path ltcovPath = testPath.resolve("rca").resolve("ltcov.yaml");
+        Path ltcovPath = testPath.resolve("ltcov.yaml");
         if(ltcovPath.toFile().exists()) {
             aggcov.addSource(ltcovPath);
             if(aggFileInitRequired) {
@@ -186,7 +186,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
                 aggcov.aggregateFrom(LtCoverageYamlReader.readYaml(ltcovPath));
             }
         } else {
-            logger.atWarning().log("Test passed but not LTCov");  
+            logger.atWarning().log("Test passed but no LTCov");  
         }
     }
 
