@@ -70,18 +70,22 @@ public class CommandLineHandler {
 		} else {
 			//Call the Runner that reads all of the specs
 			//and runs all of the tests
-			TestDriver.processSpecList();
-			TestDriver.runAllTests();
-			TestReporter reporter = new TestReporter();
-			try {
-				reporter.generate();
-				if(reporter.allPassed()) {
-					System.exit(0);
-				} else {
-					System.exit(4);
+			if(TestDriver.processSpecList()) {
+				TestDriver.runAllTests();
+				if(line.hasOption("coverage")) {
+					TestDriver.generateCoverage();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				TestReporter reporter = new TestReporter();
+				try {
+					reporter.generate();
+					if(reporter.allPassed()) {
+						System.exit(0);
+					} else {
+						System.exit(4);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -98,9 +102,11 @@ public class CommandLineHandler {
 
 		Option help = new Option( "help", "print this message" );
 		Option menu = new Option( "menu", "run-menu",  false, "run from menu");
-		
+		Option coverage = new Option( "coverage", "run-coverage",  false, "run function code coverage");
+
 		options.addOption( help );
 		options.addOption(menu);
+		options.addOption(coverage);
 		return options;
 	}
 

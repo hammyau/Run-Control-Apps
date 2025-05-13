@@ -59,12 +59,20 @@
         },
         {
             "type": "java",
-            "name": "Launch ftl2jcl",
+            "name": "Launch TestFramework With Coverage",
             "request": "launch",
-            "mainClass": "org.genevaers.ftl2jcl.CommandLineHandler",
+            "mainClass": "org.genevaers.testframework.CommandLineHandler",
             "projectName": "petestframework",
             "cwd": "${workspaceFolder}/PETestFramework",
-            "args": "banana"
+            "args": "-coverage"
+        },
+        {
+            "type": "java",
+            "name": "Launch Aggregate",
+            "request": "launch",
+            "mainClass": "org.genevaers.rcapps.Runner",
+            "projectName": "rcapps",
+            "cwd": "${workspaceFolder}/PETestFramework/out"
         },
         {
             "type": "java",
