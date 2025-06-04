@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.apache.commons.io.file.AccumulatorPathVisitor;
@@ -50,7 +49,6 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static LTCoverageFile ltcov = new LTCoverageFile();
-    private static LtCoverageYamlWriter yamlWriter = new LtCoverageYamlWriter();
     private static LTCoverageFile aggcov;
     private static boolean aggFileInitRequired; 
     private static List<Path> sources = new ArrayList<>();

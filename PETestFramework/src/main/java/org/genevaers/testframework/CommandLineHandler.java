@@ -36,8 +36,8 @@ import com.google.common.flogger.FluentLogger;
 
 public class CommandLineHandler {
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
-	public static void main(String[] args) throws IOException, InterruptedException {
+	
+	public static void main(String[] args) throws  IOException, InterruptedException {
 		Options options = buildCommandLineOptions();
 		CommandLineParser parser = new DefaultParser();
 		try {
