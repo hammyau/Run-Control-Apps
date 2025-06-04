@@ -317,13 +317,6 @@
 				<module>ZosIO</module>
 				<module>ZosUtilities</module>
 			</modules>
-			<dependencies>
-				<dependency>
-					<groupId>com.ibm</groupId>
-					<artifactId>jzos</artifactId>
-					<version>2.4.8</version>
-				</dependency>
-			</dependencies>
 		</profile>
 	</profiles>
 
