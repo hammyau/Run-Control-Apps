@@ -127,13 +127,12 @@ public class Tester {
 			initialisePaths();
 			readAndProcessTheInputs();
 			} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				logger.atSevere().log("Exception in processing MR91 inputs:\n%s", e.getMessage());
 		}
 		return true;
     }
 
-	private void readAndProcessTheInputs() {
+	private void readAndProcessTheInputs() { 
 		WildcardFileFilter mr91Filter = new WildcardFileFilter(XMLFILES);
 		Collection<File> xmlFiles = FileUtils.listFiles(inputsPath.toFile(), mr91Filter, TrueFileFilter.TRUE);
 		logger.atInfo().log("Processing XML Files: " + inputsPath.toString());
@@ -162,8 +161,7 @@ public class Tester {
 		try {
 			run(xmlFiles);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("Exception occurred in run MR91 \n%s", e.getMessage());
 		}
 	}
 

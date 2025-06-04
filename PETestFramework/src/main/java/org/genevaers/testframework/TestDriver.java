@@ -114,8 +114,7 @@ public class TestDriver {
 				logger.atSevere().log("Invalid variable values");
 			}
 		} catch (Exception e) {
-			logger.atSevere().log("Exception in testing");
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception in testing");
 		}
 		return run;
 	}
@@ -150,7 +149,7 @@ public class TestDriver {
 		try {
 			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + TEST_SRC));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 	}
 
@@ -161,7 +160,7 @@ public class TestDriver {
 			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + "cfg"));
 			FileProcessor.deleteRecursive(new File(GersEnvironment.get(LOCALROOT) + File.separator + "out"));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 	}
 
@@ -214,7 +213,7 @@ public class TestDriver {
 			properties.load(resourceStream);
 			ver = properties.getProperty("app.name") + ": " + properties.getProperty("build.version");
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 		return ver;
 	}
@@ -312,8 +311,7 @@ public class TestDriver {
 			nodeMap.put("cssPath", cssPath);
 			TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
 		} catch (IOException | TemplateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 	}
 
@@ -342,7 +340,7 @@ public class TestDriver {
 			fw.append(outdata);
 			fw.close();
 		} catch (IOException e) {
-			logger.atSevere().log(e.getMessage());
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 	}
 
@@ -440,8 +438,7 @@ public class TestDriver {
 				ZFile.remove(dataset);
 			}
 		} catch (ZFileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 	}
 
@@ -474,7 +471,7 @@ public class TestDriver {
 				runTest(t);
 				specPassed &= t.getResult().getMessage().startsWith("pass") ? true : false;
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.atSevere().withCause(e);
 			}
 		}
 		if(specPassed) {
@@ -624,7 +621,7 @@ public class TestDriver {
 		try {
 			Thread.sleep(millis);
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		} // 1 second
 	}
 
@@ -634,7 +631,7 @@ public class TestDriver {
 			logger.atInfo().log("check %s exists", dataset);
 			found = ZFile.exists(dataset);
 		} catch (ZFileException e) {
-			e.printStackTrace();
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 		return found;
 	}
@@ -705,8 +702,7 @@ public class TestDriver {
 				nodeMap.put("cssPath", cssPath);
 				TemplateApplier.generateTestTemplatedOutput(template, nodeMap, resultFilePath);
 			} catch (IOException | TemplateException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.atSevere().withCause(e).log("Exception occurred");
 			}
 		}
 	}
@@ -744,8 +740,7 @@ public class TestDriver {
 						System.out.println(Menu.GREEN + "PASS for " + outFilePath.toString() + Menu.RESET);
 					}
 			} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					logger.atSevere().log("Exception occurred in output files match \n%s", e.getMessage());
 				}
 			}
 		}
@@ -773,8 +768,7 @@ public class TestDriver {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			llogger.atSevere().log("Exception occurred in get File info \n%s", e.getMessage());
 		}
 		return eventFiles;
 	}	
@@ -827,8 +821,7 @@ public class TestDriver {
 			cr.run(rcaString, loc.toFile());
 			logger.atInfo().log(cr.getCmdOutput().toString());
 		} catch (InterruptedException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("Exception occurred in run RCA \n%s", e.getMessage());
 		}
 	}
 
@@ -842,7 +835,7 @@ public class TestDriver {
             fw.write(GersConfigration.LOG_LEVEL + "=DEBUG\n");
             fw.close();
         } catch (IOException e) {
-            logger.atSevere().log("Unable to write RCA Parms %s", e.getMessage() );
+            logger.atSevere().log("Unable to write RCA Parms %s", e.getMessage());
         }
 	}
 

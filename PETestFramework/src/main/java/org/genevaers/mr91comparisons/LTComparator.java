@@ -39,6 +39,8 @@ import org.genevaers.genevaio.ltfile.LogicTable;
 import org.genevaers.genevaio.ltfile.LTFileReader;
 import org.genevaers.utilities.CommandRunner;
 
+import com.google.common.flogger.FluentLogger;
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -55,7 +57,7 @@ public class LTComparator {
 	private static final String JXTRGRPT = "JavaXLTTRGRPT";
 	private static final String JJSRCRPT = "JavaJLTSRCRPT";
 	private static final String JJTRGRPT = "JavaJLTTRGRPT";
-	static transient Logger logger = Logger.getLogger("LTComparitor");
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	
 	private Path rootpath;
 	private Path jltResult; 
@@ -70,7 +72,7 @@ public class LTComparator {
 
 	public List<Path> compareXLTs(Configuration cfg, Path testOutPath, Path srcxlt, Path trgxlt ) {
 		List<Path> results = null;
-		logger.info("Compare XLTs " +  srcxlt.toString() + " and " + trgxlt);
+		logger.atInfo().log("Compare XLTs " +  srcxlt.toString() + " and " + trgxlt);
 		try {
 			//setupAndRunLTPrint(cfg, srcxlt, XLT, SRCRPT);
 			runLTPrint(srcxlt, XLT, JXSRCRPT);
@@ -79,7 +81,7 @@ public class LTComparator {
 			moveTargetLTReportToSource(srcxlt, trgxlt, JXTRGRPT);
 			results = getXLTRPTcomparisonResults(testOutPath, srcxlt, trgxlt, XLT);
 		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
+			logger.atSevere().log("Exception occurred in comparing XLTS \n%s", e.getMessage());
 		}
 		return results;
 	}
@@ -87,7 +89,7 @@ public class LTComparator {
 	public Boolean compareJLTs(Configuration cfg, Path jlt1, Path jlt2) {
 		Boolean result = true;
 		
-		logger.info("Compare JLTs " +  jlt1.toString() + " and " + jlt2);
+		logger.atInfo().log("Compare JLTs " +  jlt1.toString() + " and " + jlt2);
 		try {
 			//setupAndRunLTPrint(cfg, jlt1, JLT, SRCRPT);
 			runLTPrint(jlt1, JLT, JJSRCRPT);
@@ -112,10 +114,10 @@ public class LTComparator {
 			}
 	        cmd.clear();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.atSevere().log("Exception occurred in comparing JLTS \n%s", e.getMessage());
 		}
 		catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.atSevere().log("Exception occurred in comparing JLTS \n%s", e.getMessage());
 		}
 		return result;
 	}

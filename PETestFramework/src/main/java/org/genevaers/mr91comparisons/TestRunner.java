@@ -18,10 +18,10 @@ package org.genevaers.mr91comparisons;
  */
 
 
-import java.util.logging.Logger;
+import com.google.common.flogger.FluentLogger;
 
 public class TestRunner {
-	static transient Logger logger = Logger.getLogger("com.ibm.safr.test.pm.TestRunner");
+	private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
 	public static void main(String[] args) {
 		int exitCode = 1; //not good
@@ -32,14 +32,13 @@ public class TestRunner {
             try {
 				report.generate();
 	    		if(report.allPassed()) {
-	    			logger.info("All tests were successful");
+	    			logger.atInfo().log("All tests were successful");
 	    			exitCode = 0;
 	    		} else {
-	    			logger.severe("Not all tests passed");
+	    			logger.atSevere().log("Not all tests passed");
 	    		}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.atSevere().log("Exception occured in generating test reports: \n%s", e.getMessage());
 			}
 		}
 		System.exit(exitCode);
