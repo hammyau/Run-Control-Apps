@@ -84,7 +84,7 @@ public class CommandLineHandler {
 						System.exit(4);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.atSevere().log("Exception in command line process: \n%s",e.getMessage());
 				}
 			}
 		}
@@ -118,7 +118,7 @@ public class CommandLineHandler {
 			properties.load(resourceStream);
             version = properties.getProperty("build.version") + " (" + properties.getProperty("build.timestamp") + ")";
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.atSevere().log("Exception in reading version \n%s",e.getMessage());
 		}
 		return version;
 	}
