@@ -154,7 +154,7 @@ public class TestReporter {
 			logger.atInfo().log(WRITE_TO + csvOverview.toString());
 			generateTemplatedOutput(csvTemplate, nodeMap, csvOverview);
 		} catch (IOException | TemplateException e) {
-			e.printStackTrace();
+			logger.atSevere().log("Exception occurred in writing FMOverview html \n%s", e.getMessage());
 		}
 	}
 
@@ -190,8 +190,14 @@ public class TestReporter {
 	}
 
 	public void runOverviewHTML() throws IOException, InterruptedException {
+		Path htmlPath = overviewHTMLFile.toAbsolutePath().normalize();
+		String fileName = htmlPath.getFileName().toString();
+    	if (fileName.matches(".*[&|<>^].*")) {
+        	throw new SecurityException("Unsafe characters in file name: " + fileName);
+    	}
+		String command = String.format("cmd /C start \"\" \"%s\"", fileName);
 		CommandRunner cmdRunner = new CommandRunner();
-		cmdRunner.run("cmd /C " + overviewHTMLFile.toString(), overviewHTMLFile.getParent().toFile());
+		cmdRunner.run(command, overviewHTMLFile.getParent().toFile());
 	}
 
 	protected void processSpecList() {

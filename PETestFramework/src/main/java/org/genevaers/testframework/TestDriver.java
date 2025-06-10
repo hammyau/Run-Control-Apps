@@ -271,7 +271,12 @@ public class TestDriver {
 		Path xmlfile;
 		List<Substitution> substs = new ArrayList<Substitution>();
 		for (XMLFile xml : testToRun.getXmlfiles()) {
-			xmlfile = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xml").resolve(xml.getName());
+			Path baseDir = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("xml").normalize();
+			xmlfile = baseDir.resolve(xml.getName()).normalize();
+			
+			if (!xmlfile.startsWith(baseDir)) {
+			 	throw new SecurityException("Path traversal attempt detected: " + xmlfile);
+			}
 
 			for (Replacement r : xml.getReplacements()) {
 				substs.add(new Substitution(r.getReplace(), r.getWith()));
@@ -302,8 +307,7 @@ public class TestDriver {
 			cr.run(rcaString, localTest.toFile());
 			logger.atInfo().log(cr.getCmdOutput().toString());
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("Exception occured in runLocalTest: \n%s",e.getMessage());
 		}
 		// dittto gvbrca
 		processLocalResult(testToRun);
@@ -441,8 +445,9 @@ public class TestDriver {
 	private static void copyTheJCLToPDS(GersTest testToRun, String pds) {
 		logger.atInfo().log("Copy the JCL files to %s", pds);
 		deletePdsIfExists(pds);
-		if (GersEnvironment.get("OSNAME").startsWith("z")) {
-			for (File f : testJCLDirectory.toFile().listFiles()) {
+		if (GersEnvironment.get("OSNAME").startsWith("z")) {		
+			Path baseDir = testJCLDirectory.toAbsolutePath().normalize();	
+			for (File f : baseDir.toFile().listFiles()) {
 				ZosHelper.convertA2EAndCopyFile2Dataset(f, "//'" + pds + "(" + f.getName() + ")'", "fb", "80");
 			}
 		}
@@ -452,7 +457,8 @@ public class TestDriver {
 		logger.atInfo().log("Copy the config files to %s", pds);
 		deletePdsIfExists(pds);
 		if (GersEnvironment.get("OSNAME").startsWith("z")) {
-			Path configFolder = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("Config").resolve(testToRun.getFullName());
+			Path baseConfigDir = Paths.get(GersEnvironment.get("LOCALROOT")).resolve("Config").normalize();
+			Path configFolder = baseConfigDir.resolve(testToRun.getFullName()).normalize();
 			for (File f : configFolder.toFile().listFiles()) {
 				ZosHelper.convertA2EAndCopyFile2Dataset(f, "//'" + pds + "(" + f.getName() + ")'", "fb", "80");
 			}
@@ -463,7 +469,8 @@ public class TestDriver {
 		logger.atInfo().log("Copy the XML to %s", pds);
 		deletePdsIfExists(pds);
 		if (GersEnvironment.get("OSNAME").startsWith("z")) {
-			for (File f : xmlDir.toFile().listFiles()) {
+			Path normXmlDir = xmlDir.normalize();
+			for (File f : normXmlDir.toFile().listFiles()) {
 				ZosHelper.convertA2EAndCopyFile2Dataset(f, "//'" + pds + "(" + f.getName() + ")'", "vb", "1000");
 			}
 		}
@@ -764,8 +771,8 @@ public class TestDriver {
 			if (!basePath.toFile().exists()) {
 				logger.atSevere().log("Base file does not exist " + basePath.toString());
 			} else {
-				Path outFilePath = outPath.resolve(test.getFullName()).resolve(outputFileName);
-				Path diffPath = outPath.resolve(test.getFullName()).resolve(outputFileName + ".diff");
+				Path outFilePath = outPath.resolve(test.getFullName()).resolve(outputFileName).normalize();
+				Path diffPath = outPath.resolve(test.getFullName()).resolve(outputFileName + ".diff").normalize();
 				try {
 					FileProcessor.toPrintableFile(outFilePath.toFile());
 					if(of.getStartkey() != null) {

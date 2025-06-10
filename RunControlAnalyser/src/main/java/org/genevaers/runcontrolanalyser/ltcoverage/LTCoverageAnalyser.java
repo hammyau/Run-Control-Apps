@@ -44,8 +44,6 @@ import org.genevaers.repository.components.enums.LtRecordType;
 import org.genevaers.utilities.GenevaLog;
 
 import com.google.common.flogger.FluentLogger;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 
 public class LTCoverageAnalyser extends LtFunctionCodeCache{
@@ -65,7 +63,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
         super();
     }
 
-	public static void main(String[] args) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, InterruptedException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		GenevaLog.formatConsoleLogger(LTCoverageAnalyser.class.getName(), Level.FINE);
 
         GenevaLog.closeLogger(LTCoverageAnalyser.class.getName());
