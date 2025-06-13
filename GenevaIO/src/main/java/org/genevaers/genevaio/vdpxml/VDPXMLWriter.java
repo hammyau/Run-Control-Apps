@@ -282,7 +282,7 @@ public class VDPXMLWriter {
         ViewSortKey vsk = currentView.getViewSortKeyFromColumnId(vc.getComponentId());
         if (vc.getExtractArea() != ExtractArea.AREACALC) {
             writeElement("DataType", vc.getDataType().dbcode(), fw);
-            if(vc.getExtractArea().name() == ExtractArea.SORTKEY.name() && currentView.getViewSortKeyFromColumnId(vc.getComponentId()) != null){
+            if(vc.getExtractArea().name() == ExtractArea.SORTKEY.name() && vsk != null){
                 writeElement("Length", Integer.toString(vsk.getSkFieldLength()), fw);
             }else {
                 writeElement("Length", Integer.toString(vc.getFieldLength()), fw);
