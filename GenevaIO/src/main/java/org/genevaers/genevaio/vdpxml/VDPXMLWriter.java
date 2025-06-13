@@ -281,11 +281,14 @@ public class VDPXMLWriter {
         writeElement("Area", vc.getExtractArea().dbcode(), fw);
         ViewSortKey vsk = currentView.getViewSortKeyFromColumnId(vc.getComponentId());
         if (vc.getExtractArea() != ExtractArea.AREACALC) {
-            writeElement("DataType", vc.getDataType().dbcode(), fw);
             if(vc.getExtractArea().name() == ExtractArea.SORTKEY.name() && vsk != null){
+                writeElement("DataType", vsk.getSortKeyDataType().dbcode(), fw);
                 writeElement("Length", Integer.toString(vsk.getSkFieldLength()), fw);
+                writeElement("DateFormat", vsk.getSortKeyDateTimeFormat().dbcode(), fw);
             }else {
+                writeElement("DataType", vc.getDataType().dbcode(), fw);
                 writeElement("Length", Integer.toString(vc.getFieldLength()), fw);
+                writeElement("DateFormat", vc.getDateCode().dbcode(), fw);
             }
             writeElement("Position", Integer.toString(vc.getExtractAreaPosition()), fw);
             writeElement("Ordinal", Integer.toString(vc.getOrdinalPosition()), fw);
