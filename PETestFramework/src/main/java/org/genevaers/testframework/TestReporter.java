@@ -111,9 +111,9 @@ public class TestReporter {
 		boolean success = true;
 		logger.atInfo().log("Generating Test Result Overview");
 
-		rootPath = Paths.get(GersEnvironment.get("LOCALROOT"));
-		outPath = getOutDir(rootPath);
-		specPath = rootPath.resolve("spec");
+		rootPath = Paths.get(GersEnvironment.get("LOCALROOT")).normalize();
+		outPath = getOutDir(rootPath).normalize();
+		specPath = rootPath.resolve("spec").normalize();
 		initFreeMarkerConfiguration();
 		processSpecList();
 		// Do this before the Overview so we can pick up the correct links
@@ -142,15 +142,15 @@ public class TestReporter {
 			nodeMap.put(CSS_PATH, W3_CSSPATH);
 			nodeMap.put("categories", categories.values());
 			nodeMap.put("QandA", getQandAs());
-			overviewHTMLFile = outPath.resolve("fmoverview.html");
+			overviewHTMLFile = outPath.resolve("fmoverview.html").normalize();
 			logger.atInfo().log(WRITE_TO + overviewHTMLFile.toString());
 			generateTemplatedOutput(template, nodeMap, overviewHTMLFile);
 			Template textTemplate = cfg.getTemplate("test/overviewText.ftl");
-			Path textOverview = outPath.resolve("fmoverview.txt");
+			Path textOverview = outPath.resolve("fmoverview.txt").normalize();
 			logger.atInfo().log(WRITE_TO + textOverview.toString());
 			generateTemplatedOutput(textTemplate, nodeMap, textOverview);
 			Template csvTemplate = cfg.getTemplate("test/overviewCSV.ftl");
-			Path csvOverview = outPath.resolve("fmoverview.csv");
+			Path csvOverview = outPath.resolve("fmoverview.csv").normalize();
 			logger.atInfo().log(WRITE_TO + csvOverview.toString());
 			generateTemplatedOutput(csvTemplate, nodeMap, csvOverview);
 		} catch (IOException | TemplateException e) {
@@ -170,8 +170,8 @@ public class TestReporter {
 	}
 
 	private String generateSpecHTML(Path specFileDirPath, Spec spec) {
-		Path specHTMLPath = specFileDirPath.resolve(spec.getName() + ".html");
-		Path cssPath = specHTMLPath.relativize(outPath).resolve(W3_CSS);
+		Path specHTMLPath = specFileDirPath.resolve(spec.getName() + ".html").normalize();
+		Path cssPath = specHTMLPath.relativize(outPath).resolve(W3_CSS).normalize();
 		if (specHTMLPath.getParent().toFile().exists() == false) {
 			// Then jolly well make it exist
 			specHTMLPath.getParent().toFile().mkdirs();
@@ -187,17 +187,6 @@ public class TestReporter {
 		}
 		Path sphtml = outPath.relativize(specHTMLPath);
 		return sphtml.toString();
-	}
-
-	public void runOverviewHTML() throws IOException, InterruptedException {
-		Path htmlPath = overviewHTMLFile.toAbsolutePath().normalize();
-		String fileName = htmlPath.getFileName().toString();
-    	if (fileName.matches(".*[&|<>^].*")) {
-        	throw new SecurityException("Unsafe characters in file name: " + fileName);
-    	}
-		String command = String.format("cmd /C start \"\" \"%s\"", fileName);
-		CommandRunner cmdRunner = new CommandRunner();
-		cmdRunner.run(command, overviewHTMLFile.getParent().toFile());
 	}
 
 	protected void processSpecList() {
@@ -216,7 +205,7 @@ public class TestReporter {
 																	// later?
 		// and the name of the spec... that is the beast without the .xml
 		// String specName = specFile.substring(0, specFile.length()-4);
-		Path specOutputPath = outPath.resolve(spec.getCategory()).resolve(spec.getName());
+		Path specOutputPath = outPath.resolve(spec.getCategory()).resolve(spec.getName()).normalize();
 
 		List<SpecTestResult> results = cat.getSpecTestResults(outPath, specOutputPath, spec);
 		cat.totalNumTests += results.size();
