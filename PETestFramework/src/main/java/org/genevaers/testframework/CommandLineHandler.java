@@ -35,8 +35,7 @@ import org.genevaers.utilities.GenevaLog;
 import com.google.common.flogger.FluentLogger;
 
 public class CommandLineHandler {
-    private static final FluentLogger logger = FluentLogger.forEnclosingClass();
-
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 	public static void main(String[] args) throws  IOException, InterruptedException {
 		Options options = buildCommandLineOptions();
 		CommandLineParser parser = new DefaultParser();
@@ -82,7 +81,7 @@ public class CommandLineHandler {
 						System.exit(4);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					logger.atSevere().log("Exception in command line process: \n%s",e.getMessage());
 				}
 			}
 		}

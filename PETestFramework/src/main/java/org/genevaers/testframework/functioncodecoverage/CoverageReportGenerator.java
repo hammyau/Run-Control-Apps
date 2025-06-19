@@ -78,7 +78,7 @@ public class CoverageReportGenerator {
 	public static void main(String[] args) {
   
 		System.out.println("Coverage Report Generator");
-		File rootDir = Paths.get(GersEnvironment.get("LOCALROOT")).toFile();;
+		File rootDir = Paths.get(GersEnvironment.get("LOCALROOT")).normalize().toFile();;
 		CoverageReportGenerator generator = new CoverageReportGenerator();
  		generator.writeCoverageHTML(rootDir, "LTCov");
 	}
