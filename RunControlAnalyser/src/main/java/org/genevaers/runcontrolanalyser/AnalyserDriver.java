@@ -113,8 +113,7 @@ public class AnalyserDriver {
 				generateJLTDiffReport(root, xlt1, xlt2);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.atSevere().log("Problem comparing run ontrol files. %s", e.getMessage());
 		}
 	}
 
