@@ -31,7 +31,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.apache.commons.io.file.AccumulatorPathVisitor;
@@ -44,15 +43,12 @@ import org.genevaers.repository.components.enums.LtRecordType;
 import org.genevaers.utilities.GenevaLog;
 
 import com.google.common.flogger.FluentLogger;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 
 public class LTCoverageAnalyser extends LtFunctionCodeCache{
 
     private static final FluentLogger logger = FluentLogger.forEnclosingClass();
     private static LTCoverageFile ltcov = new LTCoverageFile();
-    private static LtCoverageYamlWriter yamlWriter = new LtCoverageYamlWriter();
     private static LTCoverageFile aggcov;
     private static boolean aggFileInitRequired; 
     private static List<Path> sources = new ArrayList<>();
@@ -65,7 +61,7 @@ public class LTCoverageAnalyser extends LtFunctionCodeCache{
         super();
     }
 
-	public static void main(String[] args) throws CsvDataTypeMismatchException, CsvRequiredFieldEmptyException, IOException, InterruptedException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 		GenevaLog.formatConsoleLogger(LTCoverageAnalyser.class.getName(), Level.FINE);
 
         GenevaLog.closeLogger(LTCoverageAnalyser.class.getName());
