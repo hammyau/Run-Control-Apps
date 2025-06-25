@@ -131,6 +131,14 @@ public class ViewOutputParser extends BaseParser {
 			default:
 				break;
 		}
+		
+		Iterator<ViewSource> vsi = viewNode.getViewSourceIterator();
+		while (vsi.hasNext()) {
+				ViewSource vs = vsi.next();
+				if(vs.getExtractOutputLogic().isEmpty()){
+					generateExtractOutputLogic(0);
+				}
+		}
 	}
 
 	public void setViewNode(ViewNode vn) {
