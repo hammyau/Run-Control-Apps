@@ -98,8 +98,7 @@ public class TestReporter {
 				System.exit(0);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.atSevere().withCause(e);
+			logger.atSevere().withCause(e).log("Exception occurred");
 		}
 	}
 
@@ -184,7 +183,7 @@ public class TestReporter {
 			nodeMap.put("pmspec", spec);
 			generateTemplatedOutput(template, nodeMap, specHTMLPath);
 		} catch (IOException | TemplateException e) {
-			e.printStackTrace();
+			logger.atSevere().log("Exception in generate spec HTML \n%s", e.getMessage());
 		}
 		Path sphtml = outPath.relativize(specHTMLPath);
 		return sphtml.toString();
