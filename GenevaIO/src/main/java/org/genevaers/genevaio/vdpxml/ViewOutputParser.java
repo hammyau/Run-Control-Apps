@@ -210,4 +210,15 @@ public class ViewOutputParser extends BaseParser {
 		return fileStr;
 	}
 
+	@Override
+	public void endElement(){
+		Iterator<ViewSource> vsi = viewNode.getViewSourceIterator();
+		while (vsi.hasNext()) {
+				ViewSource vs = vsi.next();
+				if(vs.getExtractOutputLogic().isEmpty()){
+					generateExtractOutputLogic(0);
+				}
+		}
+	}
+
 }

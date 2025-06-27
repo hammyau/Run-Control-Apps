@@ -793,7 +793,7 @@ public class TestDriver {
 				}
 			}
 		} catch (IOException e) {
-			llogger.atSevere().log("Exception occurred in get File info \n%s", e.getMessage());
+			logger.atSevere().log("Exception occurred in get File info \n%s", e.getMessage());
 		}
 		return eventFiles;
 	}
