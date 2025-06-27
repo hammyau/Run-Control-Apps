@@ -131,14 +131,6 @@ public class ViewOutputParser extends BaseParser {
 			default:
 				break;
 		}
-		
-		Iterator<ViewSource> vsi = viewNode.getViewSourceIterator();
-		while (vsi.hasNext()) {
-				ViewSource vs = vsi.next();
-				if(vs.getExtractOutputLogic().isEmpty()){
-					generateExtractOutputLogic(0);
-				}
-		}
 	}
 
 	public void setViewNode(ViewNode vn) {
@@ -216,6 +208,17 @@ public class ViewOutputParser extends BaseParser {
 		PhysicalFile pf = Repository.getPhysicalFiles().get(partId);
 		fileStr = "DEST=FILE={" + pf.getLogicalFilename() + "." + pf.getName() + "}" + getWriteParm(vn);
 		return fileStr;
+	}
+
+	@Override
+	public void endElement(){
+		Iterator<ViewSource> vsi = viewNode.getViewSourceIterator();
+		while (vsi.hasNext()) {
+				ViewSource vs = vsi.next();
+				if(vs.getExtractOutputLogic().isEmpty()){
+					generateExtractOutputLogic(0);
+				}
+		}
 	}
 
 }
