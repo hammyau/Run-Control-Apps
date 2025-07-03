@@ -386,7 +386,7 @@ public class TestDriver {
 		if (testToRun.getFormatfiles().size() > 0) {
 			numExpectedJobs = testToRun.getExtractfiles().size();
 		}
-       	String value = System.getenv("PETEST_TIMER");
+       	String value = System.getenv("GERS_PETEST_TIMEOUT");
 		int timeout = Integer.valueOf(testToRun.getTimeout());
 		if (value == null) {
 			timeout = Integer.valueOf(value);
