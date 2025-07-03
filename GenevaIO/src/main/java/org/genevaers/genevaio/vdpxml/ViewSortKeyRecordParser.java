@@ -99,6 +99,7 @@ public class ViewSortKeyRecordParser extends BaseParser {
 				vsk.setComponentId(componentID);
 				vsk.setViewSortKeyId(componentID);
 				vsk.setSequenceNumber((short) seqNum);
+				vsk.setSortBreakHeaderOption(SortBreakHeaderOption.SAMEPAGE); //default
 				viewNode.addViewSortKeyBySeq(vsk);;
 				break;
 			case "SORTKEYLABEL":
@@ -115,6 +116,9 @@ public class ViewSortKeyRecordParser extends BaseParser {
 				}
 				break;
 			case "HEADER":
+				if("NEWP".equalsIgnoreCase(text)){
+					text = "PNEW";
+				}
 				vsk.setSortBreakHeaderOption(SortBreakHeaderOption.fromdbcode(text));
 				break;
 			case "FOOTER":

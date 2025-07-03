@@ -61,6 +61,11 @@ public class ViewHeaderFooterParser extends BaseParser {
 				break;
 			case "FUNCTION":
 				functonCode = text.trim();
+				if("DATE".equalsIgnoreCase(functonCode)){
+					functonCode = "PDATE";
+				}else if ("TIME".equalsIgnoreCase(functonCode)) {
+					functonCode = "PTIME";
+				}
 				rh.setFunction(Repository.getReportFunctionValue(ReportFunction.fromdbcode(functonCode)));
 				break;
 			case "ALIGNMENT":
