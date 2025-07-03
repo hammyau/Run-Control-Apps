@@ -386,7 +386,12 @@ public class TestDriver {
 		if (testToRun.getFormatfiles().size() > 0) {
 			numExpectedJobs = testToRun.getExtractfiles().size();
 		}
-		waitForJobsWithTimeoutAndCollectFailures(compPrefix, numExpectedJobs, Integer.valueOf(testToRun.getTimeout()));
+       	String value = System.getenv("PETEST_TIMER");
+		int timeout = Integer.valueOf(testToRun.getTimeout());
+		if (value == null) {
+			timeout = Integer.valueOf(value);
+		}
+		waitForJobsWithTimeoutAndCollectFailures(compPrefix, numExpectedJobs, timeout);
 		comparePhaseCheck(testToRun);
 	}
 
@@ -793,7 +798,7 @@ public class TestDriver {
 				}
 			}
 		} catch (IOException e) {
-			llogger.atSevere().log("Exception occurred in get File info \n%s", e.getMessage());
+			logger.atSevere().log("Exception occurred in get File info \n%s", e.getMessage());
 		}
 		return eventFiles;
 	}
