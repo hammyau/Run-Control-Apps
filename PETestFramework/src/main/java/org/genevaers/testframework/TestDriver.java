@@ -386,7 +386,12 @@ public class TestDriver {
 		if (testToRun.getFormatfiles().size() > 0) {
 			numExpectedJobs = testToRun.getExtractfiles().size();
 		}
-		waitForJobsWithTimeoutAndCollectFailures(compPrefix, numExpectedJobs, Integer.valueOf(testToRun.getTimeout()));
+       	String value = System.getenv("GERS_PETEST_TIMEOUT");
+		int timeout = Integer.valueOf(testToRun.getTimeout());
+		if (value == null) {
+			timeout = Integer.valueOf(value);
+		}
+		waitForJobsWithTimeoutAndCollectFailures(compPrefix, numExpectedJobs, timeout);
 		comparePhaseCheck(testToRun);
 	}
 
