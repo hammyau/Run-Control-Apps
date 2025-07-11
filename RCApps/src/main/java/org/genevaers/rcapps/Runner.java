@@ -65,6 +65,9 @@ public class Runner {
             logger.atInfo().log(header.toString());
             if(GersConfigration.generatorRunRequested()) {
                 RCGApp.run();
+                ReportWriter.setNumVDPRecordsWritten(RCGApp.getNumVDPRecordsWritten());
+                ReportWriter.setNumJLTRecordsWritten(RCGApp.getNumJLTRecordsWritten());
+                ReportWriter.setNumXLTRecordsWritten(RCGApp.getNumXLTRecordsWritten());
                 status = RCGApp.getResult();
             }
             if(status != Status.ERROR && GersConfigration.analyserRunRequested())  {

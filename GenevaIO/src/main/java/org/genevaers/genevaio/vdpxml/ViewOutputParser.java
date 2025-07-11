@@ -165,6 +165,7 @@ public class ViewOutputParser extends BaseParser {
 					writeLogic = String.format("WRITE(SOURCE=VIEW,DEST=EXT=%03d",
 							viewNode.getViewDefinition().getExtractFileNumber());
 					writeLogic += getWriteParm(viewNode) + ")";
+					setOutputFile(id);
 					break;
 				case EXTRACT:
 					if (viewNode.getOutputFile().getComponentId() > 0) {
@@ -185,6 +186,15 @@ public class ViewOutputParser extends BaseParser {
 				ViewSource vs = vsi.next();
 				vs.setExtractOutputLogic(writeLogic);
 			}
+		}
+	}
+
+	private void setOutputFile(int id) {
+		PhysicalFile outpf = Repository.getPhysicalFiles().get(id);
+		if(outpf != null) {
+			outpf.setRequired(true);
+			viewNode.getViewDefinition().setDefaultOutputFileId(outpf.getComponentId());
+			viewNode.setOutputFileFrom(outpf);
 		}
 	}
 
