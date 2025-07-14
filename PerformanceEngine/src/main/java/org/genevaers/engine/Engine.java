@@ -59,6 +59,8 @@ public class Engine {
             GersConfigration.setLinesRead(pr.getLinesRead());
             header.append(GersConfigration.getLinesReadString());
             logger.atInfo().log(header.toString());
+            PERun perun = new PERun();
+            perun.execute();
         } else {
             System.out.printf("Unable to find engine parm file\n");
         }
