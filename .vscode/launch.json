@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Engine",
+            "request": "launch",
+            "mainClass": "org.genevaers.engine.Engine",
+            "projectName": "engine"
+        },
+        {
+            "type": "java",
             "name": "CommandLineHandler",
             "request": "launch",
             "mainClass": "org.genevaers.ftl2jcl.CommandLineHandler",
@@ -81,6 +88,14 @@
             "mainClass": "org.genevaers.rcapps.Runner",
             "projectName": "rcapps",
             "cwd": "${workspaceFolder}/../../../RunControlPlayPen"
+        },
+        {
+            "type": "java",
+            "name": "Launch Engine from playpen",
+            "request": "launch",
+            "mainClass": "org.genevaers.engine.Engine",
+            "projectName": "engine",
+            "cwd": "${workspaceFolder}/../../../EnginePlaypen"
         },
         {
             "type": "java",

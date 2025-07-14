@@ -22,9 +22,13 @@ export rev=`grep "<revision>" pom.xml | awk -F'<revision>||</revision>' '{print 
 echo RCA release number $rev;
 
 cp RCApps/target/*-jar-with-dependencies.jar $GERS_RCA_JAR_DIR/rcapps-$rev.jar;                                       
+cp PerformanceEngine/target/*-jar-with-dependencies.jar $GERS_RCA_JAR_DIR/engine-$rev.jar;                                       
                                                                          
 cd $GERS_RCA_JAR_DIR;                                                    
                                                                          
 touch rcapps-latest.jar;                                                 
 rm rcapps-latest.jar;                                                    
 ln -s rcapps-$rev.jar rcapps-latest.jar;
+touch engine-latest.jar;                                                 
+rm engine-latest.jar;                                                    
+ln -s engine-$rev.jar engine-latest.jar;
