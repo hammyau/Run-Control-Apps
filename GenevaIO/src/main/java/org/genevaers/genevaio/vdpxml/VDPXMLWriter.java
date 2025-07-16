@@ -136,6 +136,7 @@ public class VDPXMLWriter {
         openElement("Output", fw);
         fw.write("\n");
         writeElement("Media", vw.getViewDefinition().getOutputMedia().dbcode(), fw);
+        writeElement("ZEROSUPPRESSIND", vw.getViewDefinition().isZeroValueRecordSuppression()?"1":"0", fw);
         writeOutputFileDetails(vw, fw);
         writeExitRefs(vw, fw);
         writePageLayout(vw, fw);
