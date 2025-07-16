@@ -238,6 +238,9 @@ public class VDPXMLWriter {
         if (vw.getViewDefinition().getFormatExitId() > 0) {
             writeExitRef(vw.getViewDefinition().getFormatExitId(), vw.getViewDefinition().getFormatExitParams(), fw);
         }
+        if(vw.getViewDefinition().getWriteExitId() > 0) {
+            writeExitRef(vw.getViewDefinition().getWriteExitId(), vw.getViewDefinition().getWriteExitParams(), fw);
+        }
     }
 
     private void writeOutputFileDetails(ViewNode vw, Writer fw) throws IOException {
