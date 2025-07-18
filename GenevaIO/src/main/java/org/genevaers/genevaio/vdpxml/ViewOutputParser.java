@@ -104,7 +104,7 @@ public class ViewOutputParser extends BaseParser {
 			case "MAXCHARSPERLINE":
 				vd.setOutputLineSizeMax((short) Integer.parseInt(text.trim()));
 				break;
-			case "ZEROSUPPRESSIND":
+			case "ZEROSUPPRESION":
 				vd.setZeroValueRecordSuppression(text.equals("0") ? false : true);
 				break;
 			case "EXTRACTMAXRECCNT":
@@ -134,7 +134,7 @@ public class ViewOutputParser extends BaseParser {
 			case "DELIMHEADERROWIND":
 				vd.setGenerateDelimitedHeader(text.equals("0") ? false : true);
 				break;
-			case "FORMATFILTLOGIC":
+			case "FILTER":
 				viewNode.setFormatFilterLogic(removeBRLineEndings(text));
 				break;
 			default:
