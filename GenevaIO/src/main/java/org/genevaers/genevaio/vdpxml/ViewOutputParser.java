@@ -39,6 +39,7 @@ public class ViewOutputParser extends BaseParser {
 	private Integer prefid;
 	private ViewDefinition vd;
 	private String pfname;
+	private String exitType;
 
 	public ViewOutputParser() {
 		sectionName = "Output";
@@ -69,12 +70,20 @@ public class ViewOutputParser extends BaseParser {
 				break;
 			case "EXITREF":
 				int exitID = Integer.parseInt(attributes.get("ID"));
-				viewNode.getViewDefinition().setFormatExitId(exitID);
+				exitType = attributes.get("Type");
+				if("WRITE".equalsIgnoreCase(exitType)){
+					viewNode.getViewDefinition().setWriteExitId(exitID);
+				} else if("FORMT".equalsIgnoreCase(exitType)){
+					viewNode.getViewDefinition().setFormatExitId(exitID);
+				}
 				break;
-				case "PARAMETER":
-				viewNode.getViewDefinition().setFormatExitParams(text);;
+			case "PARAMETER":
+				if("WRITE".equalsIgnoreCase(exitType)){
+					viewNode.getViewDefinition().setWriteExitParams(text);
+				} else if("FORMT".equalsIgnoreCase(exitType)){
+					viewNode.getViewDefinition().setFormatExitParams(text);
+				}
 				break;
-
 			case "HEADERS":
 				logger.atFine().log("Parsing Headers");
 				ViewHeaderFooterParser hfp = new ViewHeaderFooterParser();
@@ -95,7 +104,7 @@ public class ViewOutputParser extends BaseParser {
 			case "MAXCHARSPERLINE":
 				vd.setOutputLineSizeMax((short) Integer.parseInt(text.trim()));
 				break;
-			case "ZEROSUPPRESSIND":
+			case "ZEROSUPPRESION":
 				vd.setZeroValueRecordSuppression(text.equals("0") ? false : true);
 				break;
 			case "EXTRACTMAXRECCNT":
@@ -125,7 +134,7 @@ public class ViewOutputParser extends BaseParser {
 			case "DELIMHEADERROWIND":
 				vd.setGenerateDelimitedHeader(text.equals("0") ? false : true);
 				break;
-			case "FORMATFILTLOGIC":
+			case "FILTER":
 				viewNode.setFormatFilterLogic(removeBRLineEndings(text));
 				break;
 			default:
@@ -205,7 +214,7 @@ public class ViewOutputParser extends BaseParser {
 			UserExit ex = Repository.getUserExits().get(exitID);
 			String wparms = vn.getViewDefinition().getWriteExitParams();
 			if (wparms.length() > 0) {
-				exitStr += String.format(",USEREXIT=({%s, \"%s\"})", ex.getName(), wparms);
+				exitStr += String.format(",USEREXIT=({%s},\"%s\")", ex.getName(), wparms);
 			} else {
 				exitStr += String.format(",USEREXIT={%s}", ex.getName());
 			}
