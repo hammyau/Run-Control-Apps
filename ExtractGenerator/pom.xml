@@ -20,7 +20,9 @@ under the License.
 -->
 
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -28,13 +30,15 @@ under the License.
 		<artifactId>apps</artifactId>
 		<relativePath>../</relativePath>
 		<version>${revision}</version>
-  	</parent>
-	<artifactId>genevaio</artifactId>
+	</parent>
+	<groupId>org.genevaers</groupId>
+	<artifactId>extractgenerator</artifactId>
 
-	<name>GenevaERS GenevaIO</name>
+	<name>GenevaERS Extractor</name>
 	<url>https://genevaers.org/</url>
 
 	<properties>
+		<maven.compiler.release>8</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -42,28 +46,16 @@ under the License.
 
 	<dependencies>
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.j2html</groupId>
-			<artifactId>j2html</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.genevaers</groupId>
-			<artifactId>repository</artifactId>
+			<artifactId>genevaio</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.genevaers</groupId>
 			<artifactId>utilities</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-text</artifactId>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.flogger</groupId>
@@ -73,47 +65,31 @@ under the License.
 			<groupId>com.google.flogger</groupId>
 			<artifactId>flogger-system-backend</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.7.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.freemarker</groupId>
-			<artifactId>freemarker</artifactId>
-		</dependency>
-</dependencies>
+	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>3.2.0</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.7.1</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>org.genevaers.extractgenerator.Runner</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 				<executions>
 					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
+						<id>make-assembly</id>
+						<phase>package</phase>
 						<goals>
-							<goal>add-source</goal>
+							<goal>single</goal>
 						</goals>
-						<configuration>
-							<sources>
-								<source>target/generated-sources</source>
-							</sources>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -124,9 +100,7 @@ under the License.
 				<directory>src/main/resources</directory>
 				<includes>
 					<include>application.properties</include>
-					<include>RCApps.ftl</include>
-					<include>Engine.ftl</include>
-					<include>Extractor.ftl</include>
+					<include>FreeMarkerTemplates/ExtractJava.ftl</include>
 				</includes>
 			</resource>
 		</resources>
@@ -134,22 +108,42 @@ under the License.
 
 	<profiles>
 		<profile>
-			<id>db2</id>
+			<id>z/os</id>
+			<activation>
+				<os>
+					<family>z/os</family>
+				</os>
+			</activation>
 			<dependencies>
 				<dependency>
 					<groupId>com.ibm</groupId>
-					<artifactId>db2jcc_license_cu</artifactId>
-					<version>4</version>
+					<artifactId>jzos</artifactId>
+					<version>2.4.8</version>
 				</dependency>
 				<dependency>
-					<groupId>com.ibm</groupId>
-					<artifactId>db2jcc4</artifactId>
-					<version>4</version>
+					<groupId>org.genevaers</groupId>
+					<artifactId>zosutilities</artifactId>
+					<version>${revision}</version>
 				</dependency>
 				<dependency>
-					<groupId>com.ibm</groupId>
-					<artifactId>db2jcc_license_cisuz</artifactId>
-					<version>4</version>
+					<groupId>org.genevaers</groupId>
+					<artifactId>zosio</artifactId>
+					<version>${revision}</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.genevaers</groupId>
+					<artifactId>winio</artifactId>
+					<version>${revision}</version>
 				</dependency>
 			</dependencies>
 		</profile>

@@ -23,6 +23,7 @@ echo RCA release number $rev;
 
 cp RCApps/target/*-jar-with-dependencies.jar $GERS_RCA_JAR_DIR/rcapps-$rev.jar;                                       
 cp PerformanceEngine/target/*-jar-with-dependencies.jar $GERS_RCA_JAR_DIR/engine-$rev.jar;                                       
+cp ExtractGenerator/target/*-jar-with-dependencies.jar $GERS_RCA_JAR_DIR/extractor-$rev.jar;                                       
                                                                          
 cd $GERS_RCA_JAR_DIR;                                                    
                                                                          
@@ -32,3 +33,6 @@ ln -s rcapps-$rev.jar rcapps-latest.jar;
 touch engine-latest.jar;                                                 
 rm engine-latest.jar;                                                    
 ln -s engine-$rev.jar engine-latest.jar;
+rm extractor-latest.jar;                                                 
+touch extractor-latest.jar;                                                 
+ln -s extractor-$rev.jar extractor-latest.jar;

@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Runner",
+            "request": "launch",
+            "mainClass": "org.genevaers.extractgenerator.Runner",
+            "projectName": "extractgenerator"
+        },
+        {
+            "type": "java",
             "name": "Engine",
             "request": "launch",
             "mainClass": "org.genevaers.engine.Engine",
@@ -96,6 +103,14 @@
             "mainClass": "org.genevaers.engine.Engine",
             "projectName": "engine",
             "cwd": "${workspaceFolder}/../../../EnginePlaypen"
+        },
+        {
+            "type": "java",
+            "name": "Launch Extractor from playpen",
+            "request": "launch",
+            "mainClass": "org.genevaers.extractgenerator.Runner",
+            "projectName": "extractgenerator",
+            "cwd": "${workspaceFolder}/../../../ExtractorPlaypen"
         },
         {
             "type": "java",

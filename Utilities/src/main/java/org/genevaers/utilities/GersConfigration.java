@@ -114,15 +114,17 @@ public class GersConfigration {
     public static final String VIEW_NAMES = "YAMLVIEWS";
 
     private static final String ENGINE_PARM_FILENAME = "PEPARM";
-
     private static final String ENGINE_LOG_FILENAME = "PELOG";
-
     private static final String ENGINE_REPORT_FILENAME = "PERPT";
+    
+    private static final String EXTRACTOR_PARM_FILENAME = "EXPARM";
+    private static final String EXTRACTOR_LOG_FILENAME = "EXLOG";
+    private static final String EXTRACTOR_REPORT_FILENAME = "EXRPT";
     
     protected static Map<String, ConfigEntry> parmToValue = new TreeMap<>();
 
     private static boolean zos;
-    private static String zosCodePage;
+    private static String zosCodePage = "IBM-1047"; //Default  value
 
     private static Path gersHome;
 
@@ -243,6 +245,10 @@ public class GersConfigration {
 
     public static String getZosCodePage() {
         return zosCodePage;
+    }
+
+    public static void setZosCodePage(String zosCodePage) {
+        GersConfigration.zosCodePage = zosCodePage;
     }
 
     public static void setCurrentWorkingDirectory(String cwd) {
@@ -507,6 +513,18 @@ public class GersConfigration {
 
 	public static String getEngineReportFileName() {
         return getCWDPrefix() + ENGINE_REPORT_FILENAME;
+	}
+
+    public static String getExtractorParmFileName() {
+        return getCWDPrefix() + EXTRACTOR_PARM_FILENAME;
+    }
+
+    public static String getExtractorLogFileName() {
+        return getCWDPrefix() + EXTRACTOR_LOG_FILENAME;
+    }
+
+	public static String getExtractorReportFileName() {
+        return getCWDPrefix() + EXTRACTOR_REPORT_FILENAME;
 	}
 
 }

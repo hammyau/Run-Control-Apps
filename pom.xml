@@ -57,6 +57,7 @@
 		<module>WinIO</module>
 		<module>RCApps</module>
 		<module>PerformanceEngine</module>
+		<module>ExtractGenerator</module>
 	</modules>
 
 
@@ -65,6 +66,11 @@
 			<dependency>
 				<groupId>org.genevaers</groupId>
 				<artifactId>engine</artifactId>
+				<version>${revision}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.genevaers</groupId>
+				<artifactId>extractgenerator</artifactId>
 				<version>${revision}</version>
 			</dependency>
 			<dependency>
