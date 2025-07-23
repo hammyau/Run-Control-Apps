@@ -516,8 +516,12 @@ public class TestDriver {
 		} else {
 			submitJobs(firstJob);
 		}
-		waitForJobsWithTimeout(testToRun.getName(), testToRun.getNumExpectedJobs(),
-				Integer.valueOf(testToRun.getTimeout()));
+		String value = System.getenv("GERS_PETEST_TIMEOUT");
+        int timeout = Integer.valueOf(testToRun.getTimeout());
+        if (value == null) {
+            timeout = Integer.valueOf(value);
+        }
+		waitForJobsWithTimeout(testToRun.getName(), testToRun.getNumExpectedJobs(), timeout);
 	}
 
 	private static void submitJobs(Path mr91Job) throws IOException {
