@@ -62,7 +62,7 @@ export CLASSPATH="$CLASSPATH":
 #   -Xms sets the minimum heap size
 #   -Xmx sets the maximum heap size
 #   You can increase these values if you are encountering memory problems. 
-IJO="-Xms16m -Xmx128m"
+IJO="-Xms16m -Xmx512m"
 # Uncomment the following to aid in debugging "Class Not Found" problems
 #IJO="$IJO -verbose:class"
 IJO="$IJO -Dfile.encoding=ISO8859-1"
