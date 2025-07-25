@@ -56,11 +56,9 @@ public class ViewOutputParser extends BaseParser {
 				break;
 			case "PARTITION":
 				pid = Integer.parseInt(attributes.get("ID"));
-				//generateExtractOutputLogic(pid);
 				break;
 			case "PARTITIONREF":
 				prefid = Integer.parseInt(attributes.get("ID"));
-				//generateExtractOutputLogic(prefid);
 				break;
 			case "NAME":
 				pfname = text;

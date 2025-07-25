@@ -518,7 +518,7 @@ public class TestDriver {
 		}
 		String value = System.getenv("GERS_PETEST_TIMEOUT");
         int timeout = Integer.valueOf(testToRun.getTimeout());
-        if (value == null) {
+        if (value != null && Integer.valueOf(value) > timeout) {
             timeout = Integer.valueOf(value);
         }
 		waitForJobsWithTimeout(testToRun.getName(), testToRun.getNumExpectedJobs(), timeout);
