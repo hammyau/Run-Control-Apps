@@ -246,6 +246,7 @@ public class AnalyserDriver {
 		logger.atInfo().log("JLT Tree added to from %s", rc2.toString());
 		//Records2Dot.write(recordsRoot, root.resolve("JLTrecords.gv"));
 		switch (GersConfigration.getReportFormat()) {
+			case "TXT":
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
 				lttw.writeFromRecordNodes(recordsRoot, GersConfigration.getJLTReportName(), generation);
@@ -271,6 +272,7 @@ public class AnalyserDriver {
 		logger.atInfo().log("XLT Tree added to from %s", rc2.toString());
 		// Records2Dot.write(recordsRoot, root.resolve("xltrecords.gv"));
 		switch (GersConfigration.getReportFormat()) {
+			case "TXT":
 			case "TEXT":
 				LogicTableTextWriter lttw = new LogicTableTextWriter();
 				lttw.writeFromRecordNodes(recordsRoot, GersConfigration.getXLTReportName(), generation);
@@ -301,6 +303,7 @@ public class AnalyserDriver {
 		logger.atInfo().log("VDP Tree added to from %s", rc2.toString());
 		//Records2Dot.write(recordsRoot, root.resolve("records.gv"));
 		switch(GersConfigration.getReportFormat()) {
+			case "TXT":
 			case "TEXT":
 			VDPTextWriter vdptw = new VDPTextWriter();
 			vdptw.writeFromRecordNodes(recordsRoot, GersConfigration.getVDPReportName(), generation);

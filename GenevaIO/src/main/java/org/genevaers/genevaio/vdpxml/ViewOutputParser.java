@@ -40,6 +40,8 @@ public class ViewOutputParser extends BaseParser {
 	private ViewDefinition vd;
 	private String pfname;
 	private String exitType;
+	private int exitId;
+	private String wparms;
 
 	public ViewOutputParser() {
 		sectionName = "Output";
@@ -54,11 +56,9 @@ public class ViewOutputParser extends BaseParser {
 				break;
 			case "PARTITION":
 				pid = Integer.parseInt(attributes.get("ID"));
-				generateExtractOutputLogic(pid);
 				break;
 			case "PARTITIONREF":
 				prefid = Integer.parseInt(attributes.get("ID"));
-				generateExtractOutputLogic(prefid);
 				break;
 			case "NAME":
 				pfname = text;
@@ -69,12 +69,12 @@ public class ViewOutputParser extends BaseParser {
 				viewNode.getOutputFile().setOutputDDName(text);
 				break;
 			case "EXITREF":
-				int exitID = Integer.parseInt(attributes.get("ID"));
+				exitId = Integer.parseInt(attributes.get("ID"));
 				exitType = attributes.get("Type");
 				if("WRITE".equalsIgnoreCase(exitType)){
-					viewNode.getViewDefinition().setWriteExitId(exitID);
+					viewNode.getViewDefinition().setWriteExitId(exitId);
 				} else if("FORMT".equalsIgnoreCase(exitType)){
-					viewNode.getViewDefinition().setFormatExitId(exitID);
+					viewNode.getViewDefinition().setFormatExitId(exitId);
 				}
 				break;
 			case "PARAMETER":
@@ -191,9 +191,12 @@ public class ViewOutputParser extends BaseParser {
 
 			}
 			Iterator<ViewSource> vsi = viewNode.getViewSourceIterator();
+			// int exitID = viewNode.getViewDefinition().getWriteExitId();
 			while (vsi.hasNext()) {
 				ViewSource vs = vsi.next();
 				vs.setExtractOutputLogic(writeLogic);
+				vs.setWriteExitId(exitId);
+				vs.setWriteExitParams(wparms);
 			}
 		}
 	}
@@ -212,7 +215,7 @@ public class ViewOutputParser extends BaseParser {
 		int exitID = vn.getViewDefinition().getWriteExitId();
 		if (exitID != 0) {
 			UserExit ex = Repository.getUserExits().get(exitID);
-			String wparms = vn.getViewDefinition().getWriteExitParams();
+			wparms = vn.getViewDefinition().getWriteExitParams();
 			if (wparms.length() > 0) {
 				exitStr += String.format(",USEREXIT=({%s},\"%s\")", ex.getName(), wparms);
 			} else {
@@ -235,7 +238,13 @@ public class ViewOutputParser extends BaseParser {
 		while (vsi.hasNext()) {
 				ViewSource vs = vsi.next();
 				if(vs.getExtractOutputLogic().isEmpty()){
-					generateExtractOutputLogic(0);
+					if (pid != 0) {
+						generateExtractOutputLogic(pid);
+					} else if (prefid != 0) {
+						generateExtractOutputLogic(prefid);
+					} else {
+						generateExtractOutputLogic(0);
+					}
 				}
 		}
 	}
