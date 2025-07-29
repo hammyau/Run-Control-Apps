@@ -35,8 +35,8 @@ import org.genevaers.repository.components.enums.OutputMedia;
 public class ViewOutputParser extends BaseParser {
 
 	private ViewNode viewNode;
-	private Integer pid;
-	private Integer prefid;
+	private int pid;
+	private int prefid;
 	private ViewDefinition vd;
 	private String pfname;
 	private String exitType;
