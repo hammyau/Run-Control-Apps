@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.genevaers.engine.extractor.Extract;
 import org.genevaers.engine.extractor.Extractor;
 import org.genevaers.genevaio.recordreader.FileRecord;
 import org.genevaers.genevaio.recordreader.RecordFileReader;
@@ -42,7 +43,7 @@ public class PERun {
 
     private boolean ASCIItext = true;
 
-    private Extractor extractor;
+    private Extract extractor;
 
     private FileRecord outputRecord;
 
@@ -95,17 +96,16 @@ public class PERun {
     }
 
     public void execute() {
-        logger.atInfo().log("Setup IO");
-        setupIO();
         logger.atInfo().log("Read write records");
         readWrite();
         logger.atInfo().log("close IO");
     }
 
     private void readWrite() {
-        openInput(Paths.get(inputDDnames.get(0)));
         try {
             extractor = getExtractor();
+            setupIO();
+            openInput(Paths.get(inputDDnames.get(0)));
             openOutput(outputDDnames.get(0));
             readInput();
         } catch (Exception e) {
@@ -129,7 +129,8 @@ public class PERun {
     private void setupIO() {
         // Where do we read from... ddnames defined in view sources
         // dummy
-        inputDDnames.add("inputdata");
+        logger.atInfo().log("Setup IO");
+        inputDDnames.addAll(extractor.getInputDDnames());
         outputDDnames.add("DUMMYOUT");
         // Where do we write too? ddnames defined in view
     }
@@ -143,7 +144,7 @@ public class PERun {
     private void readInput() throws Exception {
         rr = RecordFileReaderWriter.getReader();
         rr.readRecordsFrom(inputFile);
-        rr.setRecLen(26);
+        rr.setRecLen(28);
         FileRecord rec = rr.readRecord();
         while (rr.isAtFileEnd() == false) {
             numrecords++;
@@ -158,14 +159,14 @@ public class PERun {
 
     private void processRecord(FileRecord rec) throws Exception {
         logger.atInfo().log("Do something with the record");
-        extractor.processRecord(rec.bytes.array(), outputRecord.bytes.array(), outWriter);
+        extractor.processRecord(rec.bytes.array(), outputRecord.bytes, outWriter);
      }
 
-    private Extractor getExtractor() {
+    private Extract getExtractor() {
         try {
-            Class<?> exc = Class.forName("org.genevaers.engine.extractor.SelectTextExtract");
+            Class<?> exc = Class.forName("org.genevaers.engine.extractor.XLT");
             Constructor<?>[] constructors = exc.getConstructors();
-            return ((Extractor) constructors[0].newInstance());
+            return ((Extract) constructors[0].newInstance());
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                 | InvocationTargetException | ClassNotFoundException e) {
             logger.atSevere().log("getGersFiles failed %s", e.getMessage());
@@ -177,9 +178,10 @@ public class PERun {
         outFile = new File(name);
         outWriter = RecordFileReaderWriter.getWriter();
         outWriter.writeRecordsTo(outFile);
+        outWriter.setReclen(extractor.getOutputLen());
         outputRecord = outWriter.getRecordToFill();
-        outputRecord.length = (short) (9);
-        outputRecord.bytes.putShort( outputRecord.length);
+        outputRecord.length = (short) (extractor.getOutputLen());
+        //outputRecord.bytes.putShort( outputRecord.length);
     }
 
     // private void writeTheRecord(FileRecord record) throws Exception {

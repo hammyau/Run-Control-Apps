@@ -2,12 +2,12 @@ package org.genevaers.extractgenerator;
 
 import java.io.FileWriter;
 
-import org.genevaers.extractgenerator.codegenerators.Extractor;
+import org.genevaers.extractgenerator.codegenerators.ExtractRecordGenerator;
 import org.genevaers.extractgenerator.codegenerators.ExtractorEntry;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.recordreader.RecordFileWriter;
 
-public class SelectTextExtract implements Extractor {
+public class SelectTextExtract implements ExtractRecordGenerator {
     public void processRecord(byte[] src, byte[] target, RecordFileWriter outWriter) {
         if(src[0] < 'H') {
             System.arraycopy(src, 5, target, 2, 7);

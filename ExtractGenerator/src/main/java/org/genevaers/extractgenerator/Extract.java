@@ -3,13 +3,13 @@ package org.genevaers.extractgenerator;
 import java.io.FileWriter;
 import java.nio.ByteBuffer;
 
-import org.genevaers.extractgenerator.codegenerators.Extractor;
+import org.genevaers.extractgenerator.codegenerators.ExtractRecordGenerator;
 import org.genevaers.extractgenerator.codegenerators.ExtractorEntry;
 import org.genevaers.genevaio.ltfile.LTRecord;
 import org.genevaers.genevaio.recordreader.RecordFileWriter;
 import org.genevaers.utilities.GersCodePage;
 
-public class Extract implements Extractor {
+public class Extract implements ExtractRecordGenerator {
     public void processRecord(byte[] src, byte[] target, RecordFileWriter outWriter) {
         if(src[29] < 11) {
             byte[] stringBuffer = new byte[19];

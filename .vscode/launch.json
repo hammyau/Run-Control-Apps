@@ -114,6 +114,14 @@
         },
         {
             "type": "java",
+            "name": "Launch RCA from Extractor playpen",
+            "request": "launch",
+            "mainClass": "org.genevaers.rcapps.Runner",
+            "projectName": "rcapps",
+            "cwd": "${workspaceFolder}/../../../ExtractorPlaypen"
+        },
+        {
+            "type": "java",
             "name": "Launch RCG/RCA from WEReports",
             "request": "launch",
             "mainClass": "org.genevaers.rcapps.Runner",

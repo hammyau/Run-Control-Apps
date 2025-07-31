@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.genevaers.extractgenerator.codegenerators.ExtractorEntry;
-import org.genevaers.extractgenerator.codegenerators.ExtractorRecord;
+import org.genevaers.extractgenerator.codegenerators.LT2JavaRecords;
 import org.genevaers.genevaio.fieldnodes.MetadataNode;
 import org.genevaers.genevaio.fieldnodes.Records2Dot;
 import org.genevaers.genevaio.html.LTRecordsHTMLWriter;
@@ -40,13 +40,13 @@ public class LT2Extractor {
     private void generateExtract(Path root, Path rc1) {
         MetadataNode recordsRoot = new MetadataNode();
         recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.XLT_DDNAME)).toString());
-        readLT(root, recordsRoot, GersConfigration.XLT_DDNAME).getStream().forEach(lte -> generateExtractFromLT(lte));
-        logger.atInfo().log("XLT Tree built from %s", rc1.toString());
-        ExtractorWriter.write(exrecs);
+        readLT(root, recordsRoot, GersConfigration.XLT_DDNAME).getStream().forEach(lte -> LT2JavaRecords.processRecord(lte));
+        logger.atInfo().log("XLT read from %s", rc1.toString());
+        ExtractorWriter.write(LT2JavaRecords.getExrecs(), LT2JavaRecords.getInputDDnames(), LT2JavaRecords.getOutputLength());
     }
 
     private void generateExtractFromLT(LTRecord lte) {
-            ExtractorRecord er = new ExtractorRecord();
+            LT2JavaRecords er = new LT2JavaRecords();
             ExtractorEntry exr = er.processRecord(lte);
             if(exr != null) {
                 exrecs.add(exr);

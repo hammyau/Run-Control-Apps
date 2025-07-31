@@ -46,7 +46,7 @@ public class ExtractorWriter {
 
 	private static  Configuration cfg;
 
-	public static void write(List<ExtractorEntry> exrecs){
+	public static void write(List<ExtractorEntry> exrecs, List<String> inputdds, int outLen){
 		configureFreeMarker();
         Template template;
         try {
@@ -55,6 +55,8 @@ public class ExtractorWriter {
             Map<String, Object> nodeMap = new HashMap<>();
             List<String> ers = exrecs.stream().map(e -> e.getEntryString()).collect(Collectors.toList());
             nodeMap.put("exrecs", ers);
+            nodeMap.put("inputdds", inputdds);
+            nodeMap.put("outLen", outLen);
             generateTemplatedOutput(template, nodeMap, "XLT.java");
             logger.atInfo().log("Extract Java Generated");
         } catch (IOException e) {
