@@ -9,5 +9,6 @@ public interface Extractor {
     public void processRecord(byte[] src, ByteBuffer bytes, RecordFileWriter outWriter);
 
     public int getOutputLen();
+    public int getLrLen();
 
 }

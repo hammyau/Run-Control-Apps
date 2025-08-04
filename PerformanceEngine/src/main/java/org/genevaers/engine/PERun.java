@@ -144,7 +144,7 @@ public class PERun {
     private void readInput() throws Exception {
         rr = RecordFileReaderWriter.getReader();
         rr.readRecordsFrom(inputFile);
-        rr.setRecLen(28);
+        rr.setRecLen(extractor.getLrLen());
         FileRecord rec = rr.readRecord();
         while (rr.isAtFileEnd() == false) {
             numrecords++;

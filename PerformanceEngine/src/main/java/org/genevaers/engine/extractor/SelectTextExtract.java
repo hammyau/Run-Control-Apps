@@ -18,4 +18,10 @@ public class SelectTextExtract implements Extractor {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getOutputLen'");
     }
+
+    @Override
+    public int getLrLen() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getLrLen'");
+    }
 }

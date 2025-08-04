@@ -13,6 +13,7 @@ public class LT2JavaRecords {
     private static List<ExtractorEntry> exrecs = new ArrayList<>();
     private static List<String> inputDDnames = new ArrayList<>();
     private static int outputLength;
+    private static int lrLength;
     private static Stack<Integer> gotos = new Stack<>();
     private static int endScopeRow;
 
@@ -28,6 +29,7 @@ public class LT2JavaRecords {
                 NVGenerator nv = new NVGenerator();
                 exrecs.add(nv.processRecord(lt));
                 outputLength = nv.getOutputLength();
+                lrLength =  nv.getLrLength();
                 break;
             case "DTC":
                 DTCGenerator dtc = new DTCGenerator();
@@ -84,6 +86,10 @@ public class LT2JavaRecords {
 
     public static int getOutputLength() {
         return outputLength;
+    }
+
+    public static int getLrLength() {
+        return lrLength;
     }
 
 }

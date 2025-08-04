@@ -39,5 +39,9 @@ ${rec}
         return  ${outLen};
     }
 
+    public int getLrLen() {
+        return  ${lrLen};
+    }
+
 
 }

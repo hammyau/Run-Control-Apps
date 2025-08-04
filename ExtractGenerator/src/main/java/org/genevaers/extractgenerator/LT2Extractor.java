@@ -42,7 +42,7 @@ public class LT2Extractor {
         recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.XLT_DDNAME)).toString());
         readLT(root, recordsRoot, GersConfigration.XLT_DDNAME).getStream().forEach(lte -> LT2JavaRecords.processRecord(lte));
         logger.atInfo().log("XLT read from %s", rc1.toString());
-        ExtractorWriter.write(LT2JavaRecords.getExrecs(), LT2JavaRecords.getInputDDnames(), LT2JavaRecords.getOutputLength());
+        ExtractorWriter.write(LT2JavaRecords.getExrecs(), LT2JavaRecords.getInputDDnames(), LT2JavaRecords.getOutputLength(), LT2JavaRecords.getLrLength());
     }
 
     private void generateExtractFromLT(LTRecord lte) {
