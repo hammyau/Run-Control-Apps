@@ -6,7 +6,7 @@ import org.genevaers.genevaio.recordreader.RecordFileWriter;
 
 public interface Extractor {
 
-    public void processRecord(byte[] src, ByteBuffer bytes, RecordFileWriter outWriter);
+    public void processRecord(byte[] src, ByteBuffer bytes, RecordFileWriter outWriter, int numrecords);
 
     public int getOutputLen();
     public int getLrLen();

@@ -4,15 +4,22 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.genevaers.engine.extractor.Extract;
 import org.genevaers.engine.extractor.Extractor;
+import org.genevaers.engine.lookups.Join;
+import org.genevaers.engine.lookups.JoinsRepo;
 import org.genevaers.genevaio.recordreader.FileRecord;
 import org.genevaers.genevaio.recordreader.RecordFileReader;
 import org.genevaers.genevaio.recordreader.RecordFileReaderWriter;
@@ -28,6 +35,7 @@ public class PERun {
 
     private List<String> inputDDnames = new ArrayList<>(); // Find and keep VDP Records?
     private List<String> outputDDnames = new ArrayList<>(); // Find and keep VDP Records?
+
 
     private File inputFile;
 
@@ -101,8 +109,31 @@ public class PERun {
         logger.atInfo().log("close IO");
     }
 
+    private void setupReferences() throws IOException {
+        //Should this be done dynamically
+        //or when the Extract is generated... we should know what we need then
+        //At the moment this is not reading the VDP
+        Join join = new Join();
+        rr = RecordFileReaderWriter.getReader();
+        rr.readRecordsFrom(new File("REFR001"));
+        rr.setRecLen(27);
+        FileRecord rec = rr.readRecord();
+        while (rr.isAtFileEnd() == false) {
+            numrecords++;
+            join.addReferenceRecord(rec);
+            join.setJoinId(1);
+            rec.bytes.clear();
+            rec = rr.readRecord();
+        }
+        rr.close();       
+        logger.atInfo().log("Read %d reference records", numrecords);
+        join.logContent();
+        JoinsRepo.addJoin(join);
+    }
+
     private void readWrite() {
         try {
+            setupReferences();
             extractor = getExtractor();
             setupIO();
             openInput(Paths.get(inputDDnames.get(0)));
@@ -159,7 +190,13 @@ public class PERun {
 
     private void processRecord(FileRecord rec) throws Exception {
         logger.atInfo().log("Do something with the record");
-        extractor.processRecord(rec.bytes.array(), outputRecord.bytes, outWriter);
+        //The extractor is going to need to know about the joins
+        //A join should really be based on ByteBuffers, maybe the key is a byte array?
+        //Make a class that represents a Join and we can them map them
+        //Then a join statement means get the join...
+        //If lookup not already performed buuild the key and get the buffer
+        //A DTL etc then uses the buffer rather than the source record
+        extractor.processRecord(rec.bytes.array(), outputRecord.bytes, outWriter, numrecords);
      }
 
     private Extract getExtractor() {

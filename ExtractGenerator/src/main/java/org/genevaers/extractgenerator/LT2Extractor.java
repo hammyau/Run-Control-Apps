@@ -41,6 +41,7 @@ public class LT2Extractor {
         MetadataNode recordsRoot = new MetadataNode();
         recordsRoot.setSource1(root.relativize(rc1.resolve(GersConfigration.XLT_DDNAME)).toString());
         readLT(root, recordsRoot, GersConfigration.XLT_DDNAME).getStream().forEach(lte -> LT2JavaRecords.processRecord(lte));
+        ExtractorWriter.addJoinInitialisation(LT2JavaRecords.getJoins());
         logger.atInfo().log("XLT read from %s", rc1.toString());
         ExtractorWriter.write(LT2JavaRecords.getExrecs(), LT2JavaRecords.getInputDDnames(), LT2JavaRecords.getOutputLength(), LT2JavaRecords.getLrLength());
     }

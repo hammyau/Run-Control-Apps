@@ -22,12 +22,14 @@ package org.genevaers.extractgenerator;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.genevaers.extractgenerator.codegenerators.ExtractorEntry;
+import org.genevaers.extractgenerator.codegenerators.JoinGenerator;
 import org.genevaers.utilities.GersConfigration;
 import org.genevaers.utilities.GersFile;
 import org.genevaers.utilities.Status;
@@ -81,6 +83,15 @@ public class ExtractorWriter {
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 	}
+
+
+    public static void addJoinInitialisation(Collection<JoinGenerator> joins) {
+        //What do we do with the join data?
+        //Function to read the data from the DDname of the PF - this cuts out the ref optimisation?
+        //Use the join id to make a REFRnnn and use that as the ddname
+        //So PE uses a REFR class? -> we make a REFRnnn class
+        //  it knows how to build the map for the lookup - again templated
+    }
 
 
 

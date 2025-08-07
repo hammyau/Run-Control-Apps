@@ -16,11 +16,14 @@ public class GOTOGenerator implements ExtractRecordGenerator{
         LogicTableF0 gotofc = (LogicTableF0)lt;
         gotofc.getGotoRow1();
         logger.atInfo().log("GOTO %d ", gotofc.getGotoRow1());
-        String exec = "        }";
-        if(generateElse) {
-            exec += " else {";
+        String exec = "//GOTO join default\n }";
+        if(gotofc.getGotoRow2() > 0) {
+            exec = "        }";
+            if(generateElse) {
+                exec += " else {";
+            }
+            endScopeRow = gotofc.getGotoRow1();
         }
-        endScopeRow = gotofc.getGotoRow1();
         return new ExtractorEntry(exec);
     }
 

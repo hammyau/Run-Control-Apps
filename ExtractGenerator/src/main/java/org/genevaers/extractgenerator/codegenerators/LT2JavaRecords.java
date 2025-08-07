@@ -1,8 +1,12 @@
 package org.genevaers.extractgenerator.codegenerators;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
+import java.util.function.Function;
 
 import org.genevaers.genevaio.ltfile.LTRecord;
 import com.google.common.flogger.FluentLogger;
@@ -16,6 +20,8 @@ public class LT2JavaRecords {
     private static int lrLength;
     private static Stack<Integer> gotos = new Stack<>();
     private static int endScopeRow;
+
+    private static Map<String, JoinGenerator> joins = new HashMap<>();
 
     public static ExtractorEntry processRecord(LTRecord lt) {
         String fc = lt.getFunctionCode();
@@ -39,14 +45,35 @@ public class LT2JavaRecords {
                 DTEGenerator dte = new DTEGenerator();
                 exrecs.add(dte.processRecord(lt));
                 break;
+            case "DTL":
+                DTLGenerator dtl = new DTLGenerator();
+                exrecs.add(dtl.processRecord(lt));
+                break;
             case "CFEC":
                 CFECGenerator cfec = new CFECGenerator();
                 exrecs.add(cfec.processRecord(lt));
                 gotos.push(cfec.getFalseRow());
                 break;
+            case "JOIN":
+                JoinGenerator join = new JoinGenerator();
+                //Collect the Reference information needed
+                // Input DDName - record len, key Len, so we can populate the Map of data
+                //We also need to generate the if logic that is a JOIN - three way
+                //Flag on if reference data already read for this event record
+                exrecs.add(join.processRecord(lt));
+                joins.computeIfAbsent(join.getNewid(), id -> addJoin(join));
+                break;
+            case "LKE":
+                LKEGenerator lke = new LKEGenerator();
+                exrecs.add(lke.processRecord(lt));
+                break;
+            case "LUSM":
+                LUSMGenerator lusm = new LUSMGenerator();
+                exrecs.add(lusm.processRecord(lt));
+                break;
             case "GOTO":
                 GOTOGenerator gotofc = new GOTOGenerator();
-                if(gotos.peek() == lt.getRowNbr()+1) {
+                if(gotos.size() > 0 && gotos.peek() == lt.getRowNbr()+1) {
                     gotofc.generateElse();
                     gotos.pop();
                 }
@@ -76,6 +103,10 @@ public class LT2JavaRecords {
         return null;
     }
 
+    private static JoinGenerator addJoin(JoinGenerator join) {
+        return join;
+    }
+
     public static List<ExtractorEntry> getExrecs() {
         return exrecs;
     }
@@ -90,6 +121,10 @@ public class LT2JavaRecords {
 
     public static int getLrLength() {
         return lrLength;
+    }
+
+    public static  Collection<JoinGenerator> getJoins() {
+        return joins.values();
     }
 
 }
